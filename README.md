@@ -1,3 +1,3 @@
 #Naziv projekta
 
-[Dokumentacija](/Documentation/Documentation.md)
+[Dokumentacija](Documentation/documentation.md)
