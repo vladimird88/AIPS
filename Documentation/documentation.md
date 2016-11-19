@@ -20,7 +20,7 @@
 
 ## Korišćene tehnologije i framework-ci
 
-Za izradu **Online Blackboard** web aplikacije kao osnovni framework korišćen je MeteorJS. Za razvoj MeteorJS aplikacija potrebno je koristiti NodeJS platformu.
+Za izradu **Online Blackboard** web aplikacije kao osnovni framework korišćen je MeteorJS. Za razvoj MeteorJS aplikacija potrebno je koristiti NodeJS platformu, dok će se kao osnovna baza koristiti MongoDB. Za razvoj specifičnih funkcionalnosti će se koristiti odgovarajući MeteorJS paketi, npm (NodeJS) paketi ili druge pomoćne biblioteke/framework-ci.
 
 ### MeteorJS
 MeteorJS je full-stack JavaScript web framework za izradu web i mobilnih aplikacija. Kao glavne prednosti korišćenja ovog framework-a možemo izdvojiti:
@@ -46,5 +46,5 @@ NodeJS je open-source, cross-platform JavaScript runtime okruženje za razvoj we
 MongoDB je NoSQL baza podataka orijentisana na dokumentima za koju se smatra da je lako skalabilna, visoko dostupna i da ima visoke performanse. MongoDB čuva podatke kao kolekcije dokumenata u BSON/JSON formatu. 
 
 ## Zaduženja članova tima
-- Lalić Aleksandra će biti zadužena za ...
-- Dinić Vladimir će biti zadužen za ...
+- Lalić Aleksandra će biti zadužena za implementaciju backend funkcionalnosti (serverski deo aplikacije i rad sa bazom podataka) i UI/UX dizajn
+- Dinić Vladimir će biti zadužen za implementaciju frontend funkcionalnosti (klijentski deo aplikacije)
