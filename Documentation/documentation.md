@@ -36,6 +36,10 @@ Kao neka od ograničenja prilikom korišćenja ovog framework-a možemo izdvojit
 - MeteorJS nije u potpunosti pogodan za velike i kompleksne aplikacije
 - Zbog mnogo "magije" prilikom rada sa MeteorJS-om, tako da developeri mogu osećati da imaju ograničene mogućnosti prilikom rada sa ovim framework-om
 
+Kao neki od MeteorJS paketa koje ćemo koristiti izdvajamo:
+
+- **jeremy:snapsvg** - Moderna JavaScript biblioteka koja se koristi za SVG grafiku, tj. manipulaciju i animaciju SVG grafike.
+
 ### NodeJS
 NodeJS je open-source, cross-platform JavaScript runtime okruženje za razvoj web aplikacija, sa sledećim karakteristikama:
 
