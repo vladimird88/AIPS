@@ -18,7 +18,7 @@
 - Čuvanje predavanja, tako da posetioci portala mogu slušati kurseve koji trenutno nisu aktivni ("live")
 - Čet među učesnicima
 
-## Korišćene tehnologije i frejmvorci
+## Korišćene tehnologije i framework-ci
 
 Za izradu **Online Blackboard** web aplikacije kao osnovni framework korišćen je MeteorJS. Za razvoj MeteorJS aplikacija potrebno je koristiti NodeJS platformu.
 
