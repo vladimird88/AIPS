@@ -23,21 +23,24 @@
 Za izradu **Online Blackboard** web aplikacije kao osnovni framework korišćen je MeteorJS. Za razvoj MeteorJS aplikacija potrebno je koristiti NodeJS platformu.
 
 ### MeteorJS
-MeteorJS je full-stack JavaScript web frejmvork za izradu web i mobilnih aplikacija. Kao glavne prednosti korišćenja ovog frejmvorka možemo izdvojiti:
+MeteorJS je full-stack JavaScript web framework za izradu web i mobilnih aplikacija. Kao glavne prednosti korišćenja ovog framework-a možemo izdvojiti:
 
-- MeteorJS spada u tzv. "reaktivne frejmvorke". Reaktivnost kao programerska paradigma označava programiranje sa asinhronim tokovima podataka. Drugim rečima, reaktivnost omogućuje real-time usklađivanje UI-a sa vrednostima u modelu podataka.
+- MeteorJS spada u tzv. "reaktivne framework-e". Reaktivnost kao programerska paradigma označava programiranje sa asinhronim tokovima podataka. Drugim rečima, reaktivnost omogućuje real-time usklađivanje UI-a sa vrednostima u modelu podataka.
 - MeteorJS aplikacije su real-time po defaultu (zbog reaktivnosti).
 - Koristi se jedan programski jezik i za serverski i za klijentski deo apliklacije (JavaScript)
 - Programiranje u MeteorJS-u je jednostavno i zgodno za početnike 
 - Dostupne su brojni paketi za MeteorJS koji olakšavaju kreiranje MeteorJS aplikacija
 
-Kao ograničenja prilikom korišćenja ovog frejmvorka možemo izdvojiti:
+Kao neka od ograničenja prilikom korišćenja ovog framework-a možemo izdvojiti:
 
-- MeteorJS nije u potpunosti pogodan za velike i kompleksne aplikacije.
-- Zbog mnogo "magije" prilikom rada sa MeteorJS-om, tako da developeri mogu osećati da imaju ograničene mogućnosti prilikom rada sa ovim frejmvorkom.
+- MeteorJS nije u potpunosti pogodan za velike i kompleksne aplikacije
+- Zbog mnogo "magije" prilikom rada sa MeteorJS-om, tako da developeri mogu osećati da imaju ograničene mogućnosti prilikom rada sa ovim framework-om
 
 ### NodeJS
+NodeJS je open-source, cross-platform JavaScript runtime okruženje za razvoj web aplikacija, sa sledećim karakteristikama:
 
+- Zasnovan je na Google-ovom V8 JavaScript engine-u koji je veoma brz. V8 engine kompajlira i izvršava JavaScript izvorni kod, hendluje alokaciju memorije za objekte i pomoću svoj "garbage collector"-a uništava one objekte koji više nisu potrebni. Smatra se da je upravo "garbage collector" ugrađen u V8 engine ključ dobrih performansi ovog engine-a. Takođe, budući da V8 engine u pozadini koristi C/C++, to omogućuje rad sa sistemom fajlova, pokretanje HTTP servera itd.
+- NodeJS je neblokirajući jednonitni ("single-threaded") sistem vođen događajima ("event-driven") koji pokušava da maksimalno iskoristi dodeljeno procesorsko vreme i resurse.
 
 ### MongoDB
-dsadsa
+MongoDB je NoSQL baza podataka.
