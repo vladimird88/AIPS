@@ -18,13 +18,26 @@
 - Čuvanje predavanja, tako da posetioci portala mogu slušati kurseve koji trenutno nisu aktivni ("live")
 - Čet među učesnicima
 
-## Korišćene tehnologije
+## Korišćene tehnologije i frejmvorci
 
-//TODO:
+Za izradu **Online Blackboard** web aplikacije kao osnovni framework korišćen je MeteorJS. Za razvoj MeteorJS aplikacija potrebno je koristiti NodeJS platformu.
 
-## Instalacija
+### MeteorJS
+MeteorJS je full-stack JavaScript web frejmvork za izradu web i mobilnih aplikacija. Kao glavne prednosti korišćenja ovog frejmvorka možemo izdvojiti:
 
-//TODO:
-```
-//TODO:
-```
+- MeteorJS spada u tzv. "reaktivne frejmvorke". Reaktivnost kao programerska paradigma označava programiranje sa asinhronim tokovima podataka. Drugim rečima, reaktivnost omogućuje real-time usklađivanje UI-a sa vrednostima u modelu podataka.
+- MeteorJS aplikacije su real-time po defaultu (zbog reaktivnosti).
+- Koristi se jedan programski jezik i za serverski i za klijentski deo apliklacije (JavaScript)
+- Programiranje u MeteorJS-u je jednostavno i zgodno za početnike 
+- Dostupne su brojni paketi za MeteorJS koji olakšavaju kreiranje MeteorJS aplikacija
+
+Kao ograničenja prilikom korišćenja ovog frejmvorka možemo izdvojiti:
+
+- MeteorJS nije u potpunosti pogodan za velike i kompleksne aplikacije.
+- Zbog mnogo "magije" prilikom rada sa MeteorJS-om, tako da developeri mogu osećati da imaju ograničene mogućnosti prilikom rada sa ovim frejmvorkom.
+
+### NodeJS
+
+
+### MongoDB
+dsadsa
