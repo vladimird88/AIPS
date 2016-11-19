@@ -39,8 +39,8 @@ Kao neka od ograničenja prilikom korišćenja ovog framework-a možemo izdvojit
 ### NodeJS
 NodeJS je open-source, cross-platform JavaScript runtime okruženje za razvoj web aplikacija, sa sledećim karakteristikama:
 
-- Zasnovan je na Google-ovom V8 JavaScript engine-u koji je veoma brz. V8 engine kompajlira i izvršava JavaScript izvorni kod, hendluje alokaciju memorije za objekte i pomoću svoj "garbage collector"-a uništava one objekte koji više nisu potrebni. Smatra se da je upravo "garbage collector" ugrađen u V8 engine ključ dobrih performansi ovog engine-a. Takođe, budući da V8 engine u pozadini koristi C/C++, to omogućuje rad sa sistemom fajlova, pokretanje HTTP servera itd.
 - NodeJS je neblokirajući jednonitni ("single-threaded") sistem vođen događajima ("event-driven") koji pokušava da maksimalno iskoristi dodeljeno procesorsko vreme i resurse.
+- Zasnovan je na Google-ovom V8 JavaScript engine-u koji je veoma brz. V8 engine kompajlira i izvršava JavaScript izvorni kod, hendluje alokaciju memorije za objekte i pomoću svoj "garbage collector"-a uništava one objekte koji više nisu potrebni. Smatra se da je upravo "garbage collector" ugrađen u V8 engine ključ dobrih performansi ovog engine-a. Takođe, budući da V8 engine u pozadini koristi C/C++, to omogućuje rad sa sistemom fajlova, pokretanje HTTP servera itd.
 
 ### MongoDB
-MongoDB je NoSQL baza podataka.
+MongoDB je NoSQL baza podataka orijentisana na dokumentima za koju se smatra da je lako skalabilna, visoko dostupna i da ima visoke performanse. MongoDB čuva podatke kao kolekcije dokumenata u BSON/JSON formatu. 
