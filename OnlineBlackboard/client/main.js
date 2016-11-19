@@ -6,6 +6,25 @@ import './main.html';
 window.onload = function()
 {
 	draw();
+	chat();
+}
+
+function chat()
+{
+	const streamer = new Meteor.Streamer('chat');
+
+	if(Meteor.isClient) {
+	  sendMessage = function(message) {
+		streamer.emit('message', message);
+		console.log('me: ' + message);
+	  };
+
+	  streamer.on('message', function(message) {
+		console.log('user: ' + message);
+	  });
+	}
+	
+	//Now you can open 2 browser tabs/windows and chat using sendMessage("text") at your browser's console Every message will travel from your client to server and retransmited to all other clients.
 }
 
 Template.hello.onCreated(function helloOnCreated() {
@@ -13,6 +32,7 @@ Template.hello.onCreated(function helloOnCreated() {
   this.counter = new ReactiveVar(0);
 });
 
+//FIXME: Ovaj chat treba koristiti kad podaci treba da se cuvaju u bazi. U suprotnom, bolje je koristiti rocket chat za klasican chat
 Template.messages.helpers({
 		messages: function() {
 			return Poruke.find({}, { sort: { time: -1}});
