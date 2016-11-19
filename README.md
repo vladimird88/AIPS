@@ -1,3 +1,3 @@
-#Naziv projekta
+#Online Blackboard
 
 [Dokumentacija](Documentation/documentation.md)
