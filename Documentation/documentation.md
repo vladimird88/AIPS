@@ -54,7 +54,7 @@ Takođe, za izradu ovog projekta će biti korišćene sledeće JavaScript biblio
 
 - **FabricJS** - Javascript HTML5 canvas biblioteka koja olakšava korišćenje canvasa i proširuje njegove mogućnosti.
 
-
+Ukoliko bude bilo potrebe, biće korišćene i dodatne biblioteke / paketi.
 
 ## Zaduženja članova tima
 - Lalić Aleksandra će biti zadužena za implementaciju backend funkcionalnosti (serverski deo aplikacije i rad sa bazom podataka) i UI/UX dizajn
