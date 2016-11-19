@@ -48,3 +48,5 @@ MongoDB je NoSQL baza podataka orijentisana na dokumentima za koju se smatra da 
 ## Zaduženja članova tima
 - Lalić Aleksandra će biti zadužena za implementaciju backend funkcionalnosti (serverski deo aplikacije i rad sa bazom podataka) i UI/UX dizajn
 - Dinić Vladimir će biti zadužen za implementaciju frontend funkcionalnosti (klijentski deo aplikacije)
+
+Test
