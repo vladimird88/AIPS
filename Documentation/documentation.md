@@ -36,7 +36,7 @@ Kao neka od ograničenja prilikom korišćenja ovog framework-a možemo izdvojit
 - MeteorJS nije u potpunosti pogodan za velike i kompleksne aplikacije
 - Zbog mnogo "magije" prilikom rada sa MeteorJS-om, tako da developeri mogu osećati da imaju ograničene mogućnosti prilikom rada sa ovim framework-om
 
-Kao neki od MeteorJS paketa koje ćemo koristiti izdvajamo:
+Jedan od MeteorJS paketa koji ćemo koristiti jeste:
 
 - **jeremy:snapsvg** - Moderna JavaScript biblioteka koja se koristi za SVG grafiku, tj. manipulaciju i animaciju SVG grafike.
 
