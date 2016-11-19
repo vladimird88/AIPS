@@ -36,7 +36,7 @@ Kao neka od ograničenja prilikom korišćenja ovog framework-a možemo izdvojit
 - MeteorJS nije u potpunosti pogodan za velike i kompleksne aplikacije
 - Zbog mnogo "magije" prilikom rada sa MeteorJS-om, tako da developeri mogu osećati da imaju ograničene mogućnosti prilikom rada sa ovim framework-om
 
-Jedan od MeteorJS paketa koji ćemo koristiti jeste:
+MeteorJS paketi koje ćemo koristiti su:
 
 - **jeremy:snapsvg** - Moderna JavaScript biblioteka koja se koristi za SVG grafiku, tj. manipulaciju i animaciju SVG grafike.
 
@@ -48,6 +48,10 @@ NodeJS je open-source, cross-platform JavaScript runtime okruženje za razvoj we
 
 ### MongoDB
 MongoDB je NoSQL baza podataka orijentisana na dokumentima za koju se smatra da je lako skalabilna, visoko dostupna i da ima visoke performanse. MongoDB čuva podatke kao kolekcije dokumenata u BSON/JSON formatu. 
+
+## Korišćene biblioteke
+Za izradu ovog projekta će biti korišćene sledeće biblioteke:
+- **FabricJS** - Javascript HTML5 canvas biblioteka koja olakšava korišćenje canvasa i proširuje njegove mogućnosti.
 
 ## Zaduženja članova tima
 - Lalić Aleksandra će biti zadužena za implementaciju backend funkcionalnosti (serverski deo aplikacije i rad sa bazom podataka) i UI/UX dizajn
