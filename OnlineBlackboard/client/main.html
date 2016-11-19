@@ -16,11 +16,23 @@
         canvas.selectionColor = 'rgba(0,255,0,0.3)';
         canvas.selectionBorderColor = 'red';
         canvas.selectionLineWidth = 5;
-		canvas.interactive = false;
+		//canvas.interactive = false;
     </script>
-  
+	
+	{{> messages }}
+	{{> input }}
 </body>
 
+<template name="messages">
+	  {{#each messages}}
+		<strong>{{name}}:</strong> {{message}}<br>
+	  {{/each}}
+	</template>
+
+<template name="input">
+  <p>Message: <input type="text" id="message"></p>
+</template>
+	
 <template name="hello">
   <button>Click Me</button>
   <p>You've pressed the button {{counter}} times.</p>

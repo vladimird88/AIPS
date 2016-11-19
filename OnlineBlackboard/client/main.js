@@ -13,6 +13,31 @@ Template.hello.onCreated(function helloOnCreated() {
   this.counter = new ReactiveVar(0);
 });
 
+Template.messages.helpers({
+		messages: function() {
+			return Poruke.find({}, { sort: { time: -1}});
+		}
+	});
+
+	Template.input.events = {
+	  'keydown input#message' : function (event) {
+		if (event.which == 13) { // 13 is the enter key event
+			var name = 'Anonymous';
+		  var message = document.getElementById('message');
+		  if (message.value != '') {
+			Poruke.insert({
+			  name: name,
+			  message: message.value,
+			  time: Date.now(),
+			});
+
+			document.getElementById('message').value = '';
+			message.value = '';
+		  }
+		}
+	  }
+	}
+
 function draw()	//Koristimo jeremy:snapsvg
 {
 	// First lets create our drawing surface out of existing SVG element
