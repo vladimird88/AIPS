@@ -44,3 +44,7 @@ NodeJS je open-source, cross-platform JavaScript runtime okruženje za razvoj we
 
 ### MongoDB
 MongoDB je NoSQL baza podataka orijentisana na dokumentima za koju se smatra da je lako skalabilna, visoko dostupna i da ima visoke performanse. MongoDB čuva podatke kao kolekcije dokumenata u BSON/JSON formatu. 
+
+## Zaduženja članova tima
+- Lalić Aleksandra će biti zadužena za ...
+- Dinić Vladimir će biti zadužen za ...
