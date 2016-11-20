@@ -9,14 +9,24 @@
 </head>
 <body class = "darkBackground">
 <div class="container-fluid">
-	<div class="container-fluid" style="max-height:200px">
+	{{>Header}}
+	{{>Navigation}}
+	{{>Content}}
+</div>
+</body>
+
+<template name="Header">
+  <div class="container-fluid" style="max-height:200px">
 		<div class="row">
 		<div class="col-sm-4"></div>
 		<div class="col-sm-4 paddingClass"><center><img class="img-responsive" src="Resources/Images/blackboard.png" style="max-height:180px"></center></div>
 		<div class="col-sm-4"></div>
 		</div>
 	</div>
-<nav class="navbar navbar-inverse">
+</template>
+
+<template name="Navigation">
+	<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -37,9 +47,11 @@
     </div>
   </div>
 </nav>
+</template>
+
+<template name="Content">
 	<div class="container-fluid" style="height:1000px">
 		Content...
 	</div>
-</div>
-</body>
+</template>
 
