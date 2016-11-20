@@ -1,0 +1,18 @@
+/* CSS declarations go here */
+
+.darkBackground
+{
+	background-color:black;
+	color:white;
+}
+
+.paddingClass
+{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.navbar ul li
+{
+	text-align:center;
+}

@@ -1,53 +1,45 @@
 <head>
+	<meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>OnlineBlackboard</title>
-	<script src="Resources/Scripts/fabric.js"></script>
-	<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
-	<script src="dropzone.js"></script>
-	<link rel="stylesheet" href="dropzone.css">
+	<link rel="stylesheet" href="Resources/Styles/GeneralStyle.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-
-<body>
-
-	<input onclick='responsiveVoice.speak("Gde si Dinić? Nemoj da praviš probleme", "Serbo-Croatian Male");' type='button' value='🔊 Play' />
-
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
-  
-  <canvas id="canvas" width="800" height="450" style="border:1px solid #000000"></canvas>
-    <script>
-        var canvas = new fabric.Canvas('canvas');
-        canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
-
-        canvas.selectionColor = 'rgba(0,255,0,0.3)';
-        canvas.selectionBorderColor = 'red';
-        canvas.selectionLineWidth = 5;
-		//canvas.interactive = false;
-    </script>
-	
-	<form action="main.html" class="dropzone">
-		<div class="fallback">
-			<input type="file" name="file" multiple />
+<body class = "darkBackground">
+<div class="container-fluid">
+	<div class="container-fluid" style="max-height:200px">
+		<div class="row">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4 paddingClass"><center><img class="img-responsive" src="Resources/Images/blackboard.png" style="max-height:180px"></center></div>
+		<div class="col-sm-4"></div>
 		</div>
-	</form>
-	
-	
-	{{> messages }}
-	{{> input }}
+	</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Online Blackboard</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Section 2</a></li>
+          <li><a href="#">Section 3</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+	<div class="container-fluid" style="height:1000px">
+		Content...
+	</div>
+</div>
 </body>
 
-<template name="messages">
-	  {{#each messages}}
-		<strong>{{name}}:</strong> {{message}}<br>
-	  {{/each}}
-	</template>
-
-<template name="input">
-  <p>Message: <input type="text" id="message"></p>
-</template>
-	
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-  <svg id="svg" style="width:300;height:300"></svg>
-</template>

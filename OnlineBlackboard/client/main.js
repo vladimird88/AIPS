@@ -3,11 +3,11 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-window.onload = function()
+/*window.onload = function()
 {
 	draw();
 	chat();
-}
+}*/
 
 function chat()
 {
@@ -34,7 +34,7 @@ Template.hello.onCreated(function helloOnCreated() {
 
 //FIXME: Ovaj chat treba koristiti kad podaci treba da se cuvaju u bazi. U suprotnom, bolje je koristiti rocket chat za klasican chat
 //Ovaj chat ne radi kad je iskljucen autopublish. Zato bi ovo, ako se koristi, trebalo da se prebaci na server
-Template.messages.helpers({
+/*Template.messages.helpers({
 		messages: function() {
 			return Poruke.find({}, { sort: { time: -1}});
 		}
@@ -58,7 +58,7 @@ Template.messages.helpers({
 		}
 	  }
 	}
-
+*/
 function draw()	//Koristimo jeremy:snapsvg
 {
 	// First lets create our drawing surface out of existing SVG element
@@ -122,7 +122,7 @@ function draw()	//Koristimo jeremy:snapsvg
 	p.select("path").animate({stroke: "#f00"}, 1000);
 }
 
-Template.hello.helpers({
+/*Template.hello.helpers({
   counter() {
     return Template.instance().counter.get();
   },
@@ -134,3 +134,4 @@ Template.hello.events({
     instance.counter.set(instance.counter.get() + 1);
   },
 });
+*/
