@@ -33,6 +33,7 @@ Template.hello.onCreated(function helloOnCreated() {
 });
 
 //FIXME: Ovaj chat treba koristiti kad podaci treba da se cuvaju u bazi. U suprotnom, bolje je koristiti rocket chat za klasican chat
+//Ovaj chat ne radi kad je iskljucen autopublish. Zato bi ovo, ako se koristi, trebalo da se prebaci na server
 Template.messages.helpers({
 		messages: function() {
 			return Poruke.find({}, { sort: { time: -1}});

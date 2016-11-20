@@ -1,7 +1,9 @@
 <head>
-  <title>OnlineBlackboard</title>
-  <script src="Resources/Scripts/fabric.js"></script>
-  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+	<title>OnlineBlackboard</title>
+	<script src="Resources/Scripts/fabric.js"></script>
+	<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+	<script src="dropzone.js"></script>
+	<link rel="stylesheet" href="dropzone.css">
 </head>
 
 <body>
@@ -22,6 +24,13 @@
         canvas.selectionLineWidth = 5;
 		//canvas.interactive = false;
     </script>
+	
+	<form action="main.html" class="dropzone">
+		<div class="fallback">
+			<input type="file" name="file" multiple />
+		</div>
+	</form>
+	
 	
 	{{> messages }}
 	{{> input }}
