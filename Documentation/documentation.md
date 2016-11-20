@@ -57,5 +57,9 @@ Takođe, za izradu ovog projekta će biti korišćene sledeće JavaScript biblio
 Ukoliko bude bilo potrebe, biće korišćene i dodatne biblioteke / paketi.
 
 ## Zaduženja članova tima
-- Lalić Aleksandra će biti zadužena za implementaciju backend funkcionalnosti (serverski deo aplikacije i rad sa bazom podataka) i UI/UX dizajn
-- Dinić Vladimir će biti zadužen za implementaciju frontend funkcionalnosti (klijentski deo aplikacije)
+- Lalić Aleksandra će biti zadužena za implementaciju većeg dela frontend funkcionalnosti (klijentski deo aplikacije)
+- Dinić Vladimir će biti zadužen za implementaciju backend funkcionalnosti (serverski deo aplikacije i rad sa bazom podataka) i za implementaciju manjeg dela frontend funkcionalnosti.
+
+## Napomene
+- Navedena dokumentacija predstavlja samo generalni opis domena, funkcionalnosti i korišćenih tehnologija, framework-a i biblioteka / paketa. Moguće su sitne izmene, npr. u pogledu korišćenih biblioteka / paketa, a sve izvršene izmene će biti update-ovane u ovom dokumentu.
+- Podela zaduženja je takođe izvršena okvirno. U skladu sa obimom posla i strukturom aplikacije može doći do manje korekcije koja će biti update-ovana u ovom dokumentu.
