@@ -1,7 +1,7 @@
 <head>
 	<meta charset="utf-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>OnlineBlackboard</title>
+	<title>Online Blackboard</title>
 	<link rel="stylesheet" href="Resources/Styles/GeneralStyle.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -14,6 +14,16 @@
 	{{>Content}}
 </div>
 </body>
+
+
+
+<!-- ******************************************************************************** -->
+<!-- *********************************** Templates ********************************** -->
+<!-- ******************************************************************************** -->
+
+<template name="Content">
+  {{> SelectedContent}}
+</template>
 
 <template name="Header">
   <div class="container-fluid" style="max-height:200px">
@@ -39,9 +49,8 @@
     <div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Section 2</a></li>
-          <li><a href="#">Section 3</a></li>
+          <li><a id="HomeLink" href="#Home">Home</a></li>
+          <li><a id="NewCourseLink" href="#NewCourse">Create a new course</a></li>
         </ul>
       </div>
     </div>
@@ -49,9 +58,19 @@
 </nav>
 </template>
 
-<template name="Content">
-	<div class="container-fluid" style="height:1000px">
-		Content...
+<template name="ContentMain">
+	<div class="container-fluid">
+		<div class="jumbotron.darkBackground">
+			<h1>Online Blackboard</h1> 
+			<p>Online Blackboard is a platform for education where everybody can be a tutor or can listen another users' tutorials and learn new things.</p> 
+		</div>
 	</div>
 </template>
 
+<template name="NewCourse">
+	<div class="container-fluid">
+		<div class="jumbotron.darkBackground">
+			Content... 
+		</div>
+	</div>
+</template>

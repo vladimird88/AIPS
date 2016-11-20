@@ -3,6 +3,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
+
 /*window.onload = function()
 {
 	draw();
@@ -27,10 +28,46 @@ function chat()
 	//Now you can open 2 browser tabs/windows and chat using sendMessage("text") at your browser's console Every message will travel from your client to server and retransmited to all other clients.
 }
 
-Template.hello.onCreated(function helloOnCreated() {
+Template.Content.onCreated(function onContentCreated(event)
+{
+	if(Meteor.isClient) 
+	{
+		Session.set('step', 0);
+	}
+});
+
+Template.Content.helpers({
+	SelectedContent: function () 
+	{
+		var step = Session.get('step');
+		switch (step) 
+		{
+			case 0 :
+				return Template.ContentMain;
+				break;
+			case 1 :
+				return Template.NewCourse;
+				break;
+		}
+	}
+});
+
+Template.Navigation.events = 
+{
+	'click #NewCourseLink' : function (event) 
+	{
+        Session.set('step', 1);
+	},
+	'click #HomeLink' : function (event) 
+	{
+        Session.set('step', 0);
+	}
+};
+
+/*Template.hello.onCreated(function helloOnCreated() {
   // counter starts at 0
   this.counter = new ReactiveVar(0);
-});
+});*/
 
 //FIXME: Ovaj chat treba koristiti kad podaci treba da se cuvaju u bazi. U suprotnom, bolje je koristiti rocket chat za klasican chat
 //Ovaj chat ne radi kad je iskljucen autopublish. Zato bi ovo, ako se koristi, trebalo da se prebaci na server
