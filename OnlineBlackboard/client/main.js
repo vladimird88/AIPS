@@ -48,19 +48,26 @@ Template.Content.helpers({
 			case 1 :
 				return Template.NewCourse;
 				break;
+			case 2 :
+				return Template.AllCourses;
+				break;
 		}
 	}
 });
 
 Template.Navigation.events = 
 {
+	'click #HomeLink' : function (event) 
+	{
+        Session.set('step', 0);
+	},
 	'click #NewCourseLink' : function (event) 
 	{
         Session.set('step', 1);
 	},
-	'click #HomeLink' : function (event) 
+	'click #AllCoursesLink' : function (event) 
 	{
-        Session.set('step', 0);
+        Session.set('step', 2);
 	}
 };
 

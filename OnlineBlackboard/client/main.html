@@ -2,6 +2,7 @@
 	<meta charset="utf-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Online Blackboard</title>
+	<script src="Resources/Scripts/fabric.js"></script>
 	<link rel="stylesheet" href="Resources/Styles/GeneralStyle.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -49,8 +50,9 @@
     <div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li><a id="HomeLink" href="#Home">Home</a></li>
-          <li><a id="NewCourseLink" href="#NewCourse">Create a new course</a></li>
+          <li><a id="HomeLink" href="#">Home</a></li>
+          <li><a id="NewCourseLink" href="#">Create a new course</a></li>
+		  <li><a id="AllCoursesLink" href="#">All courses</a></li>
         </ul>
       </div>
     </div>
@@ -70,7 +72,23 @@
 <template name="NewCourse">
 	<div class="container-fluid">
 		<div class="jumbotron.darkBackground">
-			Content... 
+			<canvas id="canvas" width="800" height="450" style="border:1px solid #000000"></canvas>
+			<script>
+				var canvas = new fabric.Canvas('canvas');
+				canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
+				canvas.selectionColor = 'rgba(0,255,0,0.3)';
+				canvas.selectionBorderColor = 'red';
+				canvas.selectionLineWidth = 5;
+				//canvas.interactive = false;
+			</script> 
+		</div>
+	</div>
+</template>
+
+<template name="AllCourses">
+	<div class="container-fluid">
+		<div class="jumbotron.darkBackground">
+			All courses content... 
 		</div>
 	</div>
 </template>
