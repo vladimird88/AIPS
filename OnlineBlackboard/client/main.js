@@ -73,7 +73,7 @@ function drawOnCanvas(canvas)
 					radius: 1,
 					strokeWidth: 5,
 					stroke: 'red',
-					selectable: false,
+					selectable: true,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'center', originY: 'center'
 				});
@@ -82,17 +82,19 @@ function drawOnCanvas(canvas)
 			}
 			case 1:		//rect
 			{
-				rect = new fabric.Circle({
+				rect = new fabric.Rect({
 					left: pointer.x,
 					top: pointer.y,
+					width:0,
+					height:0,
 					radius: 1,
 					strokeWidth: 5,
 					stroke: 'red',
-					selectable: false,
+					selectable: true,
 					fill: 'rgba(0,0,0,0)',
-					originX: 'center', originY: 'center'
+					originX: 'left', originY: 'top'
 				});
-				canvas.add(circle);
+				canvas.add(rect);
 				break;
 			}
 		}
@@ -101,12 +103,28 @@ function drawOnCanvas(canvas)
 	canvas.on('mouse:move', function(o)
 	{
 		var drawingMode = Session.get('DrawingMode');
-		if(drawingMode == 2)
+		switch(drawingMode)
 		{
-			if (!isDown) return;
-			var pointer = canvas.getPointer(o.e);
-			circle.set({ radius: Math.abs(origX - pointer.x) });
-			canvas.renderAll();
+			case 2:		//circle
+			{
+				if (!isDown) return;
+				var pointer = canvas.getPointer(o.e);
+				circle.set({ radius: Math.abs(origX - pointer.x) });
+				canvas.renderAll();
+				break;
+			}
+			case 1:		//rect
+			{
+				if (!isDown) return;
+				var pointer = canvas.getPointer(o.e);
+				rect.set({ width: Math.abs(origX - pointer.x), height: Math.abs(origY - pointer.y) });
+				canvas.renderAll();
+				break;
+			}
+			case 0:		//No mode;
+			{
+				if (!isDown) return;
+			}
 		}
 	});
 
@@ -126,7 +144,7 @@ Template.NewCourse.events =
 {
 	'click #clearSelection' : function (event) 
 	{
-        Session.set('clearSelection', 0);
+        Session.set('DrawingMode', 0);
 	},
 	'click #rectSelected' : function (event) 
 	{
