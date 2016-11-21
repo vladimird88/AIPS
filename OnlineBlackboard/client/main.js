@@ -5,10 +5,7 @@ import './main.html';
 
 Template.Content.onCreated(function onContentCreated(event)
 {
-	if(Meteor.isClient) 
-	{
-		Session.set('step', 0);
-	}
+	Session.set('step', 0);
 });
 
 Template.Content.helpers({
@@ -42,14 +39,105 @@ Template.Navigation.events =
 		setTimeout(function() 
 		{ 
 			var canvas = new fabric.Canvas('canvas');
-			canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
-			canvas.selectionColor = 'rgba(0,255,0,0.3)';
-			canvas.selectionBorderColor = 'red';
-			canvas.selectionLineWidth = 5;
+			canvas.selection = false;
+			drawOnCanvas(canvas);
 		}, 0);
 	},
 	'click #AllCoursesLink' : function (event) 
 	{
         Session.set('step', 2);
+	}
+};
+
+function drawOnCanvas(canvas)
+{	
+	var circle, rect, isDown, origX, origY;
+
+	canvas.on('mouse:down', function(o)
+	{
+		var drawingMode = Session.get('DrawingMode');
+		if(drawingMode != 0)
+		{
+			isDown = true;
+			var pointer = canvas.getPointer(o.e);
+			origX = pointer.x;
+			origY = pointer.y;
+		}
+		switch(drawingMode)
+		{
+			case 2:		//circle
+			{
+				circle = new fabric.Circle({
+					left: pointer.x,
+					top: pointer.y,
+					radius: 1,
+					strokeWidth: 5,
+					stroke: 'red',
+					selectable: false,
+					fill: 'rgba(0,0,0,0)',
+					originX: 'center', originY: 'center'
+				});
+				canvas.add(circle);
+				break;
+			}
+			case 1:		//rect
+			{
+				rect = new fabric.Circle({
+					left: pointer.x,
+					top: pointer.y,
+					radius: 1,
+					strokeWidth: 5,
+					stroke: 'red',
+					selectable: false,
+					fill: 'rgba(0,0,0,0)',
+					originX: 'center', originY: 'center'
+				});
+				canvas.add(circle);
+				break;
+			}
+		}
+	});
+
+	canvas.on('mouse:move', function(o)
+	{
+		var drawingMode = Session.get('DrawingMode');
+		if(drawingMode == 2)
+		{
+			if (!isDown) return;
+			var pointer = canvas.getPointer(o.e);
+			circle.set({ radius: Math.abs(origX - pointer.x) });
+			canvas.renderAll();
+		}
+	});
+
+	canvas.on('mouse:up', function(o)
+	{
+		isDown = false;
+	});
+}
+
+Template.NewCourse.onCreated(function onContentCreated(event)
+{
+	Session.set('DrawingMode', 0);
+});
+
+
+Template.NewCourse.events = 
+{
+	'click #clearSelection' : function (event) 
+	{
+        Session.set('clearSelection', 0);
+	},
+	'click #rectSelected' : function (event) 
+	{
+        Session.set('DrawingMode', 1);
+	},
+	'click #circleSelected' : function (event) 
+	{
+        Session.set('DrawingMode', 2);
+	},
+	'click #lineSelected' : function (event) 
+	{
+        Session.set('DrawingMode', 3);
 	}
 };

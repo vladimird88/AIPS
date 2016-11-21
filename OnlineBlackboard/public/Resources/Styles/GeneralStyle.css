@@ -16,3 +16,15 @@
 {
 	text-align:center;
 }
+
+.toolbar
+{
+	width:1000px;
+	height:60px;
+}
+
+.toolbar button
+{
+	background-color:black;
+	color:white;
+}
