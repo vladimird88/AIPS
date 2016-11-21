@@ -117,7 +117,7 @@ function drawOnCanvas(canvas)
 			{
 				if (!isDown) return;
 				var pointer = canvas.getPointer(o.e);
-				rect.set({ width: Math.abs(origX - pointer.x), height: Math.abs(origY - pointer.y) });
+				rect.set({ left: Math.min(origX,pointer.x), top: Math.min(origY,pointer.y), width: Math.abs(origX - pointer.x), height: Math.abs(origY - pointer.y) });
 				canvas.renderAll();
 				break;
 			}
