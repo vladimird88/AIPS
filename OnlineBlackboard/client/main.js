@@ -51,7 +51,7 @@ Template.Navigation.events =
 
 function drawOnCanvas(canvas)
 {	
-	var circle, rect, isDown, origX, origY;
+	var circle, rect, line, point1, isDown, origX, origY;
 
 	canvas.on('mouse:down', function(o)
 	{
@@ -65,6 +65,27 @@ function drawOnCanvas(canvas)
 		}
 		switch(drawingMode)
 		{
+			case 3:		//line
+			{
+				if (point1 === undefined) 
+				{
+					point1 = new fabric.Point(origX, origY)
+				} 
+				else 
+				{
+					canvas.add(new fabric.Line([point1.x, point1.y, origX, origY], {
+						stroke: 'red',
+						hasControls: false,
+						strokeWidth: 5,
+						hasBorders: false,
+						lockMovementX: true,
+						lockMovementY: true,
+						hoverCursor: 'default'
+					}))
+					point1 = undefined;
+				}
+				break;
+			}
 			case 2:		//circle
 			{
 				circle = new fabric.Circle({
