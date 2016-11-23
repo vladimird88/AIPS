@@ -1,4 +1,4 @@
 /**
 * Models
 */
-Poruke = new Meteor.Collection('Poruke');
+Figures = new Meteor.Collection('Figures');

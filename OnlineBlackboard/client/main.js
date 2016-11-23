@@ -65,7 +65,7 @@ function drawOnCanvas(canvas)
 		}
 		switch(drawingMode)
 		{
-			case 3:		//line
+			case 3:		//line, spaja 2 tacke
 			{
 				if (point1 === undefined) 
 				{
@@ -152,6 +152,31 @@ function drawOnCanvas(canvas)
 	canvas.on('mouse:up', function(o)
 	{
 		isDown = false;
+		var pointer = canvas.getPointer(o.e);
+		var drawingMode = Session.get('DrawingMode');
+		switch(drawingMode)
+		{
+			case 2:		//circle
+			{
+				Figures.insert({
+					Type: 2,
+					Top: origY,
+					Left: origX,
+					Radius: Math.abs(origX - pointer.x),
+					time: Date.now()
+			});
+				break;
+			}
+			case 1:		//rect
+			{
+				
+				break;
+			}
+			case 0:		//No mode;
+			{
+				if (!isDown) return;
+			}
+		}
 	});
 }
 
