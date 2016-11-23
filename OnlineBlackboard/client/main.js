@@ -49,8 +49,33 @@ Template.Navigation.events =
 	}
 };
 
+//FIXME: Pozeljno je da se iskljuci autopublis, i da se rad sa bazom prebaci na server. Ako je iskljucen autopublish, a rad sa bazom je na klijentu, onda ne radi ucitavanje iz baze i sl.
+//TODO: Obavezno koristi Publish i Subscribe
+function drawFromDatabase(canvas)
+{
+	//var figures = [];
+	var figuresCursors = Figures.find({}, {sort: {time: -1}});
+	//var figures = figuresCursors.fetch();
+	figuresCursors.forEach(function(singleFigure)
+	{
+		var circlefromDB = new fabric.Circle({
+					left: singleFigure.Left,
+					top: singleFigure.Top,
+					radius: singleFigure.Radius,
+					strokeWidth: 5,
+					stroke: 'red',
+					selectable: true,
+					fill: 'rgba(0,0,0,0)',
+					originX: 'center', originY: 'center'
+				});
+				canvas.add(circlefromDB);
+	}); 
+}
+
 function drawOnCanvas(canvas)
 {	
+	drawFromDatabase(canvas);
+
 	var circle, rect, line, point1, isDown, origX, origY;
 
 	canvas.on('mouse:down', function(o)
