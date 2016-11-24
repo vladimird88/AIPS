@@ -53,23 +53,25 @@ Template.Navigation.events =
 //TODO: Obavezno koristi Publish i Subscribe
 function drawFromDatabase(canvas)
 {
-	//var figures = [];
-	var figuresCursors = Figures.find({}, {sort: {time: -1}});
-	//var figures = figuresCursors.fetch();
-	figuresCursors.forEach(function(singleFigure)
-	{
-		var circlefromDB = new fabric.Circle({
-					left: singleFigure.Left,
-					top: singleFigure.Top,
-					radius: singleFigure.Radius,
-					strokeWidth: 5,
-					stroke: 'red',
-					selectable: true,
-					fill: 'rgba(0,0,0,0)',
-					originX: 'center', originY: 'center'
-				});
-				canvas.add(circlefromDB);
-	}); 
+	Tracker.autorun(function(){
+			var figuresCursors = Figures.find({}, {sort: {time: -1}});
+			//var figures = figuresCursors.fetch();
+			figuresCursors.forEach(function(singleFigure)
+			{
+				var circlefromDB = new fabric.Circle({
+							left: singleFigure.Left,
+							top: singleFigure.Top,
+							radius: singleFigure.Radius,
+							strokeWidth: 5,
+							stroke: 'red',
+							selectable: true,
+							fill: 'rgba(0,0,0,0)',
+							originX: 'center', originY: 'center'
+						});
+						canvas.add(circlefromDB);
+			});
+        });
+	 
 }
 
 function drawOnCanvas(canvas)
