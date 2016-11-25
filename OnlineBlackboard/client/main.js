@@ -64,7 +64,7 @@ function drawFromDatabase(canvas)
 							radius: singleFigure.Radius,
 							strokeWidth: 5,
 							stroke: 'red',
-							selectable: true,
+							selectable: false,
 							fill: 'rgba(0,0,0,0)',
 							originX: 'center', originY: 'center'
 						});
@@ -79,6 +79,7 @@ function drawOnCanvas(canvas)
 	drawFromDatabase(canvas);
 
 	var circle, rect, line, point1, isDown, origX, origY;
+	var objectsList = [];
 
 	canvas.on('mouse:down', function(o)
 	{
@@ -121,10 +122,11 @@ function drawOnCanvas(canvas)
 					radius: 1,
 					strokeWidth: 5,
 					stroke: 'red',
-					selectable: true,
+					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'center', originY: 'center'
 				});
+				objectsList.push(circle);
 				canvas.add(circle);
 				break;
 			}
@@ -138,7 +140,7 @@ function drawOnCanvas(canvas)
 					radius: 1,
 					strokeWidth: 5,
 					stroke: 'red',
-					selectable: true,
+					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'left', originY: 'top'
 				});
@@ -157,7 +159,7 @@ function drawOnCanvas(canvas)
 			{
 				if (!isDown) return;
 				var pointer = canvas.getPointer(o.e);
-				circle.set({ radius: Math.abs(origX - pointer.x) });
+				circle.set({ radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)) });
 				canvas.renderAll();
 				break;
 			}
@@ -189,9 +191,15 @@ function drawOnCanvas(canvas)
 					Type: 2,
 					Top: origY,
 					Left: origX,
-					Radius: Math.abs(origX - pointer.x),
+					Radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)),
 					time: Date.now()
-			});
+				},function(err,docsInserted)
+				{
+					if(!err)
+					{
+						curentObjectId = docsInserted;
+					}
+				});
 				break;
 			}
 			case 1:		//rect
