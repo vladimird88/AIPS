@@ -55,7 +55,7 @@ function drawFromDatabase(canvas)
 {
 	Meteor.subscribe('figures');
 	Tracker.autorun(function(){
-			var figuresCursors = Figures.find({}, {sort: {time: -1}});
+			var figuresCursors = Figures.find({});
 			//var figures = figuresCursors.fetch();
 			figuresCursors.forEach(function(singleFigure)
 			{
