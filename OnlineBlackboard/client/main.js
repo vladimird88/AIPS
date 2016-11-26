@@ -53,6 +53,7 @@ Template.Navigation.events =
 //TODO: Obavezno koristi Publish i Subscribe
 function drawFromDatabase(canvas)
 {
+	Meteor.subscribe('figures');
 	Tracker.autorun(function(){
 			var figuresCursors = Figures.find({}, {sort: {time: -1}});
 			//var figures = figuresCursors.fetch();
@@ -187,19 +188,20 @@ function drawOnCanvas(canvas)
 		{
 			case 2:		//circle
 			{
-				Figures.insert({
-					Type: 2,
-					Top: origY,
-					Left: origX,
-					Radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)),
-					time: Date.now()
-				},function(err,docsInserted)
+				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+				Meteor.call('saveCircleInDB', origX,origY,circleRadius, function (error, result) 
 				{
-					if(!err)
+					if (error) 
 					{
-						curentObjectId = docsInserted;
+						console.log(error);
 					}
-				});
+					else 
+					{
+						console.log('success');
+					}
+				}
+					
+				);
 				break;
 			}
 			case 1:		//rect
