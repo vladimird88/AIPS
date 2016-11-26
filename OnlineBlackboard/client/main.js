@@ -59,17 +59,39 @@ function drawFromDatabase(canvas)
 			//var figures = figuresCursors.fetch();
 			figuresCursors.forEach(function(singleFigure)
 			{
-				var circlefromDB = new fabric.Circle({
-							left: singleFigure.Left,
-							top: singleFigure.Top,
-							radius: singleFigure.Radius,
+				switch(singleFigure.type)
+				{
+					case 1:
+					{
+						var rectfromDB = new fabric.Rect({
+							left: singleFigure.left,
+							top: singleFigure.top,
+							width:singleFigure.width,
+							height:singleFigure.height,
+							radius: 1,
 							strokeWidth: 5,
-							stroke: 'red',
+							stroke: singleFigure.color,
+							selectable: false,
+							fill: 'rgba(0,0,0,0)',
+							originX: 'left', originY: 'top'
+						});
+						canvas.add(rectfromDB);
+					}
+					case 2:
+					{
+						var circlefromDB = new fabric.Circle({
+							left: singleFigure.left,
+							top: singleFigure.top,
+							radius: singleFigure.radius,
+							strokeWidth: 5,
+							stroke: singleFigure.color,
 							selectable: false,
 							fill: 'rgba(0,0,0,0)',
 							originX: 'center', originY: 'center'
 						});
 						canvas.add(circlefromDB);
+					}
+				}
 			});
         });
 	 
@@ -85,6 +107,7 @@ function drawOnCanvas(canvas)
 	canvas.on('mouse:down', function(o)
 	{
 		var drawingMode = Session.get('DrawingMode');
+		var selectedColor = Session.get('SelectedColor');
 		if(drawingMode != 0)
 		{
 			isDown = true;
@@ -103,7 +126,7 @@ function drawOnCanvas(canvas)
 				else 
 				{
 					canvas.add(new fabric.Line([point1.x, point1.y, origX, origY], {
-						stroke: 'red',
+						stroke: selectedColor,
 						hasControls: false,
 						strokeWidth: 5,
 						hasBorders: false,
@@ -122,7 +145,7 @@ function drawOnCanvas(canvas)
 					top: pointer.y,
 					radius: 1,
 					strokeWidth: 5,
-					stroke: 'red',
+					stroke: selectedColor,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'center', originY: 'center'
@@ -140,7 +163,7 @@ function drawOnCanvas(canvas)
 					height:0,
 					radius: 1,
 					strokeWidth: 5,
-					stroke: 'red',
+					stroke: selectedColor,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'left', originY: 'top'
@@ -184,12 +207,13 @@ function drawOnCanvas(canvas)
 		isDown = false;
 		var pointer = canvas.getPointer(o.e);
 		var drawingMode = Session.get('DrawingMode');
+		var selectedColor = Session.get('SelectedColor');
 		switch(drawingMode)
 		{
 			case 2:		//circle
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				Meteor.call('saveCircleInDB', origX,origY,circleRadius, function (error, result) 
+				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedColor, function (error, result) 
 				{
 					if (error) 
 					{
@@ -199,14 +223,26 @@ function drawOnCanvas(canvas)
 					{
 						console.log('success');
 					}
-				}
-					
-				);
+				});
 				break;
 			}
 			case 1:		//rect
 			{
-				
+				var left = Math.min(origX,pointer.x);
+				var top = Math.min(origY,pointer.y);
+				var width = Math.abs(origX - pointer.x);
+				var height = Math.abs(origY - pointer.y);
+				Meteor.call('saveRectInDB', left, top, width, height, selectedColor, function (error, result) 
+				{
+					if (error) 
+					{
+						console.log(error);
+					}
+					else 
+					{
+						console.log('success');
+					}
+				});
 				break;
 			}
 			case 0:		//No mode;
@@ -240,5 +276,21 @@ Template.NewCourse.events =
 	'click #lineSelected' : function (event) 
 	{
         Session.set('DrawingMode', 3);
+	},
+	'click #redColor' : function (event) 
+	{
+        Session.set('SelectedColor', 'red');
+	},
+	'click #greenColor' : function (event) 
+	{
+        Session.set('SelectedColor', 'green');
+	},
+	'click #blueColor' : function (event) 
+	{
+        Session.set('SelectedColor', 'blue');
+	},
+	'click #whiteColor' : function (event) 
+	{
+        Session.set('SelectedColor', 'white');
 	}
 };
