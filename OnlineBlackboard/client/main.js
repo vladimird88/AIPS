@@ -68,8 +68,7 @@ function drawFromDatabase(canvas)
 							top: singleFigure.top,
 							width:singleFigure.width,
 							height:singleFigure.height,
-							radius: 1,
-							strokeWidth: 5,
+							strokeWidth: singleFigure.stroke,
 							stroke: singleFigure.color,
 							selectable: false,
 							fill: 'rgba(0,0,0,0)',
@@ -83,7 +82,7 @@ function drawFromDatabase(canvas)
 							left: singleFigure.left,
 							top: singleFigure.top,
 							radius: singleFigure.radius,
-							strokeWidth: 5,
+							strokeWidth: singleFigure.stroke,
 							stroke: singleFigure.color,
 							selectable: false,
 							fill: 'rgba(0,0,0,0)',
@@ -108,6 +107,7 @@ function drawOnCanvas(canvas)
 	{
 		var drawingMode = Session.get('DrawingMode');
 		var selectedColor = Session.get('SelectedColor');
+		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		if(drawingMode != 0)
 		{
 			isDown = true;
@@ -128,7 +128,7 @@ function drawOnCanvas(canvas)
 					canvas.add(new fabric.Line([point1.x, point1.y, origX, origY], {
 						stroke: selectedColor,
 						hasControls: false,
-						strokeWidth: 5,
+						strokeWidth: selectedStrokeWidth,
 						hasBorders: false,
 						lockMovementX: true,
 						lockMovementY: true,
@@ -144,7 +144,7 @@ function drawOnCanvas(canvas)
 					left: pointer.x,
 					top: pointer.y,
 					radius: 1,
-					strokeWidth: 5,
+					strokeWidth: selectedStrokeWidth,
 					stroke: selectedColor,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
@@ -161,8 +161,7 @@ function drawOnCanvas(canvas)
 					top: pointer.y,
 					width:0,
 					height:0,
-					radius: 1,
-					strokeWidth: 5,
+					strokeWidth: selectedStrokeWidth,
 					stroke: selectedColor,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
@@ -191,7 +190,11 @@ function drawOnCanvas(canvas)
 			{
 				if (!isDown) return;
 				var pointer = canvas.getPointer(o.e);
-				rect.set({ left: Math.min(origX,pointer.x), top: Math.min(origY,pointer.y), width: Math.abs(origX - pointer.x), height: Math.abs(origY - pointer.y) });
+				var leftRect = Math.min(origX,pointer.x);
+				var topRect = Math.min(origY,pointer.y);
+				var widthRect = Math.abs(origX - pointer.x);
+				var heightRect = Math.abs(origY - pointer.y);
+				rect.set({ left: leftRect, top: topRect, width: widthRect, height: heightRect });
 				canvas.renderAll();
 				break;
 			}
@@ -208,12 +211,13 @@ function drawOnCanvas(canvas)
 		var pointer = canvas.getPointer(o.e);
 		var drawingMode = Session.get('DrawingMode');
 		var selectedColor = Session.get('SelectedColor');
+		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		switch(drawingMode)
 		{
 			case 2:		//circle
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedColor, function (error, result) 
+				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedStrokeWidth, selectedColor, function (error, result) 
 				{
 					if (error) 
 					{
@@ -228,11 +232,11 @@ function drawOnCanvas(canvas)
 			}
 			case 1:		//rect
 			{
-				var left = Math.min(origX,pointer.x);
-				var top = Math.min(origY,pointer.y);
-				var width = Math.abs(origX - pointer.x);
-				var height = Math.abs(origY - pointer.y);
-				Meteor.call('saveRectInDB', left, top, width, height, selectedColor, function (error, result) 
+				var leftRect = Math.min(origX,pointer.x);
+				var topRect = Math.min(origY,pointer.y);
+				var widthRect = Math.abs(origX - pointer.x);
+				var heightRect = Math.abs(origY - pointer.y);
+				Meteor.call('saveRectInDB', leftRect, topRect, widthRect, heightRect, selectedStrokeWidth, selectedColor, function (error, result) 
 				{
 					if (error) 
 					{
@@ -256,6 +260,8 @@ function drawOnCanvas(canvas)
 Template.NewCourse.onCreated(function onContentCreated(event)
 {
 	Session.set('DrawingMode', 0);
+	Session.set('SelectedColor', 'white');
+	Session.set('SelectedStrokeWidth', 1);
 });
 
 
@@ -292,5 +298,9 @@ Template.NewCourse.events =
 	'click #whiteColor' : function (event) 
 	{
         Session.set('SelectedColor', 'white');
+	},
+	'change #strokeWidth': function(evt) {
+		var selectedStrokeWidth = $(evt.target).val();
+		Session.set('SelectedStrokeWidth', parseInt(selectedStrokeWidth));
 	}
 };
