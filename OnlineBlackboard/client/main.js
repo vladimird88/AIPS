@@ -100,7 +100,7 @@ function drawOnCanvas(canvas)
 {	
 	drawFromDatabase(canvas);
 
-	var circle, rect, line, point1, isDown, origX, origY;
+	var circle, triangle, rect, line, point1, isDown, origX, origY;
 	var objectsList = [];
 
 	canvas.on('mouse:down', function(o)
@@ -117,7 +117,7 @@ function drawOnCanvas(canvas)
 		}
 		switch(drawingMode)
 		{
-			case 3:		//line, spaja 2 tacke
+			case 4:		//line, spaja 2 tacke
 			{
 				if (point1 === undefined) 
 				{
@@ -168,6 +168,22 @@ function drawOnCanvas(canvas)
 					originX: 'left', originY: 'top'
 				});
 				canvas.add(rect);
+				break;
+			}
+			case 3:		//triangle
+			{
+				triangle = new fabric.Triangle({
+					left: pointer.x,
+					top: pointer.y,
+					radius: 1,
+					strokeWidth: selectedStrokeWidth,
+					stroke: selectedColor,
+					selectable: false,
+					fill: 'rgba(0,0,0,0)',
+					originX: 'center', originY: 'center'
+				});
+				objectsList.push(circle);
+				canvas.add(circle);
 				break;
 			}
 		}
@@ -279,28 +295,21 @@ Template.NewCourse.events =
 	{
         Session.set('DrawingMode', 2);
 	},
-	'click #lineSelected' : function (event) 
+	'click #triangleSelected' : function (event) 
 	{
         Session.set('DrawingMode', 3);
 	},
-	'click #redColor' : function (event) 
+	'click #lineSelected' : function (event) 
 	{
-        Session.set('SelectedColor', 'red');
+        Session.set('DrawingMode', 4);
 	},
-	'click #greenColor' : function (event) 
+	'change #colorPickerStroke' : function (event) 
 	{
-        Session.set('SelectedColor', 'green');
+		var selectedStrokeColor = $(event.target).val();
+        Session.set('SelectedColor', selectedStrokeColor);
 	},
-	'click #blueColor' : function (event) 
-	{
-        Session.set('SelectedColor', 'blue');
-	},
-	'click #whiteColor' : function (event) 
-	{
-        Session.set('SelectedColor', 'white');
-	},
-	'change #strokeWidth': function(evt) {
-		var selectedStrokeWidth = $(evt.target).val();
+	'change #strokeWidth': function(event) {
+		var selectedStrokeWidth = $(event.target).val();
 		Session.set('SelectedStrokeWidth', parseInt(selectedStrokeWidth));
 	}
 };
