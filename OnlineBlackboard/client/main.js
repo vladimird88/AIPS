@@ -6,6 +6,7 @@ import { Rect } from './classfile.js';
 import { Ellipse } from './classfile.js';
 import { Circle } from './classfile.js';
 import { Triangle } from './classfile.js';
+import { DrawingManager } from './classfile.js';
 
 import './main.html';
 
@@ -64,79 +65,9 @@ function drawFromDatabase(canvas)
 		var figuresCursors = Figures.find({});
 		figuresCursors.forEach(function(singleFigure)
 		{
-			switch(singleFigure.type)
-			{
-				case 1:
-				{
-					var rectFromDB = new fabric.Rect({
-						left: singleFigure.left,
-						top: singleFigure.top,
-						width:singleFigure.width,
-						height:singleFigure.height,
-						strokeWidth: singleFigure.strokeWidth,
-						stroke: singleFigure.strokeColor,
-						fill:singleFigure.fillColor,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY
-					});
-					canvas.add(rectFromDB);
-					break;
-				}
-				case 2:
-				{
-					var circleFromDB = new fabric.Circle({
-						left: singleFigure.left,
-						top: singleFigure.top,
-						radius: singleFigure.radius,
-						strokeWidth: singleFigure.strokeWidth,
-						stroke: singleFigure.strokeColor,
-						fill:singleFigure.fillColor,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY
-					});
-					canvas.add(circleFromDB);
-					break;
-				}
-				case 3:
-				{
-					var triangleFromDB = new fabric.Triangle({
-						left: singleFigure.left,
-						top: singleFigure.top,
-						width:singleFigure.width,
-						height:singleFigure.height,
-						strokeWidth: singleFigure.strokeWidth,
-						stroke: singleFigure.strokeColor,
-						fill:singleFigure.fillColor,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY
-					});
-					canvas.add(triangleFromDB);
-					break;
-				}
-				case 5:
-				{
-					var ellipseFromDB = new fabric.Ellipse({
-						left: singleFigure.left,
-						top: singleFigure.top,
-						rx:singleFigure.radiusX,
-						ry:singleFigure.radiusY,
-						strokeWidth: singleFigure.strokeWidth,
-						stroke: singleFigure.strokeColor,
-						fill:singleFigure.fillColor,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY
-					});
-					canvas.add(ellipseFromDB);
-					break;
-				}
-			}
+			DrawingManager.drawFigure(canvas,singleFigure);
 		});
 	});
-	 
 }
 
 function drawOnCanvas(canvas)

@@ -50,3 +50,79 @@ export class Triangle extends Figure {
 		this.type = 3;
     }
 }
+
+export class DrawingManager{
+	static drawFigure(canvas,singleFigure)
+	{
+		switch(singleFigure.type)
+		{
+			case 1:
+			{
+				var rectFromDB = new fabric.Rect({
+						left: singleFigure.left,
+						top: singleFigure.top,
+						width:singleFigure.width,
+						height:singleFigure.height,
+						strokeWidth: singleFigure.strokeWidth,
+						stroke: singleFigure.strokeColor,
+						fill:singleFigure.fillColor,
+						selectable: false,
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
+					});
+				canvas.add(rectFromDB);
+				break;
+			}
+			case 2:
+			{
+				var circleFromDB = new fabric.Circle({
+					left: singleFigure.left,
+					top: singleFigure.top,
+					radius: singleFigure.radius,
+					strokeWidth: singleFigure.strokeWidth,
+					stroke: singleFigure.strokeColor,
+					fill:singleFigure.fillColor,
+					selectable: false,
+					originX: singleFigure.originX, 
+					originY: singleFigure.originY
+				});
+				canvas.add(circleFromDB);
+				break;
+			}
+			case 3:
+			{
+				var triangleFromDB = new fabric.Triangle({
+					left: singleFigure.left,
+					top: singleFigure.top,
+					width:singleFigure.width,
+					height:singleFigure.height,
+					strokeWidth: singleFigure.strokeWidth,
+					stroke: singleFigure.strokeColor,
+					fill:singleFigure.fillColor,
+					selectable: false,
+					originX: singleFigure.originX, 
+					originY: singleFigure.originY
+				});
+				canvas.add(triangleFromDB);
+				break;
+			}
+			case 5:
+			{
+				var ellipseFromDB = new fabric.Ellipse({
+					left: singleFigure.left,
+					top: singleFigure.top,
+					rx:singleFigure.radiusX,
+					ry:singleFigure.radiusY,
+					strokeWidth: singleFigure.strokeWidth,
+					stroke: singleFigure.strokeColor,
+					fill:singleFigure.fillColor,
+					selectable: false,
+					originX: singleFigure.originX, 
+					originY: singleFigure.originY
+				});
+				canvas.add(ellipseFromDB);
+				break;
+			}
+		}
+	}
+}
