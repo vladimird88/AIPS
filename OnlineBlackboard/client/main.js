@@ -1,58 +1,11 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-export class Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left) {
-        this.strokeWidth = strokeWidth;
-        this.strokeColor = strokeColor;
-		this.fillColor = fillColor;
-		this.top = top;
-		this.left = left;
-		this.time = Date.now();
-    }
-}
 
-export class Circle extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, radius) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
-		this.radius = radius;
-		this.originX = 'center';
-		this.originY = 'center';
-		this.type = 2;
-    }
-}
-
-export class Ellipse extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, radiusX, radiusY) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
-		this.radiusX = radiusX;
-		this.radiusY = radiusY;
-		this.originX = 'center';
-		this.originY = 'center';
-		this.type = 5;
-    }
-}
-
-export class Rect extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
-		this.width = width;
-		this.height = height;
-		this.originX = 'left';
-		this.originY = 'top';
-		this.type = 1;
-    }
-}
-export class Triangle extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
-		this.width = width;
-		this.height = height;
-		this.originX = 'left';
-		this.originY = 'top';
-		this.type = 3;
-    }
-}
-
+import { Figure } from './classfile.js';
+import { Rect } from './classfile.js';
+import { Ellipse } from './classfile.js';
+import { Circle } from './classfile.js';
+import { Triangle } from './classfile.js';
 
 import './main.html';
 
@@ -102,8 +55,6 @@ Template.Navigation.events =
 	}
 };
 
-//FIXME: Pozeljno je da se iskljuci autopublis, i da se rad sa bazom prebaci na server. Ako je iskljucen autopublish, a rad sa bazom je na klijentu, onda ne radi ucitavanje iz baze i sl.
-//TODO: Obavezno koristi Publish i Subscribe
 function drawFromDatabase(canvas)
 {
 	Meteor.subscribe('figures');
@@ -111,7 +62,6 @@ function drawFromDatabase(canvas)
 		
 		canvas.clear();
 		var figuresCursors = Figures.find({});
-		//var figures = figuresCursors.fetch();
 		figuresCursors.forEach(function(singleFigure)
 		{
 			switch(singleFigure.type)
@@ -123,11 +73,12 @@ function drawFromDatabase(canvas)
 						top: singleFigure.top,
 						width:singleFigure.width,
 						height:singleFigure.height,
-						strokeWidth: singleFigure.stroke,
+						strokeWidth: singleFigure.strokeWidth,
 						stroke: singleFigure.strokeColor,
 						fill:singleFigure.fillColor,
 						selectable: false,
-						originX: 'left', originY: 'top'
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
 					});
 					canvas.add(rectFromDB);
 					break;
@@ -138,11 +89,12 @@ function drawFromDatabase(canvas)
 						left: singleFigure.left,
 						top: singleFigure.top,
 						radius: singleFigure.radius,
-						strokeWidth: singleFigure.stroke,
+						strokeWidth: singleFigure.strokeWidth,
 						stroke: singleFigure.strokeColor,
 						fill:singleFigure.fillColor,
 						selectable: false,
-						originX: 'center', originY: 'center'
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
 					});
 					canvas.add(circleFromDB);
 					break;
@@ -154,11 +106,12 @@ function drawFromDatabase(canvas)
 						top: singleFigure.top,
 						width:singleFigure.width,
 						height:singleFigure.height,
-						strokeWidth: singleFigure.stroke,
+						strokeWidth: singleFigure.strokeWidth,
 						stroke: singleFigure.strokeColor,
 						fill:singleFigure.fillColor,
 						selectable: false,
-						originX: 'left', originY: 'top'
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
 					});
 					canvas.add(triangleFromDB);
 					break;
@@ -168,13 +121,14 @@ function drawFromDatabase(canvas)
 					var ellipseFromDB = new fabric.Ellipse({
 						left: singleFigure.left,
 						top: singleFigure.top,
-						rx:singleFigure.xRadius,
-						ry:singleFigure.yRadius,
-						strokeWidth: singleFigure.stroke,
+						rx:singleFigure.radiusX,
+						ry:singleFigure.radiusY,
+						strokeWidth: singleFigure.strokeWidth,
 						stroke: singleFigure.strokeColor,
 						fill:singleFigure.fillColor,
 						selectable: false,
-						originX: 'center', originY: 'center'
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
 					});
 					canvas.add(ellipseFromDB);
 					break;
@@ -358,6 +312,7 @@ function drawOnCanvas(canvas)
 		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
 		var fillColor = Session.get('SelectedFillColorWithAlpha');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
+		var figureToSave;
 		switch(drawingMode)
 		{
 			case 0:		//No mode;
@@ -371,34 +326,13 @@ function drawOnCanvas(canvas)
 				var topRect = Math.min(origY,pointer.y);
 				var widthRect = Math.abs(origX - pointer.x);
 				var heightRect = Math.abs(origY - pointer.y);
-				Meteor.call('saveRectInDB', leftRect, topRect, widthRect, heightRect, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
-				{
-					if (error) 
-					{
-						console.log(error);
-					}
-					else 
-					{
-						console.log('success');
-					}
-				});
+				figureToSave = new Rect(selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
 				break;
 			}
 			case 2:		//circle
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				var circleToSave = new Circle(selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
-				Meteor.call('saveCircleInDB', circleToSave, function (error, result) 
-				{
-					if (error) 
-					{
-						console.log(error);
-					}
-					else 
-					{
-						console.log('success');
-					}
-				});
+				figureToSave = new Circle(selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
 				break;
 			}
 			case 3:		//triangle
@@ -407,24 +341,20 @@ function drawOnCanvas(canvas)
 				var topTriangle = Math.min(origY,pointer.y);
 				var widthTriangle = Math.abs(origX - pointer.x);
 				var heightTriangle = Math.abs(origY - pointer.y);
-				Meteor.call('saveTriangleInDB', leftTriangle, topTriangle, widthTriangle, heightTriangle, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
-				{
-					if (error) 
-					{
-						console.log(error);
-					}
-					else 
-					{
-						console.log('success');
-					}
-				});
+				figureToSave = new Triangle(selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
 				break;
 			}
 			case 5:		//ellipse
 			{
 				var xRadius = Math.abs(origX - pointer.x);
 				var yRadius = Math.abs(origY - pointer.y);
-				Meteor.call('saveEllipseInDB', origX,origY, xRadius, yRadius, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
+				figureToSave = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+				break;
+			}
+		}
+		if(drawingMode != 0)
+		{
+			Meteor.call('saveFigureInDB', figureToSave, function (error, result) 
 				{
 					if (error) 
 					{
@@ -435,8 +365,6 @@ function drawOnCanvas(canvas)
 						console.log('success');
 					}
 				});
-				break;
-			}
 		}
 	});
 }
