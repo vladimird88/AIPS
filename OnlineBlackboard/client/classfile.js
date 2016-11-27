@@ -53,10 +53,8 @@ export class Triangle extends Figure {
 
 export class DrawingManager
 {
-	
-	static setupDrawingOnCanvas(canvas)
+	static drawFromDB(canvas)
 	{
-		canvas.selection = false;
 		Meteor.subscribe('figures');
 		Tracker.autorun(function(){
 			
@@ -67,7 +65,14 @@ export class DrawingManager
 				DrawingManager.drawFigure(canvas,singleFigure);
 			});
 		});
-
+	}
+	
+	static setupDrawingOnCanvas(canvas)
+	{
+		canvas.selection = false;
+		
+		DrawingManager.drawFromDB(canvas);
+		
 		var circle, triangle, rect, ellipse, line, point1, isDown, origX, origY;
 		var objectsList = [];
 
