@@ -55,44 +55,80 @@ function drawFromDatabase(canvas)
 {
 	Meteor.subscribe('figures');
 	Tracker.autorun(function(){
-			var figuresCursors = Figures.find({});
-			//var figures = figuresCursors.fetch();
-			figuresCursors.forEach(function(singleFigure)
+		
+		canvas.clear();
+		var figuresCursors = Figures.find({});
+		//var figures = figuresCursors.fetch();
+		figuresCursors.forEach(function(singleFigure)
+		{
+			switch(singleFigure.type)
 			{
-				switch(singleFigure.type)
+				case 1:
 				{
-					case 1:
-					{
-						var rectfromDB = new fabric.Rect({
-							left: singleFigure.left,
-							top: singleFigure.top,
-							width:singleFigure.width,
-							height:singleFigure.height,
-							strokeWidth: singleFigure.stroke,
-							stroke: singleFigure.strokeColor,
-							fill:singleFigure.fillColor,
-							selectable: false,
-							originX: 'left', originY: 'top'
-						});
-						canvas.add(rectfromDB);
-					}
-					case 2:
-					{
-						var circlefromDB = new fabric.Circle({
-							left: singleFigure.left,
-							top: singleFigure.top,
-							radius: singleFigure.radius,
-							strokeWidth: singleFigure.stroke,
-							stroke: singleFigure.strokeColor,
-							fill:singleFigure.fillColor,
-							selectable: false,
-							originX: 'center', originY: 'center'
-						});
-						canvas.add(circlefromDB);
-					}
+					var rectFromDB = new fabric.Rect({
+						left: singleFigure.left,
+						top: singleFigure.top,
+						width:singleFigure.width,
+						height:singleFigure.height,
+						strokeWidth: singleFigure.stroke,
+						stroke: singleFigure.strokeColor,
+						fill:singleFigure.fillColor,
+						selectable: false,
+						originX: 'left', originY: 'top'
+					});
+					canvas.add(rectFromDB);
+					break;
 				}
-			});
-        });
+				case 2:
+				{
+					var circleFromDB = new fabric.Circle({
+						left: singleFigure.left,
+						top: singleFigure.top,
+						radius: singleFigure.radius,
+						strokeWidth: singleFigure.stroke,
+						stroke: singleFigure.strokeColor,
+						fill:singleFigure.fillColor,
+						selectable: false,
+						originX: 'center', originY: 'center'
+					});
+					canvas.add(circleFromDB);
+					break;
+				}
+				case 3:
+				{
+					var triangleFromDB = new fabric.Triangle({
+						left: singleFigure.left,
+						top: singleFigure.top,
+						width:singleFigure.width,
+						height:singleFigure.height,
+						strokeWidth: singleFigure.stroke,
+						stroke: singleFigure.strokeColor,
+						fill:singleFigure.fillColor,
+						selectable: false,
+						originX: 'left', originY: 'top'
+					});
+					canvas.add(triangleFromDB);
+					break;
+				}
+				case 5:
+				{
+					var ellipseFromDB = new fabric.Ellipse({
+						left: singleFigure.left,
+						top: singleFigure.top,
+						rx:singleFigure.xRadius,
+						ry:singleFigure.yRadius,
+						strokeWidth: singleFigure.stroke,
+						stroke: singleFigure.strokeColor,
+						fill:singleFigure.fillColor,
+						selectable: false,
+						originX: 'center', originY: 'center'
+					});
+					canvas.add(ellipseFromDB);
+					break;
+				}
+			}
+		});
+	});
 	 
 }
 
@@ -100,7 +136,7 @@ function drawOnCanvas(canvas)
 {	
 	drawFromDatabase(canvas);
 
-	var circle, triangle, rect, line, point1, isDown, origX, origY;
+	var circle, triangle, rect, ellipse, line, point1, isDown, origX, origY;
 	var objectsList = [];
 
 	canvas.on('mouse:down', function(o)
@@ -118,6 +154,55 @@ function drawOnCanvas(canvas)
 		}
 		switch(drawingMode)
 		{
+			case 1:		//rect
+			{
+				rect = new fabric.Rect({
+					left: pointer.x,
+					top: pointer.y,
+					width:1,
+					height:1,
+					strokeWidth: selectedStrokeWidth,
+					stroke: selectedStrokeColorWithAlpha,
+					selectable: false,
+					fill: selectedFillColorWithAlpha,
+					originX: 'left', originY: 'top'
+				});
+				canvas.add(rect);
+				break;
+			}
+			case 2:		//circle
+			{
+				circle = new fabric.Circle({
+					left: pointer.x,
+					top: pointer.y,
+					radius: 1,
+					strokeWidth: selectedStrokeWidth,
+					stroke: selectedStrokeColorWithAlpha,
+					selectable: false,
+					fill: selectedFillColorWithAlpha,
+					originX: 'center', originY: 'center'
+				});
+				objectsList.push(circle);
+				canvas.add(circle);
+				break;
+			}
+			case 3:		//triangle
+			{
+				triangle = new fabric.Triangle({
+					left: pointer.x,
+					top: pointer.y,
+					width:1,
+					height:1,
+					strokeWidth: selectedStrokeWidth,
+					stroke: selectedStrokeColorWithAlpha,
+					selectable: false,
+					fill: selectedFillColorWithAlpha,
+					originX: 'left', originY: 'top'
+				});
+				objectsList.push(triangle);
+				canvas.add(triangle);
+				break;
+			}
 			case 4:		//line, spaja 2 tacke
 			{
 				if (point1 === undefined) 
@@ -139,52 +224,21 @@ function drawOnCanvas(canvas)
 				}
 				break;
 			}
-			case 2:		//circle
+			case 5:		//ellipse
 			{
-				circle = new fabric.Circle({
+				ellipse = new fabric.Ellipse({
 					left: pointer.x,
 					top: pointer.y,
-					radius: 1,
+					rx: 1,
+					ry: 1,
 					strokeWidth: selectedStrokeWidth,
 					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
 					fill: selectedFillColorWithAlpha,
 					originX: 'center', originY: 'center'
 				});
-				objectsList.push(circle);
-				canvas.add(circle);
-				break;
-			}
-			case 1:		//rect
-			{
-				rect = new fabric.Rect({
-					left: pointer.x,
-					top: pointer.y,
-					width:0,
-					height:0,
-					strokeWidth: selectedStrokeWidth,
-					stroke: selectedStrokeColorWithAlpha,
-					selectable: false,
-					fill: selectedFillColorWithAlpha,
-					originX: 'left', originY: 'top'
-				});
-				canvas.add(rect);
-				break;
-			}
-			case 3:		//triangle
-			{
-				triangle = new fabric.Triangle({
-					left: pointer.x,
-					top: pointer.y,
-					radius: 1,
-					strokeWidth: selectedStrokeWidth,
-					stroke: selectedStrokeColorWithAlpha,
-					selectable: false,
-					fill: selectedFillColorWithAlpha,
-					originX: 'center', originY: 'center'
-				});
-				objectsList.push(circle);
-				canvas.add(circle);
+				objectsList.push(ellipse);
+				canvas.add(ellipse);
 				break;
 			}
 		}
@@ -192,15 +246,12 @@ function drawOnCanvas(canvas)
 
 	canvas.on('mouse:move', function(o)
 	{
+		if (!isDown) return;
 		var drawingMode = Session.get('DrawingMode');
 		switch(drawingMode)
 		{
-			case 2:		//circle
+			case 0:		//No mode;
 			{
-				if (!isDown) return;
-				var pointer = canvas.getPointer(o.e);
-				circle.set({ radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)) });
-				canvas.renderAll();
 				break;
 			}
 			case 1:		//rect
@@ -215,9 +266,33 @@ function drawOnCanvas(canvas)
 				canvas.renderAll();
 				break;
 			}
-			case 0:		//No mode;
+			case 2:		//circle
 			{
 				if (!isDown) return;
+				var pointer = canvas.getPointer(o.e);
+				circle.set({ radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)) });
+				canvas.renderAll();
+				break;
+			}
+			case 3:		//triangle
+			{
+				if (!isDown) return;
+				var pointer = canvas.getPointer(o.e);
+				var leftTriangle = Math.min(origX,pointer.x);
+				var topTriangle = Math.min(origY,pointer.y);
+				var widthTriangle = Math.abs(origX - pointer.x);
+				var heightTriangle = Math.abs(origY - pointer.y);
+				triangle.set({ left: leftTriangle, top: topTriangle, width: widthTriangle, height: heightTriangle });
+				canvas.renderAll();
+				break;
+			}
+			case 5:		//ellipse
+			{
+				if (!isDown) return;
+				var pointer = canvas.getPointer(o.e);
+				ellipse.set({ rx: Math.abs(origX - pointer.x), ry: Math.abs(origY - pointer.y)});
+				canvas.renderAll();
+				break;
 			}
 		}
 	});
@@ -232,20 +307,9 @@ function drawOnCanvas(canvas)
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		switch(drawingMode)
 		{
-			case 2:		//circle
+			case 0:		//No mode;
 			{
-				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
-				{
-					if (error) 
-					{
-						console.log(error);
-					}
-					else 
-					{
-						console.log('success');
-					}
-				});
+				if (!isDown) return;
 				break;
 			}
 			case 1:		//rect
@@ -267,9 +331,57 @@ function drawOnCanvas(canvas)
 				});
 				break;
 			}
-			case 0:		//No mode;
+			case 2:		//circle
 			{
-				if (!isDown) return;
+				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
+				{
+					if (error) 
+					{
+						console.log(error);
+					}
+					else 
+					{
+						console.log('success');
+					}
+				});
+				break;
+			}
+			case 3:		//triangle
+			{
+				var leftTriangle = Math.min(origX,pointer.x);
+				var topTriangle = Math.min(origY,pointer.y);
+				var widthTriangle = Math.abs(origX - pointer.x);
+				var heightTriangle = Math.abs(origY - pointer.y);
+				Meteor.call('saveTriangleInDB', leftTriangle, topTriangle, widthTriangle, heightTriangle, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
+				{
+					if (error) 
+					{
+						console.log(error);
+					}
+					else 
+					{
+						console.log('success');
+					}
+				});
+				break;
+			}
+			case 5:		//ellipse
+			{
+				var xRadius = Math.abs(origX - pointer.x);
+				var yRadius = Math.abs(origY - pointer.y);
+				Meteor.call('saveEllipseInDB', origX,origY, xRadius, yRadius, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
+				{
+					if (error) 
+					{
+						console.log(error);
+					}
+					else 
+					{
+						console.log('success');
+					}
+				});
+				break;
 			}
 		}
 	});
@@ -309,6 +421,10 @@ Template.NewCourse.events =
 	'click #lineSelected' : function (event) 
 	{
         Session.set('DrawingMode', 4);
+	},
+	'click #ellipseSelected' : function (event) 
+	{
+        Session.set('DrawingMode', 5);
 	},
 	'change #colorPickerStroke' : function (event) 
 	{
