@@ -69,9 +69,9 @@ function drawFromDatabase(canvas)
 							width:singleFigure.width,
 							height:singleFigure.height,
 							strokeWidth: singleFigure.stroke,
-							stroke: singleFigure.color,
+							stroke: singleFigure.strokeColor,
+							fill:singleFigure.fillColor,
 							selectable: false,
-							fill: 'rgba(0,0,0,0)',
 							originX: 'left', originY: 'top'
 						});
 						canvas.add(rectfromDB);
@@ -83,9 +83,9 @@ function drawFromDatabase(canvas)
 							top: singleFigure.top,
 							radius: singleFigure.radius,
 							strokeWidth: singleFigure.stroke,
-							stroke: singleFigure.color,
+							stroke: singleFigure.strokeColor,
+							fill:singleFigure.fillColor,
 							selectable: false,
-							fill: 'rgba(0,0,0,0)',
 							originX: 'center', originY: 'center'
 						});
 						canvas.add(circlefromDB);
@@ -106,9 +106,9 @@ function drawOnCanvas(canvas)
 	canvas.on('mouse:down', function(o)
 	{
 		var drawingMode = Session.get('DrawingMode');
-		var selectedColor = Session.get('SelectedColor');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		var selectedStrokeColorWithAlpha = Session.get('SelectedStrokeColorWithAlpha');
+		var selectedFillColorWithAlpha = Session.get('SelectedFillColorWithAlpha');
 		if(drawingMode != 0)
 		{
 			isDown = true;
@@ -148,7 +148,7 @@ function drawOnCanvas(canvas)
 					strokeWidth: selectedStrokeWidth,
 					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
-					fill: 'rgba(0,0,0,0)',
+					fill: selectedFillColorWithAlpha,
 					originX: 'center', originY: 'center'
 				});
 				objectsList.push(circle);
@@ -165,7 +165,7 @@ function drawOnCanvas(canvas)
 					strokeWidth: selectedStrokeWidth,
 					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
-					fill: 'rgba(0,0,0,0)',
+					fill: selectedFillColorWithAlpha,
 					originX: 'left', originY: 'top'
 				});
 				canvas.add(rect);
@@ -180,7 +180,7 @@ function drawOnCanvas(canvas)
 					strokeWidth: selectedStrokeWidth,
 					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
-					fill: 'rgba(0,0,0,0)',
+					fill: selectedFillColorWithAlpha,
 					originX: 'center', originY: 'center'
 				});
 				objectsList.push(circle);
@@ -227,14 +227,15 @@ function drawOnCanvas(canvas)
 		isDown = false;
 		var pointer = canvas.getPointer(o.e);
 		var drawingMode = Session.get('DrawingMode');
-		var selectedColor = Session.get('SelectedStrokeColorWithAlpha');
+		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
+		var fillColor = Session.get('SelectedFillColorWithAlpha');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		switch(drawingMode)
 		{
 			case 2:		//circle
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedStrokeWidth, selectedColor, function (error, result) 
+				Meteor.call('saveCircleInDB', origX,origY,circleRadius, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
 				{
 					if (error) 
 					{
@@ -253,7 +254,7 @@ function drawOnCanvas(canvas)
 				var topRect = Math.min(origY,pointer.y);
 				var widthRect = Math.abs(origX - pointer.x);
 				var heightRect = Math.abs(origY - pointer.y);
-				Meteor.call('saveRectInDB', leftRect, topRect, widthRect, heightRect, selectedStrokeWidth, selectedColor, function (error, result) 
+				Meteor.call('saveRectInDB', leftRect, topRect, widthRect, heightRect, selectedStrokeWidth, strokeColor, fillColor, function (error, result) 
 				{
 					if (error) 
 					{
@@ -277,11 +278,13 @@ function drawOnCanvas(canvas)
 Template.NewCourse.onCreated(function onContentCreated(event)
 {
 	Session.set('DrawingMode', 0);
-	Session.set('SelectedStrokeColorWithAlpha', 'rgba(255,255,255,1)');
-	Session.set('SelectedColor', 'ffffff');
 	Session.set('SelectedStrokeWidth', 1);
+	Session.set('SelectedColor', 'ffffff');
+	Session.set('SelectedFillColor', '3c78b4');
+	Session.set('SelectedStrokeColorWithAlpha', 'rgba(255,255,255,1)');
+	Session.set('SelectedFillColorWithAlpha', 'rgba(60,120,180,1)');
 	Session.set('SelectedStrokeAlpha', 1);
-	
+	Session.set('SelectedFillAlpha', 1);
 });
 
 
@@ -332,6 +335,32 @@ Template.NewCourse.events =
 		Session.set('SelectedStrokeAlpha', selectedStrokeAlpha);
 		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
 		Session.set('SelectedStrokeColorWithAlpha',selectedStrokeColorWithAlpha);
+	},
+	'change #colorPickerFill' : function (event) 
+	{
+		var selectedFillColor = $(event.target).val().replace("#","");
+		var selectedFillAlpha = Session.get('SelectedFillAlpha');
+		var bigint = parseInt(selectedFillColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedFillColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedFillAlpha+')';
+		document.getElementById("fillPreview").style.backgroundColor=selectedFillColorWithAlpha;
+		Session.set('SelectedFillColor', selectedFillColor);
+		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
+	},
+	'change #fillAlpha' : function (event) 
+	{
+		var selectedFillAlpha = $(event.target).val()*0.01;
+		var selectedFillColor = Session.get('SelectedFillColor');;
+		var bigint = parseInt(selectedFillColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedFillColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedFillAlpha+')';
+		Session.set('SelectedFillAlpha', selectedFillAlpha);
+		document.getElementById("fillPreview").style.backgroundColor=selectedFillColorWithAlpha;
+		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
 	},
 	'change #strokeWidth': function(event) {
 		var selectedStrokeWidth = $(event.target).val();

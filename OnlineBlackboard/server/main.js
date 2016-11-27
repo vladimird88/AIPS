@@ -7,13 +7,14 @@ Meteor.startup(() => {
 	});
 	Meteor.methods({
 	
-		saveCircleInDB: function (xPosition, yPosition, radius, strokeWidth, color) {
+		saveCircleInDB: function (xPosition, yPosition, radius, strokeWidth, strokeColor, fillColor) {
 			Figures.insert({
 					type: 2,
 					top: yPosition,
 					left: xPosition,
 					radius: radius,
-					color: color,
+					strokeColor: strokeColor,
+					fillColor: fillColor,
 					stroke: strokeWidth,
 					time: Date.now()
 				},function(err,docsInserted)
@@ -24,13 +25,14 @@ Meteor.startup(() => {
 					}
 				});
 		},
-		saveRectInDB: function (xPosition, yPosition, width, height, strokeWidth, color) {
+		saveRectInDB: function (xPosition, yPosition, width, height, strokeWidth, strokeColor, fillColor) {
 			Figures.insert({
 					type: 1,
 					top: yPosition,
 					left: xPosition,
 					width: width,
-					color: color,
+					strokeColor: strokeColor,
+					fillColor: fillColor,
 					height: height,
 					stroke: strokeWidth,
 					time: Date.now()
