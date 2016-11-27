@@ -108,6 +108,7 @@ function drawOnCanvas(canvas)
 		var drawingMode = Session.get('DrawingMode');
 		var selectedColor = Session.get('SelectedColor');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
+		var selectedStrokeColorWithAlpha = Session.get('SelectedStrokeColorWithAlpha');
 		if(drawingMode != 0)
 		{
 			isDown = true;
@@ -126,7 +127,7 @@ function drawOnCanvas(canvas)
 				else 
 				{
 					canvas.add(new fabric.Line([point1.x, point1.y, origX, origY], {
-						stroke: selectedColor,
+						stroke: selectedStrokeColorWithAlpha,
 						hasControls: false,
 						strokeWidth: selectedStrokeWidth,
 						hasBorders: false,
@@ -145,7 +146,7 @@ function drawOnCanvas(canvas)
 					top: pointer.y,
 					radius: 1,
 					strokeWidth: selectedStrokeWidth,
-					stroke: selectedColor,
+					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'center', originY: 'center'
@@ -162,7 +163,7 @@ function drawOnCanvas(canvas)
 					width:0,
 					height:0,
 					strokeWidth: selectedStrokeWidth,
-					stroke: selectedColor,
+					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'left', originY: 'top'
@@ -177,7 +178,7 @@ function drawOnCanvas(canvas)
 					top: pointer.y,
 					radius: 1,
 					strokeWidth: selectedStrokeWidth,
-					stroke: selectedColor,
+					stroke: selectedStrokeColorWithAlpha,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					originX: 'center', originY: 'center'
@@ -226,7 +227,7 @@ function drawOnCanvas(canvas)
 		isDown = false;
 		var pointer = canvas.getPointer(o.e);
 		var drawingMode = Session.get('DrawingMode');
-		var selectedColor = Session.get('SelectedColor');
+		var selectedColor = Session.get('SelectedStrokeColorWithAlpha');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		switch(drawingMode)
 		{
@@ -276,8 +277,11 @@ function drawOnCanvas(canvas)
 Template.NewCourse.onCreated(function onContentCreated(event)
 {
 	Session.set('DrawingMode', 0);
-	Session.set('SelectedColor', 'white');
+	Session.set('SelectedStrokeColorWithAlpha', 'rgba(255,255,255,1)');
+	Session.set('SelectedColor', 'ffffff');
 	Session.set('SelectedStrokeWidth', 1);
+	Session.set('SelectedStrokeAlpha', 1);
+	
 });
 
 
@@ -305,8 +309,29 @@ Template.NewCourse.events =
 	},
 	'change #colorPickerStroke' : function (event) 
 	{
-		var selectedStrokeColor = $(event.target).val();
-        Session.set('SelectedColor', selectedStrokeColor);
+		var selectedStrokeColor = $(event.target).val().replace("#","");
+		var selectedStrokeAlpha = Session.get('SelectedStrokeAlpha');
+		var bigint = parseInt(selectedStrokeColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedStrokeColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedStrokeAlpha+')';
+		Session.set('SelectedStrokeColorWithAlpha', selectedStrokeColorWithAlpha);
+		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
+		Session.set('SelectedColor', selectedStrokeColor);
+	},
+	'change #strokeAlpha' : function (event) 
+	{
+		var selectedStrokeAlpha = $(event.target).val()*0.01;
+		var selectedStrokeColor = Session.get('SelectedColor');;
+		var bigint = parseInt(selectedStrokeColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedStrokeColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedStrokeAlpha+')';
+		Session.set('SelectedStrokeAlpha', selectedStrokeAlpha);
+		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
+		Session.set('SelectedStrokeColorWithAlpha',selectedStrokeColorWithAlpha);
 	},
 	'change #strokeWidth': function(event) {
 		var selectedStrokeWidth = $(event.target).val();

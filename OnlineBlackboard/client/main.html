@@ -80,9 +80,13 @@
 				<button id="lineSelected">Line</button>
 			</div>
 			<div>
-				Stroke color: <input type="color" id="colorPickerStroke" style="width:50px;height:50px" value = "#ffffff">
-				Fill color: <input type="color" id="colorPickerFill" style="width:50px;height:50px">
-				<select id="strokeWidth" style="background-color:white; color:black">
+				Stroke color: <input type="color" id="colorPickerStroke" style="width:50px;height:50px" value = "#ffffff"><br>
+				Stroke Alpha:<input type="range" id="strokeAlpha"  min="0" max="100" value="100" style="width:50px;display:inline"/><br>
+				Stroke preview <div id="strokePreview" style="display:inline-block;width:50px;height:50px;background-color:white"></div><br><br>
+				Fill color: <input type="color" id="colorPickerFill" style="width:50px;height:50px"><br>
+				Fill Alpha:<input type="range" id="fillAlpha"  min="0" max="100" value="100" style="width:50px;display:inline"/><br>
+				Fill preview <div id="fillPreview" style="display:inline-block;width:50px;height:50px;background-color:white"></div><br><br>
+				Line width: <select id="strokeWidth" style="background-color:white; color:black">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
