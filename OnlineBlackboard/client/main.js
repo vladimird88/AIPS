@@ -7,30 +7,19 @@ import { Ellipse } from './classfile.js';
 import { Circle } from './classfile.js';
 import { Triangle } from './classfile.js';
 import { DrawingManager } from './classfile.js';
+import { PageManager } from './classfile.js';
 
 import './main.html';
 
 Template.Content.onCreated(function onContentCreated(event)
 {
-	Session.set('step', 0);
+	PageManager.openHomePage();
 });
 
 Template.Content.helpers({
 	SelectedContent: function () 
 	{
-		var step = Session.get('step');
-		switch (step) 
-		{
-			case 0 :
-				return Template.ContentMain;
-				break;
-			case 1 :
-				return Template.NewCourse;
-				break;
-			case 2 :
-				return Template.AllCourses;
-				break;
-		}
+		return PageManager.getSelectedPage();
 	}
 });
 
@@ -38,20 +27,15 @@ Template.Navigation.events =
 {
 	'click #HomeLink' : function (event) 
 	{
-        Session.set('step', 0);
+        PageManager.openHomePage();
 	},
 	'click #NewCourseLink' : function (event) 
 	{
-        Session.set('step', 1);
-		setTimeout(function() 
-		{ 
-			var canvas = new fabric.Canvas('canvas');
-			DrawingManager.setupDrawingOnCanvas(canvas);
-		}, 0);
+        PageManager.openDrawingPage();
 	},
 	'click #AllCoursesLink' : function (event) 
 	{
-        Session.set('step', 2);
+        PageManager.openAllCoursesPage();
 	}
 };
 
