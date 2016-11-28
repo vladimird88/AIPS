@@ -30,9 +30,19 @@ export class Ellipse extends Figure {
     }
 }
 
-export class Rect extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
+export class Square extends Figure {
+  constructor(strokeWidth, strokeColor, fillColor, top, left, width) {
 		super(strokeWidth, strokeColor, fillColor, top, left);
+		this.width = width;
+		this.originX = 'left';
+		this.originY = 'top';
+		this.type = 6;
+    }
+}
+
+export class Rect extends Square {
+  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
+		super(strokeWidth, strokeColor, fillColor, top, left, width);
 		this.width = width;
 		this.height = height;
 		this.originX = 'left';
@@ -182,7 +192,7 @@ export class DrawingManager
 		
 		DrawingManager.drawFromDB(canvas);
 		
-		var circle, triangle, rect, ellipse, line, point1, isDown, origX, origY;
+		var circle, triangle, rect, ellipse, square, line, point1, isDown, origX, origY;
 		var objectsList = [];
 
 		canvas.on('mouse:down', function(o)
@@ -213,6 +223,7 @@ export class DrawingManager
 						fill: selectedFillColorWithAlpha,
 						originX: 'left', originY: 'top'
 					});
+					//objectsList.push(rect);
 					canvas.add(rect);
 					break;
 				}
@@ -228,7 +239,7 @@ export class DrawingManager
 						fill: selectedFillColorWithAlpha,
 						originX: 'center', originY: 'center'
 					});
-					objectsList.push(circle);
+					//objectsList.push(circle);
 					canvas.add(circle);
 					break;
 				}
@@ -245,7 +256,7 @@ export class DrawingManager
 						fill: selectedFillColorWithAlpha,
 						originX: 'left', originY: 'top'
 					});
-					objectsList.push(triangle);
+					//objectsList.push(triangle);
 					canvas.add(triangle);
 					break;
 				}
@@ -283,8 +294,25 @@ export class DrawingManager
 						fill: selectedFillColorWithAlpha,
 						originX: 'center', originY: 'center'
 					});
-					objectsList.push(ellipse);
+					//objectsList.push(ellipse);
 					canvas.add(ellipse);
+					break;
+				}
+				case 6:		//square
+				{
+					square = new fabric.Rect({
+						left: pointer.x,
+						top: pointer.y,
+						width:1,
+						height:1,
+						strokeWidth: selectedStrokeWidth,
+						stroke: selectedStrokeColorWithAlpha,
+						selectable: false,
+						fill: selectedFillColorWithAlpha,
+						originX: 'left', originY: 'top'
+					});
+					canvas.add(square);
+					//objectsList.push(square);
 					break;
 				}
 			}
@@ -340,6 +368,17 @@ export class DrawingManager
 					canvas.renderAll();
 					break;
 				}
+				case 6:		//square
+				{
+					if (!isDown) return;
+					var pointer = canvas.getPointer(o.e);
+					var leftSquare = Math.min(origX,pointer.x);
+					var topSquare = Math.min(origY,pointer.y);
+					var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
+					square.set({ left: leftSquare, top: topSquare, width: widthSquare, height: widthSquare });
+					canvas.renderAll();
+					break;
+				}
 			}
 		});
 
@@ -388,6 +427,14 @@ export class DrawingManager
 					var xRadius = Math.abs(origX - pointer.x);
 					var yRadius = Math.abs(origY - pointer.y);
 					figureToSave = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+					break;
+				}
+				case 6:		//square
+				{
+					var leftSquare= Math.min(origX,pointer.x);
+					var topSquare = Math.min(origY,pointer.y);
+					var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
+					figureToSave = new Square(selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
 					break;
 				}
 			}
@@ -478,6 +525,23 @@ export class DrawingManager
 					originY: singleFigure.originY
 				});
 				canvas.add(ellipseFromDB);
+				break;
+			}
+			case 6:
+			{
+				var squareFromDB = new fabric.Rect({
+						left: singleFigure.left,
+						top: singleFigure.top,
+						width:singleFigure.width,
+						height:singleFigure.width,
+						strokeWidth: singleFigure.strokeWidth,
+						stroke: singleFigure.strokeColor,
+						fill:singleFigure.fillColor,
+						selectable: false,
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
+					});
+				canvas.add(squareFromDB);
 				break;
 			}
 		}

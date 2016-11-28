@@ -6,6 +6,7 @@ import { Rect } from './classfile.js';
 import { Ellipse } from './classfile.js';
 import { Circle } from './classfile.js';
 import { Triangle } from './classfile.js';
+import { Square } from './classfile.js';
 import { DrawingManager } from './classfile.js';
 import { PageManager } from './classfile.js';
 
@@ -58,6 +59,10 @@ Template.NewCourse.events =
 	'click #circleSelected' : function (event) 
 	{
         Session.set('DrawingMode', 2);
+	},
+	'click #squareSelected' : function (event) 
+	{
+        Session.set('DrawingMode', 6);
 	},
 	'click #triangleSelected' : function (event) 
 	{
