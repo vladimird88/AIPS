@@ -372,9 +372,10 @@ export class DrawingManager
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
-					var leftSquare = Math.min(origX,pointer.x);
-					var topSquare = Math.min(origY,pointer.y);
 					var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
+					var leftSquare = pointer.x > origX ? origX : Math.max(pointer.x,origX-widthSquare);
+					var topSquare = pointer.y > origY ? origY : Math.max(pointer.y,origY-widthSquare);
+					console.log(""+leftSquare+","+topSquare+","+widthSquare);
 					square.set({ left: leftSquare, top: topSquare, width: widthSquare, height: widthSquare });
 					canvas.renderAll();
 					break;
