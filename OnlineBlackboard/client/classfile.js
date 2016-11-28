@@ -67,6 +67,75 @@ export class DrawingManager
 		});
 	}
 	
+	static initializeDrawing()
+	{
+		Session.set('DrawingMode', 0);
+		Session.set('SelectedStrokeWidth', 1);
+		Session.set('SelectedColor', 'ffffff');
+		Session.set('SelectedFillColor', '3c78b4');
+		Session.set('SelectedStrokeColorWithAlpha', 'rgba(255,255,255,1)');
+		Session.set('SelectedFillColorWithAlpha', 'rgba(60,120,180,1)');
+		Session.set('SelectedStrokeAlpha', 1);
+		Session.set('SelectedFillAlpha', 1);
+	}
+	
+	static setStrokeWidth(selectedStrokeWidth)
+	{
+		Session.set('SelectedStrokeWidth', parseInt(selectedStrokeWidth));
+	}
+	
+	static setStrokeColor(selectedStrokeColor)
+	{
+		var selectedStrokeAlpha = Session.get('SelectedStrokeAlpha');
+		var bigint = parseInt(selectedStrokeColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedStrokeColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedStrokeAlpha+')';
+		Session.set('SelectedStrokeColorWithAlpha', selectedStrokeColorWithAlpha);
+		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
+		Session.set('SelectedColor', selectedStrokeColor);
+	}
+	
+	static setStrokeAlpha(selectedStrokeAlpha)
+	{
+		var selectedStrokeColor = Session.get('SelectedColor');;
+		var bigint = parseInt(selectedStrokeColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedStrokeColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedStrokeAlpha+')';
+		Session.set('SelectedStrokeAlpha', selectedStrokeAlpha);
+		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
+		Session.set('SelectedStrokeColorWithAlpha',selectedStrokeColorWithAlpha);
+	}
+	
+	static setFillAlpha(selectedFillAlpha)
+	{
+		var selectedFillColor = Session.get('SelectedFillColor');;
+		var bigint = parseInt(selectedFillColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedFillColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedFillAlpha+')';
+		Session.set('SelectedFillAlpha', selectedFillAlpha);
+		document.getElementById("fillPreview").style.backgroundColor=selectedFillColorWithAlpha;
+		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
+	}
+	
+	static setFillColor(selectedFillColor)
+	{
+		var selectedFillAlpha = Session.get('SelectedFillAlpha');
+		var bigint = parseInt(selectedFillColor, 16);
+		var r = (bigint >> 16) & 255;
+		var g = (bigint >> 8) & 255;
+		var b = bigint & 255;
+		var selectedFillColorWithAlpha = 'rgba('+r+','+g+','+b+','+selectedFillAlpha+')';
+		document.getElementById("fillPreview").style.backgroundColor=selectedFillColorWithAlpha;
+		Session.set('SelectedFillColor', selectedFillColor);
+		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
+	}
+	
 	static setupDrawingOnCanvas(canvas)
 	{
 		canvas.selection = false;
