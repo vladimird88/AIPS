@@ -1,3 +1,7 @@
+
+
+export const FiguresEnum = { NoSelection : 0, RectFigure : 1, CircleFigure : 2, TriangleFigure : 3, LineFigure : 4, EllipseFigure : 5, SquareFigure : 6, PolygonFigure : 7 };
+
 export class Figure {
   constructor(strokeWidth, strokeColor, fillColor, top, left) {
         this.strokeWidth = strokeWidth;
@@ -201,7 +205,7 @@ export class DrawingManager
 			var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 			var selectedStrokeColorWithAlpha = Session.get('SelectedStrokeColorWithAlpha');
 			var selectedFillColorWithAlpha = Session.get('SelectedFillColorWithAlpha');
-			if(drawingMode != 0)
+			if(drawingMode != FiguresEnum.NoSelection)
 			{
 				isDown = true;
 				var pointer = canvas.getPointer(o.e);
@@ -210,7 +214,7 @@ export class DrawingManager
 			}
 			switch(drawingMode)
 			{
-				case 1:		//rect
+				case FiguresEnum.RectFigure:	
 				{
 					rect = new fabric.Rect({
 						left: pointer.x,
@@ -227,7 +231,7 @@ export class DrawingManager
 					canvas.add(rect);
 					break;
 				}
-				case 2:		//circle
+				case FiguresEnum.CircleFigure:	
 				{
 					circle = new fabric.Circle({
 						left: pointer.x,
@@ -243,7 +247,7 @@ export class DrawingManager
 					canvas.add(circle);
 					break;
 				}
-				case 3:		//triangle
+				case FiguresEnum.TriangleFigure:			//triangle
 				{
 					triangle = new fabric.Triangle({
 						left: pointer.x,
@@ -260,7 +264,7 @@ export class DrawingManager
 					canvas.add(triangle);
 					break;
 				}
-				case 4:		//line, spaja 2 tacke
+				case FiguresEnum.LineFigure:			//line, spaja 2 tacke
 				{
 					if (point1 === undefined) 
 					{
@@ -281,7 +285,7 @@ export class DrawingManager
 					}
 					break;
 				}
-				case 5:		//ellipse
+				case FiguresEnum.EllipseFigure:
 				{
 					ellipse = new fabric.Ellipse({
 						left: pointer.x,
@@ -298,7 +302,7 @@ export class DrawingManager
 					canvas.add(ellipse);
 					break;
 				}
-				case 6:		//square
+				case FiguresEnum.SquareFigure:
 				{
 					square = new fabric.Rect({
 						left: pointer.x,
@@ -315,6 +319,20 @@ export class DrawingManager
 					//objectsList.push(square);
 					break;
 				}
+				case FiguresEnum.PolygonFigure:	
+				{
+					// get the vertices of a hexagon with a radius of 30
+					var points = DrawingManager.regularPolygonPoints(8,10);	
+					var polygon = new fabric.Polygon(points, {
+													left: 250,
+													top: 150,
+													angle: 0,
+													fill: 'green'
+												  }
+												);
+					canvas.add(polygon);											
+					break;
+				}
 			}
 		});
 
@@ -324,11 +342,11 @@ export class DrawingManager
 			var drawingMode = Session.get('DrawingMode');
 			switch(drawingMode)
 			{
-				case 0:		//No mode;
+				case FiguresEnum.NoSelection:
 				{
 					break;
 				}
-				case 1:		//rect
+				case FiguresEnum.RectFigure:
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
@@ -340,7 +358,7 @@ export class DrawingManager
 					canvas.renderAll();
 					break;
 				}
-				case 2:		//circle
+				case FiguresEnum.CircleFigure:
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
@@ -348,7 +366,7 @@ export class DrawingManager
 					canvas.renderAll();
 					break;
 				}
-				case 3:		//triangle
+				case FiguresEnum.TriangleFigure:
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
@@ -360,7 +378,7 @@ export class DrawingManager
 					canvas.renderAll();
 					break;
 				}
-				case 5:		//ellipse
+				case FiguresEnum.EllipseFigure:
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
@@ -368,14 +386,13 @@ export class DrawingManager
 					canvas.renderAll();
 					break;
 				}
-				case 6:		//square
+				case FiguresEnum.SquareFigure:
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
 					var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
 					var leftSquare = pointer.x > origX ? origX : Math.max(pointer.x,origX-widthSquare);
 					var topSquare = pointer.y > origY ? origY : Math.max(pointer.y,origY-widthSquare);
-					console.log(""+leftSquare+","+topSquare+","+widthSquare);
 					square.set({ left: leftSquare, top: topSquare, width: widthSquare, height: widthSquare });
 					canvas.renderAll();
 					break;
@@ -394,12 +411,12 @@ export class DrawingManager
 			var figureToSave;
 			switch(drawingMode)
 			{
-				case 0:		//No mode;
+				case FiguresEnum.NoSelection:
 				{
 					if (!isDown) return;
 					break;
 				}
-				case 1:		//rect
+				case FiguresEnum.RectFigure:
 				{
 					var leftRect = Math.min(origX,pointer.x);
 					var topRect = Math.min(origY,pointer.y);
@@ -408,13 +425,13 @@ export class DrawingManager
 					figureToSave = new Rect(selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
 					break;
 				}
-				case 2:		//circle
+				case FiguresEnum.CircleFigure:
 				{
 					var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
 					figureToSave = new Circle(selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
 					break;
 				}
-				case 3:		//triangle
+				case FiguresEnum.TriangleFigure:
 				{
 					var leftTriangle = Math.min(origX,pointer.x);
 					var topTriangle = Math.min(origY,pointer.y);
@@ -423,14 +440,14 @@ export class DrawingManager
 					figureToSave = new Triangle(selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
 					break;
 				}
-				case 5:		//ellipse
+				case FiguresEnum.EllipseFigure:	
 				{
 					var xRadius = Math.abs(origX - pointer.x);
 					var yRadius = Math.abs(origY - pointer.y);
 					figureToSave = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
 					break;
 				}
-				case 6:		//square
+				case FiguresEnum.SquareFigure:
 				{
 					var leftSquare= Math.min(origX,pointer.x);
 					var topSquare = Math.min(origY,pointer.y);
@@ -439,7 +456,7 @@ export class DrawingManager
 					break;
 				}
 			}
-			if(drawingMode != 0)
+			if(drawingMode != FiguresEnum.NoSelection)
 			{
 				Meteor.call('saveFigureInDB', figureToSave, function (error, result) 
 					{
@@ -456,12 +473,26 @@ export class DrawingManager
 		});
 	}
 	
+	static regularPolygonPoints(sideCount,radius)
+	{
+		var sweep=Math.PI*2/sideCount;
+		var cx=radius;
+		var cy=radius;
+		var points=[];
+		for(var i=0;i<sideCount;i++){
+			var x=cx+radius*Math.cos(i*sweep);
+			var y=cy+radius*Math.sin(i*sweep);
+			points.push({x:x,y:y});
+		}
+		return(points);
+}
+	
 	
 	static drawFigure(canvas,singleFigure)
 	{
 		switch(singleFigure.type)
 		{
-			case 1:
+			case FiguresEnum.RectFigure:	
 			{
 				var rectFromDB = new fabric.Rect({
 						left: singleFigure.left,
@@ -478,7 +509,7 @@ export class DrawingManager
 				canvas.add(rectFromDB);
 				break;
 			}
-			case 2:
+			case FiguresEnum.CircleFigure:	
 			{
 				var circleFromDB = new fabric.Circle({
 					left: singleFigure.left,
@@ -494,7 +525,7 @@ export class DrawingManager
 				canvas.add(circleFromDB);
 				break;
 			}
-			case 3:
+			case FiguresEnum.TriangleFigure:	
 			{
 				var triangleFromDB = new fabric.Triangle({
 					left: singleFigure.left,
@@ -511,7 +542,7 @@ export class DrawingManager
 				canvas.add(triangleFromDB);
 				break;
 			}
-			case 5:
+			case FiguresEnum.EllipseFigure:	
 			{
 				var ellipseFromDB = new fabric.Ellipse({
 					left: singleFigure.left,
@@ -528,7 +559,7 @@ export class DrawingManager
 				canvas.add(ellipseFromDB);
 				break;
 			}
-			case 6:
+			case FiguresEnum.SquareFigure:	
 			{
 				var squareFromDB = new fabric.Rect({
 						left: singleFigure.left,

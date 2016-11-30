@@ -10,7 +10,11 @@ import { Square } from './classfile.js';
 import { DrawingManager } from './classfile.js';
 import { PageManager } from './classfile.js';
 
+import { FiguresEnum } from './classfile.js';
+
 import './main.html';
+
+
 
 Template.Content.onCreated(function onContentCreated(event)
 {
@@ -50,31 +54,35 @@ Template.NewCourse.events =
 {
 	'click #clearSelection' : function (event) 
 	{
-        Session.set('DrawingMode', 0);
+        Session.set('DrawingMode', FiguresEnum.NoSelection);
 	},
 	'click #rectSelected' : function (event) 
 	{
-        Session.set('DrawingMode', 1);
+        Session.set('DrawingMode', FiguresEnum.RectFigure);
 	},
 	'click #circleSelected' : function (event) 
 	{
-        Session.set('DrawingMode', 2);
+        Session.set('DrawingMode', FiguresEnum.CircleFigure);
 	},
 	'click #squareSelected' : function (event) 
 	{
-        Session.set('DrawingMode', 6);
+        Session.set('DrawingMode', FiguresEnum.SquareFigure);
 	},
 	'click #triangleSelected' : function (event) 
 	{
-        Session.set('DrawingMode', 3);
+        Session.set('DrawingMode', FiguresEnum.TriangleFigure);
 	},
 	'click #lineSelected' : function (event) 
 	{
-        Session.set('DrawingMode', 4);
+        Session.set('DrawingMode', FiguresEnum.LineFigure);
+	},
+	'click #polygonSelected' : function (event) 
+	{
+        Session.set('DrawingMode', FiguresEnum.PolygonFigure);
 	},
 	'click #ellipseSelected' : function (event) 
 	{
-        Session.set('DrawingMode', 5);
+        Session.set('DrawingMode', FiguresEnum.EllipseFigure);
 	},
 	'change #colorPickerStroke' : function (event) 
 	{
