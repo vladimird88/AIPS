@@ -52,10 +52,6 @@ Template.NewCourse.onCreated(function onContentCreated(event)
 
 Template.NewCourse.events = 
 {
-	'click #clearSelection' : function (event) 
-	{
-        DrawingManager.selectFigure(FiguresEnum.NoSelection);
-	},
 	'click #enableAll' : function (event) 
 	{
 		DrawingManager.setAllFiguresSelectable(true);

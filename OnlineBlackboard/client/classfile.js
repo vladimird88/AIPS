@@ -21,7 +21,7 @@ export class Circle extends Figure {
 		this.radius = radius;
 		this.originX = 'center';
 		this.originY = 'center';
-		this.type = 2;
+		this.type = FiguresEnum.CircleFigure;
     }
 }
 
@@ -32,7 +32,7 @@ export class Ellipse extends Figure {
 		this.radiusY = radiusY;
 		this.originX = 'center';
 		this.originY = 'center';
-		this.type = 5;
+		this.type = FiguresEnum.EllipseFigure;
     }
 }
 
@@ -42,7 +42,7 @@ export class Square extends Figure {
 		this.width = width;
 		this.originX = 'left';
 		this.originY = 'top';
-		this.type = 6;
+		this.type = FiguresEnum.SquareFigure;
     }
 }
 
@@ -53,7 +53,7 @@ export class Rect extends Square {
 		this.height = height;
 		this.originX = 'left';
 		this.originY = 'top';
-		this.type = 1;
+		this.type = FiguresEnum.RectFigure;
     }
 }
 export class Triangle extends Figure {
@@ -63,7 +63,7 @@ export class Triangle extends Figure {
 		this.height = height;
 		this.originX = 'left';
 		this.originY = 'top';
-		this.type = 3;
+		this.type = FiguresEnum.TriangleFigure;
     }
 }
 
@@ -156,7 +156,7 @@ export class DrawingManager
 	
 	static initializeDrawing()
 	{
-		Session.set('DrawingMode', FiguresEnum.NoSelection);
+		Session.set('DrawingMode', FiguresEnum.DisableAll);
 		Session.set('SelectedStrokeWidth', 1);
 		Session.set('SelectedColor', 'ffffff');
 		Session.set('SelectedFillColor', '3c78b4');
@@ -244,7 +244,7 @@ export class DrawingManager
 			var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 			var selectedStrokeColorWithAlpha = Session.get('SelectedStrokeColorWithAlpha');
 			var selectedFillColorWithAlpha = Session.get('SelectedFillColorWithAlpha');
-			if(drawingMode != FiguresEnum.NoSelection && drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
+			if(drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
 				isDown = true;
 				var pointer = canvas.getPointer(o.e);
@@ -381,10 +381,6 @@ export class DrawingManager
 			var drawingMode = Session.get('DrawingMode');
 			switch(drawingMode)
 			{
-				case FiguresEnum.NoSelection:
-				{
-					break;
-				}
 				case FiguresEnum.EnableAll:
 				{
 					break;
@@ -458,11 +454,6 @@ export class DrawingManager
 			var figureToSave;
 			switch(drawingMode)
 			{
-				case FiguresEnum.NoSelection:
-				{
-					if (!isDown) return;
-					break;
-				}
 				case FiguresEnum.RectFigure:
 				{
 					var leftRect = Math.min(origX,pointer.x);
@@ -503,7 +494,7 @@ export class DrawingManager
 					break;
 				}
 			}
-			if(drawingMode != FiguresEnum.NoSelection && drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
+			if(drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
 				Meteor.call('saveFigureInDB', figureToSave, function (error, result) 
 					{
