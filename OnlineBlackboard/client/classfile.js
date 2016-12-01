@@ -1,6 +1,8 @@
 
 
-export const FiguresEnum = { NoSelection : 0, RectFigure : 1, CircleFigure : 2, TriangleFigure : 3, LineFigure : 4, EllipseFigure : 5, SquareFigure : 6, PolygonFigure : 7 };
+export const FiguresEnum = { NoSelection : 0, RectFigure : 1, CircleFigure : 2, TriangleFigure : 3, LineFigure : 4, EllipseFigure : 5, SquareFigure : 6, PolygonFigure : 7, EnableAll : 8, DisableAll : 9 };
+
+var canvas;
 
 export class Figure {
   constructor(strokeWidth, strokeColor, fillColor, top, left) {
@@ -77,8 +79,8 @@ export class PageManager
 		Session.set('selectedPage', 1);
 		setTimeout(function() 
 		{ 
-			var canvas = new fabric.Canvas('canvas');
-			DrawingManager.setupDrawingOnCanvas(canvas);
+			canvas = new fabric.Canvas('canvas');
+			DrawingManager.setupDrawingOnCanvas();
 		}, 0);
 	}
 	
@@ -107,7 +109,7 @@ export class PageManager
 
 export class DrawingManager
 {
-	static drawFromDB(canvas)
+	static drawFromDB()
 	{
 		Meteor.subscribe('figures');
 		Tracker.autorun(function(){
@@ -116,14 +118,45 @@ export class DrawingManager
 			var figuresCursors = Figures.find({});
 			figuresCursors.forEach(function(singleFigure)
 			{
-				DrawingManager.drawFigure(canvas,singleFigure);
+				DrawingManager.drawFigure(singleFigure);
 			});
+			DrawingManager.setAllFiguresInCanvasNonSelectable();
 		});
+	}
+	
+	static setAllFiguresInCanvasSelectable()
+	{
+		var objs = canvas.getObjects().map(function(o) 
+			{
+				return o.set('selectable', true) && o.set('hoverCursor', 'move');
+			});
+	}
+	
+	static setAllFiguresInCanvasNonSelectable()
+	{
+		var objs = canvas.getObjects().map(function(o) 
+			{
+				return o.set('selectable', false) && o.set('hoverCursor', 'default');
+			});
+	}
+	
+	static setAllFiguresSelectable(selectable)
+	{
+		if(selectable)
+		{
+			Session.set('DrawingMode', FiguresEnum.EnableAll);
+			DrawingManager.setAllFiguresInCanvasSelectable();
+		}
+		else
+		{
+			Session.set('DrawingMode', FiguresEnum.DisableAll);
+			DrawingManager.setAllFiguresInCanvasNonSelectable();
+		}
 	}
 	
 	static initializeDrawing()
 	{
-		Session.set('DrawingMode', 0);
+		Session.set('DrawingMode', FiguresEnum.NoSelection);
 		Session.set('SelectedStrokeWidth', 1);
 		Session.set('SelectedColor', 'ffffff');
 		Session.set('SelectedFillColor', '3c78b4');
@@ -177,6 +210,12 @@ export class DrawingManager
 		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
 	}
 	
+	static selectFigure(selectedFigure)
+	{
+		Session.set('DrawingMode', selectedFigure);
+		DrawingManager.setAllFiguresInCanvasNonSelectable();;
+	}
+	
 	static setFillColor(selectedFillColor)
 	{
 		var selectedFillAlpha = Session.get('SelectedFillAlpha');
@@ -190,11 +229,11 @@ export class DrawingManager
 		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
 	}
 	
-	static setupDrawingOnCanvas(canvas)
+	static setupDrawingOnCanvas()
 	{
 		canvas.selection = false;
 		
-		DrawingManager.drawFromDB(canvas);
+		DrawingManager.drawFromDB();
 		
 		var circle, triangle, rect, ellipse, square, line, point1, isDown, origX, origY;
 		var objectsList = [];
@@ -205,7 +244,7 @@ export class DrawingManager
 			var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 			var selectedStrokeColorWithAlpha = Session.get('SelectedStrokeColorWithAlpha');
 			var selectedFillColorWithAlpha = Session.get('SelectedFillColorWithAlpha');
-			if(drawingMode != FiguresEnum.NoSelection)
+			if(drawingMode != FiguresEnum.NoSelection && drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
 				isDown = true;
 				var pointer = canvas.getPointer(o.e);
@@ -247,7 +286,7 @@ export class DrawingManager
 					canvas.add(circle);
 					break;
 				}
-				case FiguresEnum.TriangleFigure:			//triangle
+				case FiguresEnum.TriangleFigure:
 				{
 					triangle = new fabric.Triangle({
 						left: pointer.x,
@@ -343,6 +382,14 @@ export class DrawingManager
 			switch(drawingMode)
 			{
 				case FiguresEnum.NoSelection:
+				{
+					break;
+				}
+				case FiguresEnum.EnableAll:
+				{
+					break;
+				}
+				case FiguresEnum.DisableAll:
 				{
 					break;
 				}
@@ -456,7 +503,7 @@ export class DrawingManager
 					break;
 				}
 			}
-			if(drawingMode != FiguresEnum.NoSelection)
+			if(drawingMode != FiguresEnum.NoSelection && drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
 				Meteor.call('saveFigureInDB', figureToSave, function (error, result) 
 					{
@@ -488,7 +535,7 @@ export class DrawingManager
 }
 	
 	
-	static drawFigure(canvas,singleFigure)
+	static drawFigure(singleFigure)
 	{
 		switch(singleFigure.type)
 		{

@@ -54,35 +54,43 @@ Template.NewCourse.events =
 {
 	'click #clearSelection' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.NoSelection);
+        DrawingManager.selectFigure(FiguresEnum.NoSelection);
+	},
+	'click #enableAll' : function (event) 
+	{
+		DrawingManager.setAllFiguresSelectable(true);
+	},
+	'click #disableAll' : function (event) 
+	{
+		DrawingManager.setAllFiguresSelectable(false);
 	},
 	'click #rectSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.RectFigure);
+        DrawingManager.selectFigure(FiguresEnum.RectFigure);
 	},
 	'click #circleSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.CircleFigure);
+        DrawingManager.selectFigure(FiguresEnum.CircleFigure);
 	},
 	'click #squareSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.SquareFigure);
+        DrawingManager.selectFigure(FiguresEnum.SquareFigure);
 	},
 	'click #triangleSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.TriangleFigure);
+        DrawingManager.selectFigure(FiguresEnum.TriangleFigure);
 	},
 	'click #lineSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.LineFigure);
+        DrawingManager.selectFigure(FiguresEnum.LineFigure);
 	},
 	'click #polygonSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.PolygonFigure);
+        DrawingManager.selectFigure(FiguresEnum.PolygonFigure);
 	},
 	'click #ellipseSelected' : function (event) 
 	{
-        Session.set('DrawingMode', FiguresEnum.EllipseFigure);
+        DrawingManager.selectFigure(FiguresEnum.EllipseFigure);
 	},
 	'change #colorPickerStroke' : function (event) 
 	{
