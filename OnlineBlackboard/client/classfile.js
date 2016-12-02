@@ -12,6 +12,7 @@ export const FiguresEnum = {
 	};
 
 var canvas;
+var selectedFigureForEditing;
 
 export class Figure {
   constructor(strokeWidth, strokeColor, fillColor, top, left) {
@@ -161,6 +162,7 @@ export class DrawingManager
 			Session.set('DrawingMode', FiguresEnum.DisableAll);
 			DrawingManager.setAllFiguresInCanvasNonSelectable();
 		}
+		selectedFigureForEditing = null;
 	}
 	
 	static initializeDrawing()
@@ -191,6 +193,10 @@ export class DrawingManager
 		Session.set('SelectedStrokeColorWithAlpha', selectedStrokeColorWithAlpha);
 		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
 		Session.set('SelectedColor', selectedStrokeColor);
+		if(selectedFigureForEditing != null)
+		{
+			selectedFigureForEditing.target.set('stroke', selectedStrokeColorWithAlpha);
+		}
 	}
 	
 	static setStrokeAlpha(selectedStrokeAlpha)
@@ -204,6 +210,10 @@ export class DrawingManager
 		Session.set('SelectedStrokeAlpha', selectedStrokeAlpha);
 		document.getElementById("strokePreview").style.backgroundColor=selectedStrokeColorWithAlpha;
 		Session.set('SelectedStrokeColorWithAlpha',selectedStrokeColorWithAlpha);
+		if(selectedFigureForEditing != null)
+		{
+			selectedFigureForEditing.target.set('stroke', selectedStrokeColorWithAlpha);
+		}
 	}
 	
 	static setFillAlpha(selectedFillAlpha)
@@ -217,12 +227,17 @@ export class DrawingManager
 		Session.set('SelectedFillAlpha', selectedFillAlpha);
 		document.getElementById("fillPreview").style.backgroundColor=selectedFillColorWithAlpha;
 		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
+		if(selectedFigureForEditing != null)
+		{
+			selectedFigureForEditing.target.set('fill', selectedFillColorWithAlpha);
+		}
 	}
 	
 	static selectFigure(selectedFigure)
 	{
+		selectedFigureForEditing = null;
 		Session.set('DrawingMode', selectedFigure);
-		DrawingManager.setAllFiguresInCanvasNonSelectable();;
+		DrawingManager.setAllFiguresInCanvasNonSelectable();
 	}
 	
 	static setFillColor(selectedFillColor)
@@ -236,11 +251,22 @@ export class DrawingManager
 		document.getElementById("fillPreview").style.backgroundColor=selectedFillColorWithAlpha;
 		Session.set('SelectedFillColor', selectedFillColor);
 		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
+		if(selectedFigureForEditing != null)
+		{
+			selectedFigureForEditing.target.set('fill', selectedFillColorWithAlpha);
+		}
+	}
+	
+	static onObjectSelected(e) 
+	{
+		selectedFigureForEditing = e;
 	}
 	
 	static setupDrawingOnCanvas()
 	{
 		canvas.selection = false;
+		
+		canvas.on('object:selected', DrawingManager.onObjectSelected);
 		
 		DrawingManager.drawFromDB();
 		
