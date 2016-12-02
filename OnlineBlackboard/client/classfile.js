@@ -78,13 +78,13 @@ export class Triangle extends Figure {
 }
 
 export class Polygon extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
+  constructor(strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
 		super(strokeWidth, strokeColor, fillColor, top, left);
-		this.width = width;
-		this.height = height;
 		this.originX = 'left';
 		this.originY = 'top';
-		this.type = FiguresEnum.TriangleFigure;
+		this.numberOfSides = numberOfSides;
+		this.polygonRadius = polygonRadius;
+		this.type = FiguresEnum.PolygonFigure;
     }
 }
 
@@ -406,7 +406,6 @@ export class DrawingManager
 				}
 				case FiguresEnum.PolygonFigure:	
 				{
-					// get the vertices of a hexagon with a radius of 30
 					var points = DrawingManager.regularPolygonPoints(8,1);	
 					polygon = new fabric.Polygon(points, {
 													left: pointer.x,
@@ -553,6 +552,14 @@ export class DrawingManager
 					figureToSave = new Square(selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
 					break;
 				}
+				case FiguresEnum.PolygonFigure:	
+				{
+					var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+					var leftPolygon = origX-polygonRadius;
+					var	topPolygon = origY-polygonRadius;
+					figureToSave = new Polygon(selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+					break;
+				}
 			}
 			if(drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
@@ -672,6 +679,23 @@ export class DrawingManager
 						originY: singleFigure.originY
 					});
 				canvas.add(squareFromDB);
+				break;
+			}
+			case FiguresEnum.PolygonFigure:	
+			{
+				var points = DrawingManager.regularPolygonPoints(singleFigure.numberOfSides,singleFigure.polygonRadius);	
+				var polygonFromDB = new fabric.Polygon(
+						points, {
+						left: singleFigure.left,
+						top: singleFigure.top,
+						angle: 0,
+						fill: singleFigure.fillColor,
+						stroke: singleFigure.strokeColor,
+						selectable: false,
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
+					  });
+				canvas.add(polygonFromDB);
 				break;
 			}
 		}
