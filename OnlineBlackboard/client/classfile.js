@@ -1,6 +1,15 @@
 
-
-export const FiguresEnum = { NoSelection : 0, RectFigure : 1, CircleFigure : 2, TriangleFigure : 3, LineFigure : 4, EllipseFigure : 5, SquareFigure : 6, PolygonFigure : 7, EnableAll : 8, DisableAll : 9 };
+export const FiguresEnum = {
+	DisableAll : 0, 
+	EnableAll : 1,
+	RectFigure : 2, 
+	CircleFigure : 3, 
+	TriangleFigure : 4, 
+	LineFigure : 5, 
+	EllipseFigure : 6, 
+	SquareFigure : 7, 
+	PolygonFigure : 8
+	};
 
 var canvas;
 
