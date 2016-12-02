@@ -7,6 +7,7 @@ import { Ellipse } from './classfile.js';
 import { Circle } from './classfile.js';
 import { Triangle } from './classfile.js';
 import { Square } from './classfile.js';
+import { Polygon } from './classfile.js';
 import { DrawingManager } from './classfile.js';
 import { PageManager } from './classfile.js';
 

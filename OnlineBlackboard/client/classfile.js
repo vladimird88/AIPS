@@ -77,6 +77,17 @@ export class Triangle extends Figure {
     }
 }
 
+export class Polygon extends Figure {
+  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
+		super(strokeWidth, strokeColor, fillColor, top, left);
+		this.width = width;
+		this.height = height;
+		this.originX = 'left';
+		this.originY = 'top';
+		this.type = FiguresEnum.TriangleFigure;
+    }
+}
+
 export class PageManager
 {
 	static openHomePage()
@@ -270,7 +281,7 @@ export class DrawingManager
 		
 		DrawingManager.drawFromDB();
 		
-		var circle, triangle, rect, ellipse, square, line, point1, isDown, origX, origY;
+		var circle, triangle, rect, ellipse, square, line, polygon, point1, isDown, origX, origY;
 		var objectsList = [];
 
 		canvas.on('mouse:down', function(o)
@@ -396,12 +407,15 @@ export class DrawingManager
 				case FiguresEnum.PolygonFigure:	
 				{
 					// get the vertices of a hexagon with a radius of 30
-					var points = DrawingManager.regularPolygonPoints(8,10);	
-					var polygon = new fabric.Polygon(points, {
-													left: 250,
-													top: 150,
+					var points = DrawingManager.regularPolygonPoints(8,1);	
+					polygon = new fabric.Polygon(points, {
+													left: pointer.x,
+													top: pointer.y,
 													angle: 0,
-													fill: 'green'
+													fill: selectedFillColorWithAlpha,
+													stroke: selectedStrokeColorWithAlpha,
+													selectable: false,
+													originX: 'left', originY: 'top'
 												  }
 												);
 					canvas.add(polygon);											
@@ -473,6 +487,17 @@ export class DrawingManager
 					var topSquare = pointer.y > origY ? origY : Math.max(pointer.y,origY-widthSquare);
 					square.set({ left: leftSquare, top: topSquare, width: widthSquare, height: widthSquare });
 					canvas.renderAll();
+					break;
+				}
+				case FiguresEnum.PolygonFigure:	
+				{
+					if (!isDown) return;
+					var pointer = canvas.getPointer(o.e);
+					var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+					var points = DrawingManager.regularPolygonPoints(8,polygonRadius);	
+					polygon.set('points',points);
+					polygon.set({ left: origX-polygonRadius, top: origY-polygonRadius});
+					canvas.renderAll();											
 					break;
 				}
 			}
