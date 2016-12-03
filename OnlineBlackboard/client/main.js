@@ -1,18 +1,18 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import { Figure } from './classfile.js';
-import { Rect } from './classfile.js';
-import { Ellipse } from './classfile.js';
-import { Circle } from './classfile.js';
-import { Triangle } from './classfile.js';
-import { Square } from './classfile.js';
-import { Polygon } from './classfile.js';
-import { Text } from './classfile.js';
-import { DrawingManager } from './classfile.js';
-import { PageManager } from './classfile.js';
+import { Figure } from './Figures.js';
+import { Rect } from './Figures.js';
+import { Ellipse } from './Figures.js';
+import { Circle } from './Figures.js';
+import { Triangle } from './Figures.js';
+import { Square } from './Figures.js';
+import { Polygon } from './Figures.js';
+import { Text } from './Figures.js';
+import { FiguresEnum } from './Figures.js';
 
-import { FiguresEnum } from './classfile.js';
+import { PageManager } from './PageManager.js';
+import { DrawingManager } from './DrawingManager.js';
 
 import './main.html';
 
