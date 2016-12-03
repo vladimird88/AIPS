@@ -17,7 +17,7 @@ var selectedFigureForEditing;
 
 export class Figure {
   constructor(strokeWidth, strokeColor, fillColor, top, left) {
-        this.strokeWidth = strokeWidth;
+		this.strokeWidth = strokeWidth;
         this.strokeColor = strokeColor;
 		this.fillColor = fillColor;
 		this.top = top;
@@ -220,6 +220,17 @@ export class DrawingManager
 		if(selectedFigureForEditing != null)
 		{
 			selectedFigureForEditing.target.set('stroke', selectedStrokeColorWithAlpha);
+			Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, {'strokeColor': selectedStrokeColorWithAlpha}, function (error) 
+			{
+				if (error) 
+				{
+					console.log(error);
+				}
+				else 
+				{
+					console.log('success');
+				}
+			});
 		}
 	}
 	
@@ -237,6 +248,17 @@ export class DrawingManager
 		if(selectedFigureForEditing != null)
 		{
 			selectedFigureForEditing.target.set('stroke', selectedStrokeColorWithAlpha);
+			Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, {'strokeColor': selectedStrokeColorWithAlpha}, function (error) 
+			{
+				if (error) 
+				{
+					console.log(error);
+				}
+				else 
+				{
+					console.log('success');
+				}
+			});
 		}
 	}
 	
@@ -253,7 +275,18 @@ export class DrawingManager
 		Session.set('SelectedFillColorWithAlpha',selectedFillColorWithAlpha);
 		if(selectedFigureForEditing != null)
 		{
-			selectedFigureForEditing.target.set('fill', selectedFillColorWithAlpha);
+			selectedFigureForEditing.target.set('fillColor', selectedFillColorWithAlpha);
+			Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, {'fillColor': selectedFillColorWithAlpha}, function (error) 
+			{
+				if (error) 
+				{
+					console.log(error);
+				}
+				else 
+				{
+					console.log('success');
+				}
+			});
 		}
 	}
 	
@@ -278,6 +311,17 @@ export class DrawingManager
 		if(selectedFigureForEditing != null)
 		{
 			selectedFigureForEditing.target.set('fill', selectedFillColorWithAlpha);
+			Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, {'fillColor': selectedFillColorWithAlpha}, function (error) 
+			{
+				if (error) 
+				{
+					console.log(error);
+				}
+				else 
+				{
+					console.log('success');
+				}
+			});
 		}
 	}
 	
@@ -640,11 +684,12 @@ export class DrawingManager
 	
 	static drawFigure(singleFigure)
 	{
+		var figureToDraw;
 		switch(singleFigure.type)
 		{
 			case FiguresEnum.RectFigure:	
 			{
-				var rectFromDB = new fabric.Rect({
+				figureToDraw = new fabric.Rect({
 						left: singleFigure.left,
 						top: singleFigure.top,
 						width:singleFigure.width,
@@ -656,12 +701,12 @@ export class DrawingManager
 						originX: singleFigure.originX, 
 						originY: singleFigure.originY
 					});
-				canvas.add(rectFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 			case FiguresEnum.CircleFigure:	
 			{
-				var circleFromDB = new fabric.Circle({
+				figureToDraw = new fabric.Circle({
 					left: singleFigure.left,
 					top: singleFigure.top,
 					radius: singleFigure.radius,
@@ -672,12 +717,12 @@ export class DrawingManager
 					originX: singleFigure.originX, 
 					originY: singleFigure.originY
 				});
-				canvas.add(circleFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 			case FiguresEnum.TriangleFigure:	
 			{
-				var triangleFromDB = new fabric.Triangle({
+				figureToDraw = new fabric.Triangle({
 					left: singleFigure.left,
 					top: singleFigure.top,
 					width:singleFigure.width,
@@ -689,12 +734,12 @@ export class DrawingManager
 					originX: singleFigure.originX, 
 					originY: singleFigure.originY
 				});
-				canvas.add(triangleFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
-				var ellipseFromDB = new fabric.Ellipse({
+				figureToDraw = new fabric.Ellipse({
 					left: singleFigure.left,
 					top: singleFigure.top,
 					rx:singleFigure.radiusX,
@@ -706,12 +751,12 @@ export class DrawingManager
 					originX: singleFigure.originX, 
 					originY: singleFigure.originY
 				});
-				canvas.add(ellipseFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 			case FiguresEnum.SquareFigure:	
 			{
-				var squareFromDB = new fabric.Rect({
+				figureToDraw = new fabric.Rect({
 						left: singleFigure.left,
 						top: singleFigure.top,
 						width:singleFigure.width,
@@ -723,13 +768,13 @@ export class DrawingManager
 						originX: singleFigure.originX, 
 						originY: singleFigure.originY
 					});
-				canvas.add(squareFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
 				var points = DrawingManager.regularPolygonPoints(singleFigure.numberOfSides,singleFigure.polygonRadius);	
-				var polygonFromDB = new fabric.Polygon(
+				figureToDraw = new fabric.Polygon(
 						points, {
 						left: singleFigure.left,
 						top: singleFigure.top,
@@ -741,12 +786,12 @@ export class DrawingManager
 						originX: singleFigure.originX, 
 						originY: singleFigure.originY
 					  });
-				canvas.add(polygonFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 			case FiguresEnum.TextFigure:	
 			{
-				var textFromDB = new fabric.IText(singleFigure.text, {
+				figureToDraw = new fabric.IText(singleFigure.text, {
 						left: singleFigure.left,
 						top: singleFigure.top,
 						width:singleFigure.width,
@@ -758,9 +803,10 @@ export class DrawingManager
 						originX: singleFigure.originX, 
 						originY: singleFigure.originY
 					});
-					canvas.add(textFromDB);
+				canvas.add(figureToDraw);
 				break;
 			}
 		}
+		figureToDraw._id = singleFigure._id;
 	}
 }
