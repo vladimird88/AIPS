@@ -817,5 +817,3 @@ export class DrawingManager
 		figureToDraw._id = singleFigure._id;
 	}
 }
-
-//test
