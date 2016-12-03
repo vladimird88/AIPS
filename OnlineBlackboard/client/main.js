@@ -8,6 +8,7 @@ import { Circle } from './classfile.js';
 import { Triangle } from './classfile.js';
 import { Square } from './classfile.js';
 import { Polygon } from './classfile.js';
+import { Text } from './classfile.js';
 import { DrawingManager } from './classfile.js';
 import { PageManager } from './classfile.js';
 
@@ -84,6 +85,10 @@ Template.NewCourse.events =
 	'click #polygonSelected' : function (event) 
 	{
         DrawingManager.selectFigure(FiguresEnum.PolygonFigure);
+	},
+	'click #textSelected' : function (event) 
+	{
+        DrawingManager.selectFigure(FiguresEnum.TextFigure);
 	},
 	'click #ellipseSelected' : function (event) 
 	{

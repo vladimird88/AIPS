@@ -8,7 +8,8 @@ export const FiguresEnum = {
 	LineFigure : 5, 
 	EllipseFigure : 6, 
 	SquareFigure : 7, 
-	PolygonFigure : 8
+	PolygonFigure : 8,
+	TextFigure : 9
 	};
 
 var canvas;
@@ -78,6 +79,17 @@ export class Triangle extends Figure {
 }
 
 export class Polygon extends Figure {
+  constructor(strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
+		super(strokeWidth, strokeColor, fillColor, top, left);
+		this.originX = 'left';
+		this.originY = 'top';
+		this.numberOfSides = numberOfSides;
+		this.polygonRadius = polygonRadius;
+		this.type = FiguresEnum.PolygonFigure;
+    }
+}
+
+export class Text extends Figure {
   constructor(strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
 		super(strokeWidth, strokeColor, fillColor, top, left);
 		this.originX = 'left';
@@ -281,7 +293,7 @@ export class DrawingManager
 		
 		DrawingManager.drawFromDB();
 		
-		var circle, triangle, rect, ellipse, square, line, polygon, point1, isDown, origX, origY;
+		var circle, triangle, rect, ellipse, square, line, polygon, text, point1, isDown, origX, origY;
 		var objectsList = [];
 
 		canvas.on('mouse:down', function(o)
@@ -407,17 +419,35 @@ export class DrawingManager
 				case FiguresEnum.PolygonFigure:	
 				{
 					var points = DrawingManager.regularPolygonPoints(8,1);	
-					polygon = new fabric.Polygon(points, {
-													left: pointer.x,
-													top: pointer.y,
-													angle: 0,
-													fill: selectedFillColorWithAlpha,
-													stroke: selectedStrokeColorWithAlpha,
-													selectable: false,
-													originX: 'left', originY: 'top'
-												  }
-												);
+					polygon = new fabric.Polygon(
+						points, {
+							left: pointer.x,
+							top: pointer.y,
+							angle: 0,
+							fill: selectedFillColorWithAlpha,
+							stroke: selectedStrokeColorWithAlpha,
+							selectable: false,
+							originX: 'left', originY: 'top'
+						  }
+						);
 					canvas.add(polygon);											
+					break;
+				}
+				case FiguresEnum.TextFigure:
+				{
+					text = new fabric.Text('Hello world', {
+						left: pointer.x,
+						top: pointer.y,
+						width:100,
+						height:100,
+						strokeWidth: selectedStrokeWidth,
+						stroke: selectedStrokeColorWithAlpha,
+						selectable: false,
+						fill: selectedFillColorWithAlpha,
+						originX: 'left', originY: 'top'
+					});
+					canvas.add(text);
+					//objectsList.push(square);
 					break;
 				}
 			}
