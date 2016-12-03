@@ -28,6 +28,40 @@ export class DrawingManager
 		});
 	}
 	
+	static clearTable()
+	{
+		Meteor.call('deleteAllFiguresInDB', function (error) 
+		{
+			if (error) 
+			{
+				console.log(error);
+			}
+			else 
+			{
+				console.log('success');
+			}
+		});
+	}
+	
+	static deleteSelected()
+	{
+		if(selectedFigureForEditing != null)
+		{
+			Meteor.call('deleteFigureInDB', selectedFigureForEditing.target._id, function (error) 
+			{
+				if (error) 
+				{
+					console.log(error);
+				}
+				else 
+				{
+					console.log('success');
+				}
+			});
+		}
+		
+	}
+	
 	static setAllFiguresInCanvasSelectable()
 	{
 		var objs = canvas.getObjects().map(function(o) 

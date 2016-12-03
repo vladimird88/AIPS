@@ -24,6 +24,24 @@ Meteor.startup(() => {
 						//curentObjectId = docsInserted;
 					}
 				});
+		},
+		deleteFigureInDB: function (figureId) {
+			Figures.remove(figureId,function(err)
+				{
+					if(!err)
+					{
+						//curentObjectId = docsInserted;
+					}
+				});
+		},
+		deleteAllFiguresInDB: function () {
+			Figures.remove({},function(err)
+				{
+					if(!err)
+					{
+						//curentObjectId = docsInserted;
+					}
+				});
 		}
 	});
 });

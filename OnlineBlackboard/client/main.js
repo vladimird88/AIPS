@@ -54,6 +54,14 @@ Template.NewCourse.onCreated(function onContentCreated(event)
 
 Template.NewCourse.events = 
 {
+	'click #deleteAll' : function (event)
+	{
+		DrawingManager.clearTable();
+	},
+	'click #deleteSelected' : function (event)
+	{
+		DrawingManager.deleteSelected();
+	},
 	'click #enableAll' : function (event) 
 	{
 		DrawingManager.setAllFiguresSelectable(true);
