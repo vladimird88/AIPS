@@ -588,67 +588,74 @@ export class DrawingManager
 		canvas.on('mouse:up', function(o)
 		{
 			isDown = false;
-			var pointer = canvas.getPointer(o.e);
 			var drawingMode = Session.get('DrawingMode');
-			var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
-			var fillColor = Session.get('SelectedFillColorWithAlpha');
-			var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
-			var figureToSave;
-			switch(drawingMode)
+			if(selectedFigureForEditing == null)
 			{
-				case FiguresEnum.RectFigure:
+				var pointer = canvas.getPointer(o.e);
+				var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
+				var fillColor = Session.get('SelectedFillColorWithAlpha');
+				var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
+				var figureToSave;
+				switch(drawingMode)
 				{
-					var leftRect = Math.min(origX,pointer.x);
-					var topRect = Math.min(origY,pointer.y);
-					var widthRect = Math.abs(origX - pointer.x);
-					var heightRect = Math.abs(origY - pointer.y);
-					figureToSave = new Rect(selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
-					break;
+					case FiguresEnum.RectFigure:
+					{
+						var leftRect = Math.min(origX,pointer.x);
+						var topRect = Math.min(origY,pointer.y);
+						var widthRect = Math.abs(origX - pointer.x);
+						var heightRect = Math.abs(origY - pointer.y);
+						figureToSave = new Rect(selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
+						break;
+					}
+					case FiguresEnum.CircleFigure:
+					{
+						var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+						figureToSave = new Circle(selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
+						break;
+					}
+					case FiguresEnum.TriangleFigure:
+					{
+						var leftTriangle = Math.min(origX,pointer.x);
+						var topTriangle = Math.min(origY,pointer.y);
+						var widthTriangle = Math.abs(origX - pointer.x);
+						var heightTriangle = Math.abs(origY - pointer.y);
+						figureToSave = new Triangle(selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
+						break;
+					}
+					case FiguresEnum.EllipseFigure:	
+					{
+						var xRadius = Math.abs(origX - pointer.x);
+						var yRadius = Math.abs(origY - pointer.y);
+						figureToSave = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+						break;
+					}
+					case FiguresEnum.SquareFigure:
+					{
+						var leftSquare= Math.min(origX,pointer.x);
+						var topSquare = Math.min(origY,pointer.y);
+						var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
+						figureToSave = new Square(selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
+						break;
+					}
+					case FiguresEnum.PolygonFigure:	
+					{
+						var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+						var leftPolygon = origX-polygonRadius;
+						var	topPolygon = origY-polygonRadius;
+						figureToSave = new Polygon(selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+						break;
+					}
+					case FiguresEnum.TextFigure:
+					{
+						var pointer = canvas.getPointer(o.e);
+						figureToSave = new Text(selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+						break;
+					}
 				}
-				case FiguresEnum.CircleFigure:
-				{
-					var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-					figureToSave = new Circle(selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
-					break;
-				}
-				case FiguresEnum.TriangleFigure:
-				{
-					var leftTriangle = Math.min(origX,pointer.x);
-					var topTriangle = Math.min(origY,pointer.y);
-					var widthTriangle = Math.abs(origX - pointer.x);
-					var heightTriangle = Math.abs(origY - pointer.y);
-					figureToSave = new Triangle(selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
-					break;
-				}
-				case FiguresEnum.EllipseFigure:	
-				{
-					var xRadius = Math.abs(origX - pointer.x);
-					var yRadius = Math.abs(origY - pointer.y);
-					figureToSave = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
-					break;
-				}
-				case FiguresEnum.SquareFigure:
-				{
-					var leftSquare= Math.min(origX,pointer.x);
-					var topSquare = Math.min(origY,pointer.y);
-					var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
-					figureToSave = new Square(selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
-					break;
-				}
-				case FiguresEnum.PolygonFigure:	
-				{
-					var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-					var leftPolygon = origX-polygonRadius;
-					var	topPolygon = origY-polygonRadius;
-					figureToSave = new Polygon(selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
-					break;
-				}
-				case FiguresEnum.TextFigure:
-				{
-					var pointer = canvas.getPointer(o.e);
-					figureToSave = new Text(selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
-					break;
-				}
+			}
+			else
+			{
+				console.log("Resize/scale/rotate");
 			}
 			if(drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
