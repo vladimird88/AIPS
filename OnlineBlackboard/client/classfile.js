@@ -90,13 +90,14 @@ export class Polygon extends Figure {
 }
 
 export class Text extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
+  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height, text) {
 		super(strokeWidth, strokeColor, fillColor, top, left);
 		this.originX = 'left';
 		this.originY = 'top';
-		this.numberOfSides = numberOfSides;
-		this.polygonRadius = polygonRadius;
-		this.type = FiguresEnum.PolygonFigure;
+		this.width = width;
+		this.height = height;
+		this.text = text;
+		this.type = FiguresEnum.TextFigure;
     }
 }
 
@@ -435,11 +436,11 @@ export class DrawingManager
 				}
 				case FiguresEnum.TextFigure:
 				{
-					text = new fabric.Text('Hello world', {
+					text = new fabric.IText('Hello world', {
 						left: pointer.x,
 						top: pointer.y,
-						width:100,
-						height:100,
+						width:400,
+						height:400,
 						strokeWidth: selectedStrokeWidth,
 						stroke: selectedStrokeColorWithAlpha,
 						selectable: false,
@@ -529,6 +530,14 @@ export class DrawingManager
 					canvas.renderAll();											
 					break;
 				}
+				case FiguresEnum.TextFigure:
+				{
+					if (!isDown) return;
+					var pointer = canvas.getPointer(o.e);
+					text.set({ left: pointer.x, top: pointer.y});
+					canvas.renderAll();											
+					break;
+				}
 			}
 		});
 
@@ -588,6 +597,12 @@ export class DrawingManager
 					var leftPolygon = origX-polygonRadius;
 					var	topPolygon = origY-polygonRadius;
 					figureToSave = new Polygon(selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+					break;
+				}
+				case FiguresEnum.TextFigure:
+				{
+					var pointer = canvas.getPointer(o.e);
+					figureToSave = new Text(selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
 					break;
 				}
 			}
@@ -721,11 +736,29 @@ export class DrawingManager
 						angle: 0,
 						fill: singleFigure.fillColor,
 						stroke: singleFigure.strokeColor,
+						strokeWidth: singleFigure.strokeWidth,
 						selectable: false,
 						originX: singleFigure.originX, 
 						originY: singleFigure.originY
 					  });
 				canvas.add(polygonFromDB);
+				break;
+			}
+			case FiguresEnum.TextFigure:	
+			{
+				var textFromDB = new fabric.IText(singleFigure.text, {
+						left: singleFigure.left,
+						top: singleFigure.top,
+						width:singleFigure.width,
+						height:singleFigure.height,
+						fill: singleFigure.fillColor,
+						stroke: singleFigure.strokeColor,
+						strokeWidth: singleFigure.strokeWidth,
+						selectable: false,
+						originX: singleFigure.originX, 
+						originY: singleFigure.originY
+					});
+					canvas.add(textFromDB);
 				break;
 			}
 		}
