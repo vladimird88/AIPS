@@ -233,6 +233,7 @@ export class DrawingManager
 	{
 		selectedFigureForEditing = e;
 	}
+
 	
 	static setupDrawingOnCanvas(mainCanvas)
 	{
@@ -492,6 +493,7 @@ export class DrawingManager
 
 		canvas.on('mouse:up', function(o)
 		{
+			var figureToSave, figureToEdit;
 			isDown = false;
 			var drawingMode = Session.get('DrawingMode');
 			if(selectedFigureForEditing == null)
@@ -500,7 +502,6 @@ export class DrawingManager
 				var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
 				var fillColor = Session.get('SelectedFillColorWithAlpha');
 				var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
-				var figureToSave;
 				switch(drawingMode)
 				{
 					case FiguresEnum.RectFigure:
@@ -560,11 +561,72 @@ export class DrawingManager
 			}
 			else
 			{
-				console.log("Resize/scale/rotate");
+				var pointer = canvas.getPointer(o.e);
+				var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
+				var fillColor = Session.get('SelectedFillColorWithAlpha');
+				var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
+				switch(selectedFigureForEditing.target.figureType)
+				{
+					case FiguresEnum.RectFigure:
+					{
+						figureToEdit = new Rect(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+						break;
+					}
+					case FiguresEnum.CircleFigure:
+					{
+						figureToEdit = new Circle(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
+						break;
+					}
+					case FiguresEnum.TriangleFigure:
+					{
+						figureToEdit = new Triangle(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+						break;
+					}
+					case FiguresEnum.EllipseFigure:	
+					{
+						figureToEdit = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
+						break;
+					}
+					case FiguresEnum.SquareFigure:
+					{
+						figureToEdit = new Square(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
+						break;
+					}
+					case FiguresEnum.PolygonFigure:	
+					{
+						var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+						var leftPolygon = origX-polygonRadius;
+						var	topPolygon = origY-polygonRadius;
+						figureToEdit = new Polygon(selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+						break;
+					}
+					case FiguresEnum.TextFigure:
+					{
+						var pointer = canvas.getPointer(o.e);
+						figureToEdit = new Text(selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+						break;
+					}
+				}
 			}
 			if(drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
 				Meteor.call('saveFigureInDB', figureToSave, function (error, result) 
+					{
+						if (error) 
+						{
+							console.log(error);
+						}
+						else 
+						{
+							console.log('success');
+						}
+					});
+			}
+			else if(drawingMode == FiguresEnum.EnableAll && selectedFigureForEditing != null)
+			{
+				//FIXME: kod pomeranja elemenata treba koristiti boju elementa, a ne sacuvanu boju
+				//FIXME: kod pomeranja elementa treba omoguciti i resize i rotate, a ne samo translate
+				Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, figureToEdit, function (error) 
 					{
 						if (error) 
 						{
@@ -720,6 +782,7 @@ export class DrawingManager
 			}
 		}
 		figureToDraw._id = singleFigure._id;
+		figureToDraw.figureType = singleFigure.type;
 	}
 }
 
