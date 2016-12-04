@@ -561,35 +561,31 @@ export class DrawingManager
 			}
 			else
 			{
-				var pointer = canvas.getPointer(o.e);
-				var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
-				var fillColor = Session.get('SelectedFillColorWithAlpha');
-				var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 				switch(selectedFigureForEditing.target.figureType)
 				{
 					case FiguresEnum.RectFigure:
 					{
-						figureToEdit = new Rect(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+						figureToEdit = new Rect(selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
 						break;
 					}
 					case FiguresEnum.CircleFigure:
 					{
-						figureToEdit = new Circle(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
+						figureToEdit = new Circle(selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
 						break;
 					}
 					case FiguresEnum.TriangleFigure:
 					{
-						figureToEdit = new Triangle(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+						figureToEdit = new Triangle(selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
 						break;
 					}
 					case FiguresEnum.EllipseFigure:	
 					{
-						figureToEdit = new Ellipse(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
+						figureToEdit = new Ellipse(selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
 						break;
 					}
 					case FiguresEnum.SquareFigure:
 					{
-						figureToEdit = new Square(selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
+						figureToEdit = new Square(selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
 						break;
 					}
 					case FiguresEnum.PolygonFigure:	
