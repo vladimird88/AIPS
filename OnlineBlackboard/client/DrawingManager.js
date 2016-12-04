@@ -237,6 +237,8 @@ export class DrawingManager
 	{
 		selectedFigureForEditing = e;
 		selectedFigureId = e.target._id;
+		Session.set('DrawingMode', FiguresEnum.EnableAll);
+		DrawingManager.setAllFiguresInCanvasSelectable();
 	}
 
 	
@@ -264,6 +266,7 @@ export class DrawingManager
 				var pointer = canvas.getPointer(o.e);
 				origX = pointer.x;
 				origY = pointer.y;
+				canvas.deactivateAll();
 			}
 			switch(drawingMode)
 			{
