@@ -13,7 +13,10 @@ export const FiguresEnum = {
 	};
 
 export class Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left) {
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left) {
+		this.angle = angle;
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
 		this.strokeWidth = strokeWidth;
         this.strokeColor = strokeColor;
 		this.fillColor = fillColor;
@@ -24,8 +27,8 @@ export class Figure {
 }
 
 export class Circle extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, radius) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radius) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
 		this.radius = radius;
 		this.originX = 'center';
 		this.originY = 'center';
@@ -34,8 +37,8 @@ export class Circle extends Figure {
 }
 
 export class Ellipse extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, radiusX, radiusY) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radiusX, radiusY) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
 		this.radiusX = radiusX;
 		this.radiusY = radiusY;
 		this.originX = 'center';
@@ -45,8 +48,8 @@ export class Ellipse extends Figure {
 }
 
 export class Square extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
 		this.width = width;
 		this.originX = 'left';
 		this.originY = 'top';
@@ -55,8 +58,8 @@ export class Square extends Figure {
 }
 
 export class Rect extends Square {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(strokeWidth, strokeColor, fillColor, top, left, width);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width);
 		this.width = width;
 		this.height = height;
 		this.originX = 'left';
@@ -65,8 +68,8 @@ export class Rect extends Square {
     }
 }
 export class Triangle extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
 		this.width = width;
 		this.height = height;
 		this.originX = 'left';
@@ -76,8 +79,8 @@ export class Triangle extends Figure {
 }
 
 export class Polygon extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
 		this.originX = 'left';
 		this.originY = 'top';
 		this.numberOfSides = numberOfSides;
@@ -87,8 +90,8 @@ export class Polygon extends Figure {
 }
 
 export class Text extends Figure {
-  constructor(strokeWidth, strokeColor, fillColor, top, left, width, height, text) {
-		super(strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height, text) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
 		this.originX = 'left';
 		this.originY = 'top';
 		this.width = width;
