@@ -249,7 +249,7 @@ export class DrawingManager
 		
 		DrawingManager.drawFromDB();
 		
-		var circle, triangle, rect, ellipse, square, line, polygon, text, point1, isDown, origX, origY;
+		var drawingFigure, point1, isDown, origX, origY;
 		var objectsList = [];
 
 		canvas.on('mouse:down', function(o)
@@ -269,7 +269,7 @@ export class DrawingManager
 			{
 				case FiguresEnum.RectFigure:	
 				{
-					rect = new fabric.Rect({
+					drawingFigure = new fabric.Rect({
 						left: pointer.x,
 						top: pointer.y,
 						width:1,
@@ -281,12 +281,12 @@ export class DrawingManager
 						originX: 'left', originY: 'top'
 					});
 					//objectsList.push(rect);
-					canvas.add(rect);
+					canvas.add(drawingFigure);
 					break;
 				}
 				case FiguresEnum.CircleFigure:	
 				{
-					circle = new fabric.Circle({
+					drawingFigure = new fabric.Circle({
 						left: pointer.x,
 						top: pointer.y,
 						radius: 1,
@@ -297,12 +297,12 @@ export class DrawingManager
 						originX: 'center', originY: 'center'
 					});
 					//objectsList.push(circle);
-					canvas.add(circle);
+					canvas.add(drawingFigure);
 					break;
 				}
 				case FiguresEnum.TriangleFigure:
 				{
-					triangle = new fabric.Triangle({
+					drawingFigure = new fabric.Triangle({
 						left: pointer.x,
 						top: pointer.y,
 						width:1,
@@ -314,7 +314,7 @@ export class DrawingManager
 						originX: 'left', originY: 'top'
 					});
 					//objectsList.push(triangle);
-					canvas.add(triangle);
+					canvas.add(drawingFigure);
 					break;
 				}
 				case FiguresEnum.LineFigure:			//line, spaja 2 tacke
@@ -340,7 +340,7 @@ export class DrawingManager
 				}
 				case FiguresEnum.EllipseFigure:
 				{
-					ellipse = new fabric.Ellipse({
+					drawingFigure = new fabric.Ellipse({
 						left: pointer.x,
 						top: pointer.y,
 						rx: 1,
@@ -352,12 +352,12 @@ export class DrawingManager
 						originX: 'center', originY: 'center'
 					});
 					//objectsList.push(ellipse);
-					canvas.add(ellipse);
+					canvas.add(drawingFigure);
 					break;
 				}
 				case FiguresEnum.SquareFigure:
 				{
-					square = new fabric.Rect({
+					drawingFigure = new fabric.Rect({
 						left: pointer.x,
 						top: pointer.y,
 						width:1,
@@ -368,14 +368,14 @@ export class DrawingManager
 						fill: selectedFillColorWithAlpha,
 						originX: 'left', originY: 'top'
 					});
-					canvas.add(square);
+					canvas.add(drawingFigure);
 					//objectsList.push(square);
 					break;
 				}
 				case FiguresEnum.PolygonFigure:	
 				{
 					var points = DrawingManager.regularPolygonPoints(8,1);	
-					polygon = new fabric.Polygon(
+					drawingFigure = new fabric.Polygon(
 						points, {
 							left: pointer.x,
 							top: pointer.y,
@@ -386,12 +386,12 @@ export class DrawingManager
 							originX: 'left', originY: 'top'
 						  }
 						);
-					canvas.add(polygon);											
+					canvas.add(drawingFigure);											
 					break;
 				}
 				case FiguresEnum.TextFigure:
 				{
-					text = new fabric.IText('Hello world', {
+					drawingFigure = new fabric.IText('Hello world', {
 						left: pointer.x,
 						top: pointer.y,
 						width:400,
@@ -402,7 +402,7 @@ export class DrawingManager
 						fill: selectedFillColorWithAlpha,
 						originX: 'left', originY: 'top'
 					});
-					canvas.add(text);
+					canvas.add(drawingFigure);
 					//objectsList.push(square);
 					break;
 				}
@@ -431,7 +431,7 @@ export class DrawingManager
 					var topRect = Math.min(origY,pointer.y);
 					var widthRect = Math.abs(origX - pointer.x);
 					var heightRect = Math.abs(origY - pointer.y);
-					rect.set({ left: leftRect, top: topRect, width: widthRect, height: heightRect });
+					drawingFigure.set({ left: leftRect, top: topRect, width: widthRect, height: heightRect });
 					canvas.renderAll();
 					break;
 				}
@@ -439,7 +439,7 @@ export class DrawingManager
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
-					circle.set({ radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)) });
+					drawingFigure.set({ radius: Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)) });
 					canvas.renderAll();
 					break;
 				}
@@ -451,7 +451,7 @@ export class DrawingManager
 					var topTriangle = Math.min(origY,pointer.y);
 					var widthTriangle = Math.abs(origX - pointer.x);
 					var heightTriangle = Math.abs(origY - pointer.y);
-					triangle.set({ left: leftTriangle, top: topTriangle, width: widthTriangle, height: heightTriangle });
+					drawingFigure.set({ left: leftTriangle, top: topTriangle, width: widthTriangle, height: heightTriangle });
 					canvas.renderAll();
 					break;
 				}
@@ -459,7 +459,7 @@ export class DrawingManager
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
-					ellipse.set({ rx: Math.abs(origX - pointer.x), ry: Math.abs(origY - pointer.y)});
+					drawingFigure.set({ rx: Math.abs(origX - pointer.x), ry: Math.abs(origY - pointer.y)});
 					canvas.renderAll();
 					break;
 				}
@@ -470,7 +470,7 @@ export class DrawingManager
 					var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
 					var leftSquare = pointer.x > origX ? origX : Math.max(pointer.x,origX-widthSquare);
 					var topSquare = pointer.y > origY ? origY : Math.max(pointer.y,origY-widthSquare);
-					square.set({ left: leftSquare, top: topSquare, width: widthSquare, height: widthSquare });
+					drawingFigure.set({ left: leftSquare, top: topSquare, width: widthSquare, height: widthSquare });
 					canvas.renderAll();
 					break;
 				}
@@ -480,8 +480,8 @@ export class DrawingManager
 					var pointer = canvas.getPointer(o.e);
 					var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
 					var points = DrawingManager.regularPolygonPoints(8,polygonRadius);	
-					polygon.set('points',points);
-					polygon.set({ left: origX-polygonRadius, top: origY-polygonRadius});
+					drawingFigure.set('points',points);
+					drawingFigure.set({ left: origX-polygonRadius, top: origY-polygonRadius});
 					canvas.renderAll();											
 					break;
 				}
@@ -489,7 +489,7 @@ export class DrawingManager
 				{
 					if (!isDown) return;
 					var pointer = canvas.getPointer(o.e);
-					text.set({ left: pointer.x, top: pointer.y});
+					drawingFigure.set({ left: pointer.x, top: pointer.y});
 					canvas.renderAll();											
 					break;
 				}
