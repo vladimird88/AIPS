@@ -10,6 +10,7 @@ import { FiguresEnum } from './Figures.js';
 
 var canvas;
 var selectedFigureForEditing;
+var selectedFigureId;
 var figureToEdit;
 
 export class DrawingManager
@@ -25,7 +26,7 @@ export class DrawingManager
 			{
 				DrawingManager.drawFigure(singleFigure);
 			});
-			DrawingManager.setAllFiguresInCanvasNonSelectable();
+			DrawingManager.setAllFiguresInCanvasSelectable();
 		});
 	}
 	
@@ -92,11 +93,12 @@ export class DrawingManager
 			DrawingManager.setAllFiguresInCanvasNonSelectable();
 		}
 		selectedFigureForEditing = null;
+		selectedFigureId = null;
 	}
 	
 	static initializeDrawing()
 	{
-		Session.set('DrawingMode', FiguresEnum.DisableAll);
+		Session.set('DrawingMode', FiguresEnum.EnableAll);
 		Session.set('SelectedStrokeWidth', 1);
 		Session.set('SelectedColor', 'ffffff');
 		Session.set('SelectedFillColor', '3c78b4');
@@ -198,6 +200,7 @@ export class DrawingManager
 	static selectFigure(selectedFigure)
 	{
 		selectedFigureForEditing = null;
+		selectedFigureId = null;
 		Session.set('DrawingMode', selectedFigure);
 		DrawingManager.setAllFiguresInCanvasNonSelectable();
 	}
@@ -233,6 +236,7 @@ export class DrawingManager
 	static onObjectSelected(e) 
 	{
 		selectedFigureForEditing = e;
+		selectedFigureId = e.target._id;
 	}
 
 	
@@ -619,13 +623,8 @@ export class DrawingManager
 						}
 					});
 			}
-		});
-		canvas.on('selection:cleared', function(o)
-		{
-			var drawingMode = Session.get('DrawingMode');
-			if(drawingMode == FiguresEnum.EnableAll && selectedFigureForEditing != null)
+			else if(drawingMode == FiguresEnum.EnableAll && selectedFigureForEditing != null)
 			{
-				//FIXME: kod pomeranja elementa treba omoguciti i resize i rotate, a ne samo translate
 				Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, figureToEdit, function (error) 
 				{
 					if (error) 
@@ -803,6 +802,10 @@ export class DrawingManager
 			}
 		}
 		figureToDraw._id = singleFigure._id;
+		if(figureToDraw._id == selectedFigureId)
+		{
+			canvas.setActiveObject(figureToDraw);
+		}
 		figureToDraw.figureType = singleFigure.type;
 	}
 }
