@@ -370,7 +370,7 @@ export class Figure {
 				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
 				var points = Figure.regularPolygonPoints(8,polygonRadius);	
 				drawingFigure.set('points',points);
-				drawingFigure.set({ left: origX-polygonRadius, top: origY-polygonRadius});										
+				drawingFigure.set({ left: origX-polygonRadius, top: origY-polygonRadius});						
 				break;
 			}
 			case FiguresEnum.TextFigure:
@@ -459,11 +459,12 @@ export class Figure {
 	}
 	
 	
-	static updateExistingFigureInDB(selectedFigureForEditing, figureToEdit, pointer, origX, origY)
+	static updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY)
 	{
 		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
 		var fillColor = Session.get('SelectedFillColorWithAlpha');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
+		var figureToEdit;
 		switch(selectedFigureForEditing.target.figureType)
 		{
 			case FiguresEnum.RectFigure:
@@ -493,10 +494,8 @@ export class Figure {
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				var leftPolygon = origX-polygonRadius;
-				var	topPolygon = origY-polygonRadius;
-				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+				var polygonRadius = 50;
+				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, polygonRadius);										
 				break;
 			}
 			case FiguresEnum.TextFigure:

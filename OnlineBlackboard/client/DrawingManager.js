@@ -287,7 +287,7 @@ export class DrawingManager
 			}
 			else
 			{
-				Figure.updateExistingFigureInDB(selectedFigureForEditing,figureToEdit, pointer, origX, origY);
+				Figure.updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY);
 			}
 		});
 	}
