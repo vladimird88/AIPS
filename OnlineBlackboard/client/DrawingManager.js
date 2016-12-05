@@ -643,6 +643,7 @@ export class DrawingManager
 		});
 	}
 	
+	//Duplirano / ukloni 
 	static regularPolygonPoints(sideCount,radius)
 	{
 		var sweep=Math.PI*2/sideCount;
@@ -655,155 +656,13 @@ export class DrawingManager
 			points.push({x:x,y:y});
 		}
 		return(points);
-}
+	}
 	
 	
 	static drawFigure(singleFigure)
 	{
-		var figureToDraw;
-		switch(singleFigure.type)
-		{
-			case FiguresEnum.RectFigure:	
-			{
-				figureToDraw = new fabric.Rect({
-						left: singleFigure.left,
-						top: singleFigure.top,
-						width:singleFigure.width,
-						height:singleFigure.height,
-						strokeWidth: singleFigure.strokeWidth,
-						stroke: singleFigure.strokeColor,
-						fill:singleFigure.fillColor,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY,
-						angle: singleFigure.angle,
-						scaleX: singleFigure.scaleX,
-						scaleY: singleFigure.scaleY
-					});
-				canvas.add(figureToDraw);
-				break;
-			}
-			case FiguresEnum.CircleFigure:	
-			{
-				figureToDraw = new fabric.Circle({
-					left: singleFigure.left,
-					top: singleFigure.top,
-					radius: singleFigure.radius,
-					strokeWidth: singleFigure.strokeWidth,
-					stroke: singleFigure.strokeColor,
-					fill:singleFigure.fillColor,
-					selectable: false,
-					originX: singleFigure.originX, 
-					originY: singleFigure.originY,
-					angle: singleFigure.angle,
-					scaleX: singleFigure.scaleX,
-					scaleY: singleFigure.scaleY
-				});
-				canvas.add(figureToDraw);
-				break;
-			}
-			case FiguresEnum.TriangleFigure:	
-			{
-				figureToDraw = new fabric.Triangle({
-					left: singleFigure.left,
-					top: singleFigure.top,
-					width:singleFigure.width,
-					height:singleFigure.height,
-					strokeWidth: singleFigure.strokeWidth,
-					stroke: singleFigure.strokeColor,
-					fill:singleFigure.fillColor,
-					selectable: false,
-					originX: singleFigure.originX, 
-					originY: singleFigure.originY,
-					angle: singleFigure.angle,
-					scaleX: singleFigure.scaleX,
-					scaleY: singleFigure.scaleY
-				});
-				canvas.add(figureToDraw);
-				break;
-			}
-			case FiguresEnum.EllipseFigure:	
-			{
-				figureToDraw = new fabric.Ellipse({
-					left: singleFigure.left,
-					top: singleFigure.top,
-					rx:singleFigure.radiusX,
-					ry:singleFigure.radiusY,
-					strokeWidth: singleFigure.strokeWidth,
-					stroke: singleFigure.strokeColor,
-					fill:singleFigure.fillColor,
-					selectable: false,
-					originX: singleFigure.originX, 
-					originY: singleFigure.originY,
-					angle: singleFigure.angle,
-					scaleX: singleFigure.scaleX,
-					scaleY: singleFigure.scaleY
-				});
-				canvas.add(figureToDraw);
-				break;
-			}
-			case FiguresEnum.SquareFigure:	
-			{
-				figureToDraw = new fabric.Rect({
-						left: singleFigure.left,
-						top: singleFigure.top,
-						width:singleFigure.width,
-						height:singleFigure.width,
-						strokeWidth: singleFigure.strokeWidth,
-						stroke: singleFigure.strokeColor,
-						fill:singleFigure.fillColor,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY,
-						angle: singleFigure.angle,
-						scaleX: singleFigure.scaleX,
-						scaleY: singleFigure.scaleY
-					});
-				canvas.add(figureToDraw);
-				break;
-			}
-			case FiguresEnum.PolygonFigure:	
-			{
-				var points = DrawingManager.regularPolygonPoints(singleFigure.numberOfSides,singleFigure.polygonRadius);	
-				figureToDraw = new fabric.Polygon(
-						points, {
-						left: singleFigure.left,
-						top: singleFigure.top,
-						angle: 0,
-						fill: singleFigure.fillColor,
-						stroke: singleFigure.strokeColor,
-						strokeWidth: singleFigure.strokeWidth,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY,
-						angle: singleFigure.angle,
-						scaleX: singleFigure.scaleX,
-						scaleY: singleFigure.scaleY
-					  });
-				canvas.add(figureToDraw);
-				break;
-			}
-			case FiguresEnum.TextFigure:	
-			{
-				figureToDraw = new fabric.IText(singleFigure.text, {
-						left: singleFigure.left,
-						top: singleFigure.top,
-						width:singleFigure.width,
-						height:singleFigure.height,
-						fill: singleFigure.fillColor,
-						stroke: singleFigure.strokeColor,
-						strokeWidth: singleFigure.strokeWidth,
-						selectable: false,
-						originX: singleFigure.originX, 
-						originY: singleFigure.originY,
-						angle: singleFigure.angle,
-						scaleX: singleFigure.scaleX,
-						scaleY: singleFigure.scaleY
-					});
-				canvas.add(figureToDraw);
-				break;
-			}
-		}
+		var figureToDraw = Figure.createFigure(singleFigure);
+		canvas.add(figureToDraw);
 		figureToDraw._id = singleFigure._id;
 		if(figureToDraw._id == selectedFigureId)
 		{
