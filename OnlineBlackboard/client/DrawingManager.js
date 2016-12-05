@@ -1,11 +1,4 @@
 import { Figure } from './Figures.js';
-import { Rect } from './Figures.js';
-import { Ellipse } from './Figures.js';
-import { Circle } from './Figures.js';
-import { Triangle } from './Figures.js';
-import { Square } from './Figures.js';
-import { Polygon } from './Figures.js';
-import { Text } from './Figures.js';
 import { FiguresEnum } from './Figures.js';
 
 var canvas;

@@ -13,18 +13,7 @@ export const FiguresEnum = {
 	};
 
 export class Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left) {
-		this.angle = angle;
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.strokeWidth = strokeWidth;
-        this.strokeColor = strokeColor;
-		this.fillColor = fillColor;
-		this.top = top;
-		this.left = left;
-		this.time = Date.now();
-    }
-	
+
 	static startDrawingFigure(pointer)
 	{
 		var drawingFigure;
@@ -384,8 +373,8 @@ export class Figure {
 	static saveDrawingFigureInDb(drawingFigure, pointer, origX, origY)
 	{
 		var drawingMode = Session.get('DrawingMode');
-		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
-		var fillColor = Session.get('SelectedFillColorWithAlpha');
+		var selectedStrokeColor = Session.get('SelectedStrokeColorWithAlpha');
+		var selectedFillColor = Session.get('SelectedFillColorWithAlpha');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		switch(drawingMode)
 		{
@@ -395,13 +384,40 @@ export class Figure {
 				var topRect = Math.min(origY,pointer.y);
 				var widthRect = Math.abs(origX - pointer.x);
 				var heightRect = Math.abs(origY - pointer.y);
-				figureToSave = new Rect(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : topRect,
+					left : leftRect,
+					width : widthRect, 
+					height : heightRect,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.RectFigure
+				};
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				figureToSave = new Circle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : origY,
+					left : origX,
+					radius : Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2)),
+					originX : 'center',
+					originY : 'center',
+					type : FiguresEnum.CircleFigure
+				};
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
@@ -410,14 +426,42 @@ export class Figure {
 				var topTriangle = Math.min(origY,pointer.y);
 				var widthTriangle = Math.abs(origX - pointer.x);
 				var heightTriangle = Math.abs(origY - pointer.y);
-				figureToSave = new Triangle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : topTriangle,
+					left : leftTriangle,
+					width : widthTriangle, 
+					height : heightTriangle,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.TriangleFigure
+				};
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
 				var xRadius = Math.abs(origX - pointer.x);
 				var yRadius = Math.abs(origY - pointer.y);
-				figureToSave = new Ellipse(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : origY,
+					left : origX,
+					radiusX : xRadius,
+					radiusY : yRadius,
+					originX : 'center',
+					originY : 'center',
+					type : FiguresEnum.EllipseFigure
+				};
 				break;
 			}
 			case FiguresEnum.SquareFigure:
@@ -425,7 +469,20 @@ export class Figure {
 				var leftSquare= Math.min(origX,pointer.x);
 				var topSquare = Math.min(origY,pointer.y);
 				var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
-				figureToSave = new Square(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : topSquare,
+					left : leftSquare,
+					width : widthSquare, 
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.SquareFigure
+				};
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
@@ -433,12 +490,42 @@ export class Figure {
 				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
 				var leftPolygon = origX-polygonRadius;
 				var	topPolygon = origY-polygonRadius;
-				figureToSave = new Polygon(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : topPolygon,
+					left : leftPolygon,
+					numberOfSides : 8,
+					polygonRadius : polygonRadius,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.PolygonFigure
+				};										
 				break;
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToSave = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+				figureToSave = {
+					angle : 0,
+					scaleX : 1,
+					scaleY : 1,
+					strokeWidth : selectedStrokeWidth,
+					strokeColor : selectedStrokeColor,
+					fillColor : selectedFillColor,
+					top : pointer.y,
+					left : pointer.x,
+					width : 400,
+					height : 400,
+					text : 'Hello world',
+					polygonRadius : polygonRadius,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.TextFigure
+				};										
 				break;
 			}
 		}
@@ -461,45 +548,142 @@ export class Figure {
 	
 	static updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY)
 	{
-		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
-		var fillColor = Session.get('SelectedFillColorWithAlpha');
+		var selectedStrokeColor = Session.get('SelectedStrokeColorWithAlpha');
+		var selectedFillColor = Session.get('SelectedFillColorWithAlpha');
 		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		var figureToEdit;
 		switch(selectedFigureForEditing.target.figureType)
 		{
 			case FiguresEnum.RectFigure:
 			{
-				figureToEdit = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					width : selectedFigureForEditing.target.width, 
+					height : selectedFigureForEditing.target.height,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.RectFigure
+				};
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
-				figureToEdit = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					radius : selectedFigureForEditing.target.width * 0.5,
+					originX : 'center',
+					originY : 'center',
+					type : FiguresEnum.CircleFigure
+				};
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
 			{
-				figureToEdit = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					width : selectedFigureForEditing.target.width, 
+					height : selectedFigureForEditing.target.height,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.TriangleFigure
+				};
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
-				figureToEdit = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					radiusX : selectedFigureForEditing.target.rx,
+					radiusY : selectedFigureForEditing.target.ry,
+					originX : 'center',
+					originY : 'center',
+					type : FiguresEnum.EllipseFigure
+				};
 				break;
 			}
 			case FiguresEnum.SquareFigure:
 			{
-				figureToEdit = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					width : selectedFigureForEditing.target.width, 
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.SquareFigure
+				}
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5);										
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					numberOfSides : 8,
+					polygonRadius : selectedFigureForEditing.target.width * 0.5,
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.PolygonFigure
+				};											
 				break;
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+				figureToEdit = {
+					angle : selectedFigureForEditing.target.angle,
+					scaleX : selectedFigureForEditing.target.scaleX,
+					scaleY : selectedFigureForEditing.target.scaleY,
+					strokeWidth : selectedFigureForEditing.target.strokeWidth,
+					strokeColor : selectedFigureForEditing.target.stroke,
+					fillColor : selectedFigureForEditing.target.fill,
+					top : selectedFigureForEditing.target.top,
+					left : selectedFigureForEditing.target.left,
+					width : 400,
+					height : 400,
+					text : 'Hello world',
+					originX : 'left',
+					originY : 'top',
+					type : FiguresEnum.TextFigure
+				};										
 				break;
 			}
 		}
@@ -533,79 +717,4 @@ export class Figure {
 		}
 		return(points);
 	}
-}
-
-export class Circle extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radius) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
-		this.radius = radius;
-		this.originX = 'center';
-		this.originY = 'center';
-		this.type = FiguresEnum.CircleFigure;
-    }
-}
-
-export class Ellipse extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radiusX, radiusY) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
-		this.radiusX = radiusX;
-		this.radiusY = radiusY;
-		this.originX = 'center';
-		this.originY = 'center';
-		this.type = FiguresEnum.EllipseFigure;
-    }
-}
-
-export class Square extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
-		this.width = width;
-		this.originX = 'left';
-		this.originY = 'top';
-		this.type = FiguresEnum.SquareFigure;
-    }
-}
-
-export class Rect extends Square {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width);
-		this.width = width;
-		this.height = height;
-		this.originX = 'left';
-		this.originY = 'top';
-		this.type = FiguresEnum.RectFigure;
-    }
-}
-export class Triangle extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
-		this.width = width;
-		this.height = height;
-		this.originX = 'left';
-		this.originY = 'top';
-		this.type = FiguresEnum.TriangleFigure;
-    }
-}
-
-export class Polygon extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
-		this.originX = 'left';
-		this.originY = 'top';
-		this.numberOfSides = numberOfSides;
-		this.polygonRadius = polygonRadius;
-		this.type = FiguresEnum.PolygonFigure;
-    }
-}
-
-export class Text extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height, text) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
-		this.originX = 'left';
-		this.originY = 'top';
-		this.width = width;
-		this.height = height;
-		this.text = text;
-		this.type = FiguresEnum.TextFigure;
-    }
 }
