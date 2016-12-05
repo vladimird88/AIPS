@@ -136,7 +136,7 @@ export class Figure {
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				var points = DrawingManager.regularPolygonPoints(8,1);	
+				var points = Figure.regularPolygonPoints(8,1);	
 				drawingFigure = new fabric.Polygon(
 					points, {
 						left: pointer.x,
@@ -368,7 +368,7 @@ export class Figure {
 			case FiguresEnum.PolygonFigure:	
 			{
 				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				var points = DrawingManager.regularPolygonPoints(8,polygonRadius);	
+				var points = Figure.regularPolygonPoints(8,polygonRadius);	
 				drawingFigure.set('points',points);
 				drawingFigure.set({ left: origX-polygonRadius, top: origY-polygonRadius});										
 				break;
@@ -438,7 +438,6 @@ export class Figure {
 			}
 			case FiguresEnum.TextFigure:
 			{
-				var pointer = canvas.getPointer(o.e);
 				figureToSave = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
 				break;
 			}
@@ -460,8 +459,11 @@ export class Figure {
 	}
 	
 	
-	static updateExistingFigureInDB(selectedFigureForEditing, figureToEdit)
+	static updateExistingFigureInDB(selectedFigureForEditing, figureToEdit, pointer, origX, origY)
 	{
+		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
+		var fillColor = Session.get('SelectedFillColorWithAlpha');
+		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
 		switch(selectedFigureForEditing.target.figureType)
 		{
 			case FiguresEnum.RectFigure:
@@ -499,7 +501,6 @@ export class Figure {
 			}
 			case FiguresEnum.TextFigure:
 			{
-				var pointer = canvas.getPointer(o.e);
 				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
 				break;
 			}
