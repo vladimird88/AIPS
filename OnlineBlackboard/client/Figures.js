@@ -494,8 +494,7 @@ export class Figure {
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				var polygonRadius = 50;
-				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, polygonRadius);										
+				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedStrokeWidth, strokeColor, fillColor, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5);										
 				break;
 			}
 			case FiguresEnum.TextFigure:
