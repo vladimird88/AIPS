@@ -1,5 +1,13 @@
 import { Figure } from './Figures.js';
+import { Rect } from './Figures.js';
+import { Ellipse } from './Figures.js';
+import { Circle } from './Figures.js';
+import { Triangle } from './Figures.js';
+import { Square } from './Figures.js';
+import { Polygon } from './Figures.js';
+import { Text } from './Figures.js';
 import { FiguresEnum } from './Figures.js';
+import { FiguresFactory } from './FiguresFactory.js';
 
 var canvas;
 var selectedFigureForEditing;
@@ -257,7 +265,7 @@ export class DrawingManager
 				origX = pointer.x;
 				origY = pointer.y;
 				canvas.deactivateAll();
-				drawingFigure = Figure.startDrawingFigure(pointer);
+				drawingFigure = FiguresFactory.startDrawingFigure(pointer);
 			}
 		});
 
@@ -265,7 +273,7 @@ export class DrawingManager
 		{
 			if (!isDown) return;
 			var pointer = canvas.getPointer(o.e);
-			Figure.updateDrawingFigure(drawingFigure, pointer, origX, origY);
+			FiguresFactory.updateDrawingFigure(drawingFigure, pointer, origX, origY);
 			canvas.renderAll();
 		});
 
@@ -276,18 +284,18 @@ export class DrawingManager
 			var pointer = canvas.getPointer(o.e);
 			if(selectedFigureForEditing == null)
 			{
-				Figure.saveDrawingFigureInDb(drawingFigure, pointer, origX, origY)
+				FiguresFactory.saveDrawingFigureInDb(drawingFigure, pointer, origX, origY)
 			}
 			else
 			{
-				Figure.updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY);
+				FiguresFactory.updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY);
 			}
 		});
 	}
 	
 	static drawFigure(singleFigure)
 	{
-		var figureToDraw = Figure.createFigure(singleFigure);
+		var figureToDraw = FiguresFactory.createFigure(singleFigure);
 		canvas.add(figureToDraw);
 		figureToDraw._id = singleFigure._id;
 		if(figureToDraw._id == selectedFigureId)
