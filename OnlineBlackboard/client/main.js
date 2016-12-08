@@ -16,7 +16,27 @@ import { DrawingManager } from './DrawingManager.js';
 
 import './main.html';
 
+window.onload = function()
+{
+	chat();
+}
 
+function chat()
+{
+	const streamer = new Meteor.Streamer('chat');
+
+	sendMessage = function(message) {
+		streamer.emit('message', message);
+		console.log('me: ' + message);
+	  };
+	  
+
+	streamer.on('message', function(message) {
+		console.log('user: ' + message);
+	});
+	
+	//Now you can open 2 browser tabs/windows and chat using sendMessage("text") at your browser's console Every message will travel from your client to server and retransmited to all other clients.
+}
 
 Template.Content.onCreated(function onContentCreated(event)
 {
