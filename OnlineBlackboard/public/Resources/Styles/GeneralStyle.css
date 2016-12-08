@@ -6,6 +6,11 @@
 	color:white;
 }
 
+input.message
+{
+	color: black;
+}
+
 .paddingClass
 {
 	padding-top:10px;
