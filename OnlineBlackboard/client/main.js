@@ -16,12 +16,9 @@ import { DrawingManager } from './DrawingManager.js';
 
 import './main.html';
 
-window.onload = function()
-{
-	chat();
-}
+var messagesArray = [];
 
-function chat()
+Template.messages.onCreated(function onContentCreated(event)
 {
 	const streamer = new Meteor.Streamer('chat');
 
@@ -32,11 +29,40 @@ function chat()
 	  
 
 	streamer.on('message', function(message) {
-		console.log('user: ' + message);
+		var messageDict = {
+		  name: "sender",
+		  message: message
+		};
+		messagesArray.push(messageDict);
+		Session.set("MyMessage",messagesArray);
 	});
-	
-	//Now you can open 2 browser tabs/windows and chat using sendMessage("text") at your browser's console Every message will travel from your client to server and retransmited to all other clients.
-}
+});
+
+Template.messages.helpers({
+	messages: function()
+	{
+		return Session.get("MyMessage");
+	}
+});
+
+	Template.input.events = {
+	  'keydown input#message' : function (event) {
+		if (event.which == 13) { // 13 is the enter key event
+			var message = document.getElementById('message');
+			if(message.value != '')
+			{
+				sendMessage(message.value);
+				var messageDict = {
+					name: "sender",
+					message: message.value
+				};
+				messagesArray.push(messageDict);
+				Session.set("MyMessage",messagesArray);
+				message.value = '';
+			}
+		}
+	  }
+	}
 
 Template.Content.onCreated(function onContentCreated(event)
 {
