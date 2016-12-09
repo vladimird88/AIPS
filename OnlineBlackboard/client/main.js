@@ -13,6 +13,7 @@ import { FiguresEnum } from './Figures.js';
 
 import { PageManager } from './PageManager.js';
 import { DrawingManager } from './DrawingManager.js';
+import { ChatManager } from './ChatManager.js';
 
 import './main.html';
 
@@ -20,28 +21,13 @@ var messagesArray = [];
 
 Template.messages.onCreated(function onContentCreated(event)
 {
-	const streamer = new Meteor.Streamer('chat');
-
-	sendMessage = function(message) {
-		streamer.emit('message', message);
-		console.log('me: ' + message);
-	  };
-	  
-
-	streamer.on('message', function(message) {
-		var messageDict = {
-		  name: "sender",
-		  message: message
-		};
-		messagesArray.push(messageDict);
-		Session.set("MyMessage",messagesArray);
-	});
+	ChatManager.initializeChat();
 });
 
 Template.messages.helpers({
 	messages: function()
 	{
-		return Session.get("MyMessage");
+		return ChatManager.getChatMesssages();
 	}
 });
 
@@ -51,13 +37,7 @@ Template.messages.helpers({
 			var message = document.getElementById('message');
 			if(message.value != '')
 			{
-				sendMessage(message.value);
-				var messageDict = {
-					name: "sender",
-					message: message.value
-				};
-				messagesArray.push(messageDict);
-				Session.set("MyMessage",messagesArray);
+				ChatManager.sendSingleMessage(message.value);
 				message.value = '';
 			}
 		}
