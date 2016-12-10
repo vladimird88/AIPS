@@ -13,6 +13,7 @@ var canvas;
 var selectedFigureForEditing;
 var selectedFigureId;
 var figureToEdit;
+var liveDrawingFigure;
 
 export class DrawingManager
 {
@@ -20,7 +21,7 @@ export class DrawingManager
 	{
 		Meteor.subscribe('figures');
 		Tracker.autorun(function(){
-			
+			liveDrawingFigure = null;
 			canvas.clear();
 			var figuresCursors = Figures.find({});
 			figuresCursors.forEach(function(singleFigure)
@@ -107,6 +108,21 @@ export class DrawingManager
 		Session.set('SelectedFillColorWithAlpha', 'rgba(60,120,180,1)');
 		Session.set('SelectedStrokeAlpha', 1);
 		Session.set('SelectedFillAlpha', 1);
+		
+		const streamer2 = new Meteor.Streamer('drawing');
+
+		sendFigure = function(singleFigure) {
+			streamer2.emit('figure', singleFigure);
+			console.log('me: ' + "" + singleFigure.left + "," + singleFigure.top);
+		  };
+		  
+		streamer2.on('figure', function(singleFigure) {
+			if(liveDrawingFigure != null)
+			{
+				canvas.remove(liveDrawingFigure);
+			}
+			liveDrawingFigure = DrawingManager.drawFigure(singleFigure);
+		});
 	}
 	
 	static setStrokeWidth(selectedStrokeWidth)
@@ -274,6 +290,7 @@ export class DrawingManager
 			if (!isDown) return;
 			var pointer = canvas.getPointer(o.e);
 			FiguresFactory.updateDrawingFigure(drawingFigure, pointer, origX, origY);
+			FiguresFactory.sendDrawingFigureToOtherUsers(drawingFigure, pointer, origX, origY);
 			canvas.renderAll();
 		});
 
@@ -303,5 +320,6 @@ export class DrawingManager
 			canvas.setActiveObject(figureToDraw);
 		}
 		figureToDraw.figureType = singleFigure.type;
+		return figureToDraw;
 	}
 }

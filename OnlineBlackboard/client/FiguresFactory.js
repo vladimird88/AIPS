@@ -443,6 +443,72 @@ export class FiguresFactory
 		}
 	}
 	
+	//isto kao cuvanje u bazi
+	static sendDrawingFigureToOtherUsers(figureToSendToAnotherUsers, pointer, origX, origY)
+	{	
+		var figureToSendToAnotherUsers;
+		var drawingMode = Session.get('DrawingMode');
+		var strokeColor = Session.get('SelectedStrokeColorWithAlpha');
+		var fillColor = Session.get('SelectedFillColorWithAlpha');
+		var selectedStrokeWidth = Session.get('SelectedStrokeWidth');
+		switch(drawingMode)
+		{
+			case FiguresEnum.RectFigure:
+			{
+				var leftRect = Math.min(origX,pointer.x);
+				var topRect = Math.min(origY,pointer.y);
+				var widthRect = Math.abs(origX - pointer.x);
+				var heightRect = Math.abs(origY - pointer.y);
+				figureToSendToAnotherUsers = new Rect(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
+				break;
+			}
+			case FiguresEnum.CircleFigure:
+			{
+				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+				figureToSendToAnotherUsers = new Circle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
+				break;
+			}
+			case FiguresEnum.TriangleFigure:
+			{
+				var leftTriangle = Math.min(origX,pointer.x);
+				var topTriangle = Math.min(origY,pointer.y);
+				var widthTriangle = Math.abs(origX - pointer.x);
+				var heightTriangle = Math.abs(origY - pointer.y);
+				figureToSendToAnotherUsers = new Triangle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
+				break;
+			}
+			case FiguresEnum.EllipseFigure:	
+			{
+				var xRadius = Math.abs(origX - pointer.x);
+				var yRadius = Math.abs(origY - pointer.y);
+				figureToSendToAnotherUsers = new Ellipse(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+				break;
+			}
+			case FiguresEnum.SquareFigure:
+			{
+				var leftSquare= Math.min(origX,pointer.x);
+				var topSquare = Math.min(origY,pointer.y);
+				var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
+				figureToSendToAnotherUsers = new Square(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
+				break;
+			}
+			case FiguresEnum.PolygonFigure:	
+			{
+				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
+				var leftPolygon = origX-polygonRadius;
+				var	topPolygon = origY-polygonRadius;
+				figureToSendToAnotherUsers = new Polygon(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+				break;
+			}
+			case FiguresEnum.TextFigure:
+			{
+				figureToSendToAnotherUsers = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+				break;
+			}
+		}
+		sendFigure(figureToSendToAnotherUsers);
+	}
+	
 	
 	static updateExistingFigureInDB(selectedFigureForEditing, figureToEdit, pointer, origX, origY)
 	{

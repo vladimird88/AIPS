@@ -8,6 +8,10 @@ Meteor.startup(() => {
 	streamer.allowRead('all');
 	streamer.allowWrite('all');
 	
+	const streamer2 = new Meteor.Streamer('drawing');
+	streamer2.allowRead('all');
+	streamer2.allowWrite('all');
+	
 	
 	Meteor.publish('figures', function findFigures() {
 		return Figures.find();
