@@ -509,6 +509,51 @@ export class FiguresFactory
 		sendFigure(figureToSendToAnotherUsers);
 	}
 	
+	static sendUpdatingFigureToOtherUsers(selectedFigureForEditing)
+	{	
+		var selectedFigureId = selectedFigureForEditing.target._id;
+		var figureToSendToAnotherUsers;
+		switch(selectedFigureForEditing.target.figureType)
+		{
+			case FiguresEnum.RectFigure:
+			{
+				figureToSendToAnotherUsers = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				break;
+			}
+			case FiguresEnum.CircleFigure:
+			{
+				figureToSendToAnotherUsers = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
+				break;
+			}
+			case FiguresEnum.TriangleFigure:
+			{
+				figureToSendToAnotherUsers = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				break;
+			}
+			case FiguresEnum.EllipseFigure:	
+			{
+				figureToSendToAnotherUsers = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
+				break;
+			}
+			case FiguresEnum.SquareFigure:
+			{
+				figureToSendToAnotherUsers = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
+				break;
+			}
+			case FiguresEnum.PolygonFigure:	
+			{
+				figureToSendToAnotherUsers = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5);										
+				break;
+			}
+			case FiguresEnum.TextFigure:
+			{
+				figureToSendToAnotherUsers = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, 'Hello world');										
+				break;
+			}
+		}
+		figureToSendToAnotherUsers._id = selectedFigureId;
+		sendFigure(figureToSendToAnotherUsers);
+	}
 	
 	static updateExistingFigureInDB(selectedFigureForEditing, figureToEdit, pointer, origX, origY)
 	{

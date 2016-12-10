@@ -14,6 +14,7 @@ var selectedFigureForEditing;
 var selectedFigureId;
 var figureToEdit;
 var liveDrawingFigure;
+var liveEditingFigure;
 
 export class DrawingManager
 {
@@ -22,6 +23,7 @@ export class DrawingManager
 		Meteor.subscribe('figures');
 		Tracker.autorun(function(){
 			liveDrawingFigure = null;
+			liveEditingFigure = null;
 			canvas.clear();
 			var figuresCursors = Figures.find({});
 			figuresCursors.forEach(function(singleFigure)
@@ -116,12 +118,33 @@ export class DrawingManager
 			console.log('me: ' + "" + singleFigure.left + "," + singleFigure.top);
 		  };
 		  
-		streamer2.on('figure', function(singleFigure) {
-			if(liveDrawingFigure != null)
+		streamer2.on('figure', function(singleFigure) 
+		{
+			if(singleFigure._id)
 			{
-				canvas.remove(liveDrawingFigure);
+				for (var i = 0; i < canvas.getObjects().length; ++i) 
+				{ 
+					if (canvas.item(i)._id == singleFigure._id) 
+					{
+						liveEditingFigure = canvas.item(i); 
+						break;
+					}
+				}
+				if(liveEditingFigure)
+				{
+					canvas.remove(liveEditingFigure);
+					liveEditingFigure = DrawingManager.drawFigure(singleFigure);
+				}
 			}
-			liveDrawingFigure = DrawingManager.drawFigure(singleFigure);
+			else
+			{
+				if(liveDrawingFigure != null)
+				{
+					canvas.remove(liveDrawingFigure);
+				}
+				liveDrawingFigure = DrawingManager.drawFigure(singleFigure);
+				
+			}
 		});
 	}
 	
@@ -287,6 +310,10 @@ export class DrawingManager
 
 		canvas.on('mouse:move', function(o)
 		{
+			if(selectedFigureForEditing != null)
+			{
+				FiguresFactory.sendUpdatingFigureToOtherUsers(selectedFigureForEditing);
+			}
 			if (!isDown) return;
 			var pointer = canvas.getPointer(o.e);
 			FiguresFactory.updateDrawingFigure(drawingFigure, pointer, origX, origY);
