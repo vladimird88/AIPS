@@ -9,6 +9,7 @@ import { Text } from './Figures.js';
 import { FiguresEnum } from './Figures.js';
 import { FiguresFactory } from './FiguresFactory.js';
 
+var streamer2;
 var canvas;
 var selectedFigureForEditing;
 var selectedFigureId;
@@ -111,7 +112,10 @@ export class DrawingManager
 		Session.set('SelectedStrokeAlpha', 1);
 		Session.set('SelectedFillAlpha', 1);
 		
-		const streamer2 = new Meteor.Streamer('drawing');
+		if(streamer2 == null)
+		{
+			streamer2 = new Meteor.Streamer('drawing');
+		}
 
 		sendFigure = function(singleFigure) {
 			streamer2.emit('figure', singleFigure);
