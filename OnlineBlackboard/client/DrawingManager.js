@@ -283,7 +283,7 @@ export class DrawingManager
 	static onObjectSelected(e) 
 	{
 		selectedFigureForEditing = e;
-		selectedFigureId = e.target._id;
+		selectedFigureId = e.target._objects[0]._id;
 		Session.set('DrawingMode', FiguresEnum.EnableAll);
 		DrawingManager.setAllFiguresInCanvasSelectable();
 	}
@@ -370,7 +370,7 @@ export class DrawingManager
 		var figureToDraw = FiguresFactory.createFigure(singleFigure);
 		canvas.add(figureToDraw);
 		figureToDraw._objects[0]._id = singleFigure._id;
-		if(figureToDraw._id == selectedFigureId)
+		if(figureToDraw._objects[0]._id == selectedFigureId)
 		{
 			canvas.setActiveObject(figureToDraw);
 		}
