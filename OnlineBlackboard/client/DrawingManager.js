@@ -354,7 +354,10 @@ export class DrawingManager
 			}
 			else
 			{
-				FiguresFactory.updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY);
+				if(selectedFigureForEditing.target.get('type') != "i-text")
+				{
+					FiguresFactory.updateExistingFigureInDB(selectedFigureForEditing, pointer, origX, origY);
+				}
 			}
 		});
 	}
