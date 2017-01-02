@@ -13,7 +13,7 @@ export const FiguresEnum = {
 	};
 
 export class Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left) {
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText) {
 		this.angle = angle;
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
@@ -23,12 +23,13 @@ export class Figure {
 		this.top = top;
 		this.left = left;
 		this.time = Date.now();
+		this.figureText = figureText;
     }
 }
 
 export class Circle extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radius) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radius, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText);
 		this.radius = radius;
 		this.originX = 'center';
 		this.originY = 'center';
@@ -37,8 +38,8 @@ export class Circle extends Figure {
 }
 
 export class Ellipse extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radiusX, radiusY) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, radiusX, radiusY, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText);
 		this.radiusX = radiusX;
 		this.radiusY = radiusY;
 		this.originX = 'center';
@@ -48,8 +49,8 @@ export class Ellipse extends Figure {
 }
 
 export class Square extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText);
 		this.width = width;
 		this.originX = 'left';
 		this.originY = 'top';
@@ -58,8 +59,8 @@ export class Square extends Figure {
 }
 
 export class Rect extends Square {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, figureText);
 		this.width = width;
 		this.height = height;
 		this.originX = 'left';
@@ -68,8 +69,8 @@ export class Rect extends Square {
     }
 }
 export class Triangle extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText);
 		this.width = width;
 		this.height = height;
 		this.originX = 'left';
@@ -79,8 +80,8 @@ export class Triangle extends Figure {
 }
 
 export class Polygon extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, numberOfSides, polygonRadius, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText);
 		this.originX = 'left';
 		this.originY = 'top';
 		this.numberOfSides = numberOfSides;
@@ -90,13 +91,13 @@ export class Polygon extends Figure {
 }
 
 export class Text extends Figure {
-  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height, text) {
-		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left);
+  constructor(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, width, height, figureText) {
+		super(angle, scaleX, scaleY, strokeWidth, strokeColor, fillColor, top, left, figureText);
 		this.originX = 'left';
 		this.originY = 'top';
 		this.width = width;
 		this.height = height;
-		this.text = text;
+		this.figureText = figureText;
 		this.type = FiguresEnum.TextFigure;
     }
 }

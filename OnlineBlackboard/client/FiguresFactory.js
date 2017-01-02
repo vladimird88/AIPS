@@ -279,7 +279,7 @@ export class FiguresFactory
 			}
 			case FiguresEnum.TextFigure:	
 			{
-				figureToDraw = new fabric.IText(singleFigure.text, {
+				figureToDraw = new fabric.IText(singleFigure.figureText, {
 						left: singleFigure.left,
 						top: singleFigure.top,
 						width:singleFigure.width,
@@ -380,13 +380,13 @@ export class FiguresFactory
 				var topRect = Math.min(origY,pointer.y);
 				var widthRect = Math.abs(origX - pointer.x);
 				var heightRect = Math.abs(origY - pointer.y);
-				figureToSave = new Rect(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
+				figureToSave = new Rect(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect,'');
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				figureToSave = new Circle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
+				figureToSave = new Circle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius,'');
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
@@ -395,14 +395,14 @@ export class FiguresFactory
 				var topTriangle = Math.min(origY,pointer.y);
 				var widthTriangle = Math.abs(origX - pointer.x);
 				var heightTriangle = Math.abs(origY - pointer.y);
-				figureToSave = new Triangle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
+				figureToSave = new Triangle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle,'');
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
 				var xRadius = Math.abs(origX - pointer.x);
 				var yRadius = Math.abs(origY - pointer.y);
-				figureToSave = new Ellipse(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+				figureToSave = new Ellipse(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius,'');
 				break;
 			}
 			case FiguresEnum.SquareFigure:
@@ -410,7 +410,7 @@ export class FiguresFactory
 				var leftSquare= Math.min(origX,pointer.x);
 				var topSquare = Math.min(origY,pointer.y);
 				var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
-				figureToSave = new Square(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
+				figureToSave = new Square(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare,'');
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
@@ -418,7 +418,7 @@ export class FiguresFactory
 				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
 				var leftPolygon = origX-polygonRadius;
 				var	topPolygon = origY-polygonRadius;
-				figureToSave = new Polygon(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+				figureToSave = new Polygon(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius,'');										
 				break;
 			}
 			case FiguresEnum.TextFigure:
@@ -459,13 +459,13 @@ export class FiguresFactory
 				var topRect = Math.min(origY,pointer.y);
 				var widthRect = Math.abs(origX - pointer.x);
 				var heightRect = Math.abs(origY - pointer.y);
-				figureToSendToAnotherUsers = new Rect(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect);
+				figureToSendToAnotherUsers = new Rect(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topRect, leftRect, widthRect, heightRect,'');
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
 				var circleRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
-				figureToSendToAnotherUsers = new Circle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius);
+				figureToSendToAnotherUsers = new Circle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, circleRadius,'');
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
@@ -474,14 +474,14 @@ export class FiguresFactory
 				var topTriangle = Math.min(origY,pointer.y);
 				var widthTriangle = Math.abs(origX - pointer.x);
 				var heightTriangle = Math.abs(origY - pointer.y);
-				figureToSendToAnotherUsers = new Triangle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle);
+				figureToSendToAnotherUsers = new Triangle(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topTriangle, leftTriangle, widthTriangle, heightTriangle,'');
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
 				var xRadius = Math.abs(origX - pointer.x);
 				var yRadius = Math.abs(origY - pointer.y);
-				figureToSendToAnotherUsers = new Ellipse(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius);
+				figureToSendToAnotherUsers = new Ellipse(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, origY, origX, xRadius, yRadius,'');
 				break;
 			}
 			case FiguresEnum.SquareFigure:
@@ -489,7 +489,7 @@ export class FiguresFactory
 				var leftSquare= Math.min(origX,pointer.x);
 				var topSquare = Math.min(origY,pointer.y);
 				var widthSquare = Math.min(Math.abs(origX - pointer.x), Math.abs(origY - pointer.y));
-				figureToSendToAnotherUsers = new Square(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare);
+				figureToSendToAnotherUsers = new Square(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topSquare, leftSquare, widthSquare,'');
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
@@ -497,7 +497,7 @@ export class FiguresFactory
 				var polygonRadius = Math.sqrt(Math.pow(origX - pointer.x, 2) + Math.pow(origY - pointer.y, 2));
 				var leftPolygon = origX-polygonRadius;
 				var	topPolygon = origY-polygonRadius;
-				figureToSendToAnotherUsers = new Polygon(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius);										
+				figureToSendToAnotherUsers = new Polygon(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, topPolygon, leftPolygon, 8, polygonRadius,'');										
 				break;
 			}
 			case FiguresEnum.TextFigure:
@@ -517,32 +517,32 @@ export class FiguresFactory
 		{
 			case FiguresEnum.RectFigure:
 			{
-				figureToSendToAnotherUsers = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				figureToSendToAnotherUsers = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
-				figureToSendToAnotherUsers = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
+				figureToSendToAnotherUsers = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5,'');
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
 			{
-				figureToSendToAnotherUsers = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				figureToSendToAnotherUsers = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
-				figureToSendToAnotherUsers = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
+				figureToSendToAnotherUsers = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry,'');
 				break;
 			}
 			case FiguresEnum.SquareFigure:
 			{
-				figureToSendToAnotherUsers = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
+				figureToSendToAnotherUsers = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width,'');
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				figureToSendToAnotherUsers = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5);										
+				figureToSendToAnotherUsers = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5,'');										
 				break;
 			}
 			case FiguresEnum.TextFigure:
@@ -561,32 +561,32 @@ export class FiguresFactory
 		{
 			case FiguresEnum.RectFigure:
 			{
-				figureToEdit = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				figureToEdit = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
-				figureToEdit = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5);
+				figureToEdit = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5,'');
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
 			{
-				figureToEdit = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height);
+				figureToEdit = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
-				figureToEdit = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry);
+				figureToEdit = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry,'');
 				break;
 			}
 			case FiguresEnum.SquareFigure:
 			{
-				figureToEdit = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width);
+				figureToEdit = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width,'');
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5);										
+				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5,'');										
 				break;
 			}
 			case FiguresEnum.TextFigure:
