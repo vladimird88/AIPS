@@ -285,6 +285,23 @@ export class DrawingManager
 		DrawingManager.setAllFiguresInCanvasSelectable();
 	}
 
+	static onObjectModified(e) 
+	{
+		if(e.target.get('type') == "i-text")
+		{
+			Meteor.call('updateFigureInDB', e.target._id, {'figureText': e.target.text}, function (error) 
+			{
+				if (error) 
+				{
+					console.log(error);
+				}
+				else 
+				{
+					console.log('success');
+				}
+			});
+		}
+	}
 	
 	static setupDrawingOnCanvas(mainCanvas)
 	{
@@ -292,6 +309,7 @@ export class DrawingManager
 		canvas.selection = false;
 		
 		canvas.on('object:selected', DrawingManager.onObjectSelected);
+		canvas.on('object:modified', DrawingManager.onObjectModified);
 		
 		DrawingManager.drawFromDB();
 		

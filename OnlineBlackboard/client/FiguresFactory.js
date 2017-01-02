@@ -138,7 +138,7 @@ export class FiguresFactory
 			}
 			case FiguresEnum.TextFigure:
 			{
-				drawingFigure = new fabric.IText('Hello world', {
+				drawingFigure = new fabric.IText('<Enter text 3>', {
 					left: pointer.x,
 					top: pointer.y,
 					width:400,
@@ -154,6 +154,7 @@ export class FiguresFactory
 				break;
 			}
 		}
+
 		return drawingFigure;
 	}
 	
@@ -423,7 +424,7 @@ export class FiguresFactory
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToSave = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+				figureToSave = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, "<Enter text 4>");										
 				break;
 			}
 		}
@@ -502,7 +503,7 @@ export class FiguresFactory
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToSendToAnotherUsers = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, 'Hello world');										
+				figureToSendToAnotherUsers = new Text(0, 1, 1, selectedStrokeWidth, strokeColor, fillColor, pointer.y, pointer.x, 400, 400, '<Enter text 1>');										
 				break;
 			}
 		}
@@ -547,7 +548,7 @@ export class FiguresFactory
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToSendToAnotherUsers = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, 'Hello world');										
+				figureToSendToAnotherUsers = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, "<Enter text 2>");										
 				break;
 			}
 		}
@@ -591,7 +592,7 @@ export class FiguresFactory
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, 'Hello world');										
+				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, selectedFigureForEditing.target.text);										
 				break;
 			}
 		}
