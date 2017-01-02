@@ -118,8 +118,11 @@ export class DrawingManager
 		}
 
 		sendFigure = function(singleFigure) {
-			streamer2.emit('figure', singleFigure);
-			console.log('me: ' + "" + singleFigure.left + "," + singleFigure.top);
+			if(singleFigure != null)
+			{
+				streamer2.emit('figure', singleFigure);
+				console.log('me: ' + "" + singleFigure.left + "," + singleFigure.top);
+			}
 		  };
 		  
 		streamer2.on('figure', function(singleFigure) 
@@ -128,7 +131,7 @@ export class DrawingManager
 			{
 				for (var i = 0; i < canvas.getObjects().length; ++i) 
 				{ 
-					if (canvas.item(i)._id == singleFigure._id) 
+					if (canvas.item(i)._objects[0]._id == singleFigure._id) 
 					{
 						liveEditingFigure = canvas.item(i); 
 						break;
@@ -314,14 +317,14 @@ export class DrawingManager
 		DrawingManager.drawFromDB();
 		
 		var drawingFigure, point1, isDown, origX, origY;
-		var objectsList = [];
+		var _objectsList = [];
 
 		canvas.on('mouse:down', function(o)
 		{
+			isDown = true;
 			var drawingMode = Session.get('DrawingMode');
 			if(drawingMode != FiguresEnum.EnableAll && drawingMode != FiguresEnum.DisableAll)
 			{
-				isDown = true;
 				var pointer = canvas.getPointer(o.e);
 				origX = pointer.x;
 				origY = pointer.y;
@@ -366,12 +369,12 @@ export class DrawingManager
 	{
 		var figureToDraw = FiguresFactory.createFigure(singleFigure);
 		canvas.add(figureToDraw);
-		figureToDraw._id = singleFigure._id;
+		figureToDraw._objects[0]._id = singleFigure._id;
 		if(figureToDraw._id == selectedFigureId)
 		{
 			canvas.setActiveObject(figureToDraw);
 		}
-		figureToDraw.figureType = singleFigure.type;
+		figureToDraw._objects[0].figureType = singleFigure.type;
 		return figureToDraw;
 	}
 }

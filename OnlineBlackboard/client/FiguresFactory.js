@@ -150,7 +150,7 @@ export class FiguresFactory
 					originX: 'left', originY: 'top'
 				});
 				canvas.add(drawingFigure);
-				//objectsList.push(square);
+				//_objectsList.push(square);
 				break;
 			}
 		}
@@ -525,94 +525,97 @@ export class FiguresFactory
 	
 	static sendUpdatingFigureToOtherUsers(selectedFigureForEditing)
 	{	
-		var selectedFigureId = selectedFigureForEditing.target._id;
+		var selectedFigureId = selectedFigureForEditing.target._objects[0]._id;
 		var figureToSendToAnotherUsers;
-		switch(selectedFigureForEditing.target.figureType)
+		switch(selectedFigureForEditing.target._objects[0].figureType)
 		{
 			case FiguresEnum.RectFigure:
 			{
-				figureToSendToAnotherUsers = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
+				figureToEdit = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width, selectedFigureForEditing.target._objects[0].height,'');
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
-				figureToSendToAnotherUsers = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5,'');
+				figureToEdit = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width * 0.5,'');
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
 			{
-				figureToSendToAnotherUsers = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
+				figureToEdit = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width, selectedFigureForEditing.target._objects[0].height,'');
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
-				figureToSendToAnotherUsers = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry,'');
+				figureToEdit = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].rx, selectedFigureForEditing.target._objects[0].ry,'');
 				break;
 			}
 			case FiguresEnum.SquareFigure:
 			{
-				figureToSendToAnotherUsers = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width,'');
+				figureToEdit = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width,'');
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				figureToSendToAnotherUsers = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5,'');										
+				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target._objects[0].width * 0.5,'');										
 				break;
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToSendToAnotherUsers = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, "<Enter text 2>");										
+				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, selectedFigureForEditing.target._objects[0].text);										
 				break;
 			}
 		}
-		figureToSendToAnotherUsers._id = selectedFigureId;
-		sendFigure(figureToSendToAnotherUsers);
+		if(figureToEdit != null)
+		{
+			figureToEdit._id = selectedFigureId;
+			sendFigure(figureToEdit);
+		}
 	}
 	
 	static updateExistingFigureInDB(selectedFigureForEditing, figureToEdit, pointer, origX, origY)
 	{
-		switch(selectedFigureForEditing.target.figureType)
+		switch(selectedFigureForEditing.target._objects[0].figureType)
 		{
 			case FiguresEnum.RectFigure:
 			{
-				figureToEdit = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
+				figureToEdit = new Rect(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width, selectedFigureForEditing.target._objects[0].height,'');
 				break;
 			}
 			case FiguresEnum.CircleFigure:
 			{
-				figureToEdit = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width * 0.5,'');
+				figureToEdit = new Circle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width * 0.5,'');
 				break;
 			}
 			case FiguresEnum.TriangleFigure:
 			{
-				figureToEdit = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width, selectedFigureForEditing.target.height,'');
+				figureToEdit = new Triangle(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width, selectedFigureForEditing.target._objects[0].height,'');
 				break;
 			}
 			case FiguresEnum.EllipseFigure:	
 			{
-				figureToEdit = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.rx, selectedFigureForEditing.target.ry,'');
+				figureToEdit = new Ellipse(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].rx, selectedFigureForEditing.target._objects[0].ry,'');
 				break;
 			}
 			case FiguresEnum.SquareFigure:
 			{
-				figureToEdit = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target.width,'');
+				figureToEdit = new Square(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, selectedFigureForEditing.target._objects[0].width,'');
 				break;
 			}
 			case FiguresEnum.PolygonFigure:	
 			{
-				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target.width * 0.5,'');										
+				figureToEdit = new Polygon(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 8, selectedFigureForEditing.target._objects[0].width * 0.5,'');										
 				break;
 			}
 			case FiguresEnum.TextFigure:
 			{
-				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target.strokeWidth, selectedFigureForEditing.target.stroke, selectedFigureForEditing.target.fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, selectedFigureForEditing.target.text);										
+				figureToEdit = new Text(selectedFigureForEditing.target.angle, selectedFigureForEditing.target.scaleX, selectedFigureForEditing.target.scaleY, selectedFigureForEditing.target._objects[0].strokeWidth, selectedFigureForEditing.target._objects[0].stroke, selectedFigureForEditing.target._objects[0].fill, selectedFigureForEditing.target.top, selectedFigureForEditing.target.left, 400, 400, selectedFigureForEditing.target._objects[0].text);										
 				break;
 			}
 		}
 		var drawingMode = Session.get('DrawingMode');
 		if(drawingMode == FiguresEnum.EnableAll && selectedFigureForEditing != null)
 		{
-			Meteor.call('updateFigureInDB', selectedFigureForEditing.target._id, figureToEdit, function (error) 
+			Meteor.call('updateFigureInDB', selectedFigureForEditing.target._objects[0]._id, figureToEdit, function (error) 
 			{
 				if (error) 
 				{
