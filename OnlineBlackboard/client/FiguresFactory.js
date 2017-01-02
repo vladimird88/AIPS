@@ -298,7 +298,20 @@ export class FiguresFactory
 				break;
 			}
 		}
-		return figureToDraw;
+		var t = new fabric.Text("test", {
+			fontFamily: 'Calibri',
+			fontSize: 33,
+			textAlign: 'center',
+			originX: singleFigure.originX, 
+			originY: singleFigure.originY,
+			left: singleFigure.left,
+			top: singleFigure.top
+		});
+		var g = new fabric.Group([figureToDraw, t],{
+			// any group attributes here
+		});
+
+		return g;
 	}
 	
 	static updateDrawingFigure(drawingFigure, pointer, origX, origY)
