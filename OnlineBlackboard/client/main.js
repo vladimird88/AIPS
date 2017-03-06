@@ -19,6 +19,23 @@ import './main.html';
 
 var messagesArray = [];
 
+// import momentjs so we can return a formatted version of the creation date.
+import moment from './moment.js';
+// import the singularity model class so we can extend it
+import { Model } from 'meteor/patrickml:singularity';
+
+export class Project extends Model {
+  constructor(doc) {
+    super(doc);
+    return this;
+  }
+
+  // formats the creation data to `MM/DD/YYYY' format
+  formattedDate() {
+    return moment(this.createdAt).format('MM/DD/YYYY');
+  }
+}
+
 Template.messages.onCreated(function onContentCreated(event)
 {
 	ChatManager.initializeChat();
@@ -98,6 +115,7 @@ Template.NewCourse.events =
 	},
 	'click #rectSelected' : function (event) 
 	{
+		var k = new Project();
         DrawingManager.selectFigure(FiguresEnum.RectFigure);
 	},
 	'click #circleSelected' : function (event) 
